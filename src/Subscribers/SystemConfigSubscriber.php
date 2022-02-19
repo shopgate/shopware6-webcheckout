@@ -11,10 +11,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class SystemConfigSubscriber implements EventSubscriberInterface
 {
     private SystemConfigService $configService;
+    private string $configKey;
 
-    public function __construct(SystemConfigService $configService)
+    public function __construct(SystemConfigService $configService, string $cssConfigKey)
     {
         $this->configService = $configService;
+        $this->configKey = $cssConfigKey;
     }
 
     public static function getSubscribedEvents(): array
@@ -26,10 +28,9 @@ class SystemConfigSubscriber implements EventSubscriberInterface
 
     public function addCssToCompiler(ThemeCompilerConcatenatedStylesEvent $event): void
     {
-        $css = $this->configService->getString('ShopgateConnectSW6.config.css', $event->getSalesChannelId());
-        if (empty($css)) {
-            $css = $this->configService->getString('ShopgateConnectSW6.config.css');
+        $css = $this->configService->getString($this->configKey, $event->getSalesChannelId());
+        if (!empty($css)) {
+            $event->setConcatenatedStyles($event->getConcatenatedStyles() . "\n$css\n");
         }
-        $event->setConcatenatedStyles($event->getConcatenatedStyles() . "\n$css\n");
     }
 }
