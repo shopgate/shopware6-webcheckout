@@ -1,0 +1,49 @@
+{
+  "name": "shopgate/connect-shopware6",
+  "description": "Shopgate Connect for Shopware 6",
+  "license": "proprietary",
+  "type": "shopware-platform-plugin",
+  "version": "0.1.0",
+  "keywords": [
+    "mobile",
+    "app"
+  ],
+  "authors": [
+    {
+      "name": "Apite GmbH",
+      "email": "mail@apite.io"
+    }
+  ],
+  "require": {
+    "shopware/core": "^6.4.4"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "extra": {
+    "shopware-plugin-class": "Shopgate\\ConnectSW6\\ShopgateConnectSW6",
+    "plugin-icon": "src/Resources/public/shopgate_logo.png",
+    "copyright": "by Apite",
+    "label": {
+      "de-DE": "Shopgate Connect",
+      "en-GB": "Shopgate Connect"
+    },
+    "description": {
+      "de-DE": "Shopgate Connect Integration",
+      "en-GB": "Shopgate Connect integration"
+    },
+    "manufacturerLink": {
+      "en-GB": "https://apite.io",
+      "de-DE": "https://apite.io"
+    },
+    "supportLink": {
+      "de-DE": "https://apite.io",
+      "en-GB": "https://apite.io"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Shopgate\\ConnectSW6\\": "src/"
+    }
+  }
+}
