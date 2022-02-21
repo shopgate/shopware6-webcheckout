@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Basic Configuration</title>
+        <title lang="de-DE">Allgemeine Einstellungen</title>
+        <input-field type="textarea">
+            <name>css</name>
+            <label>Custom CSS</label>
+            <label lang="de-DE">Custom CSS</label>
+            <placeholder>.body { padding: 0; }</placeholder>
+            <helpText>Please validate CSS beforehand, this can break your theme styles. You will also have to compile your themes after CSS changes.</helpText>
+            <helpText lang="de-DE">
+                Fehler im CSS können die Theme Styles negativ beeinflussen. Das Theme muss nach jeder Änderung neu kompiliert werden.
+            </helpText>
+        </input-field>
+    </card>
+</config>
