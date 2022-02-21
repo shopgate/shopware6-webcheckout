@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
     <card>
         <title>Basic Configuration</title>
-        <title lang="de-DE">Basic Configuration</title>
+        <title lang="de-DE">Allgemeine Einstellungen</title>
         <input-field type="textarea">
             <name>css</name>
             <label>Custom CSS</label>
@@ -11,7 +11,7 @@
             <placeholder>.body { padding: 0; }</placeholder>
             <helpText>Please validate CSS beforehand, this can break your theme styles. You will also have to compile your themes after CSS changes.</helpText>
             <helpText lang="de-DE">
-                Please validate CSS beforehand, this can break your theme styles. You will also have to compile your themes after CSS changes.
+                Fehler im CSS können die Theme Styles negativ beeinflussen. Das Theme muss nach jeder Änderung neu kompiliert werden.
             </helpText>
         </input-field>
     </card>
