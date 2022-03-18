@@ -12,5 +12,8 @@
             <argument key="$cssConfigKey" type="string">%sg_connect_config_css%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
+        <service id="Shopgate\ConnectSW6\Subscribers\IsShopgateSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>

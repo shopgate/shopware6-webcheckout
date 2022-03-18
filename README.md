@@ -44,3 +44,22 @@ php bin/console plugin:install --activate ShopgateConnectSW6
 ```
 
 You may install and activate via the Shopware administration panel instead, if you prefer.
+
+### CSS class examples
+
+```css
+/* All pages */
+.is-sg-app {
+    display: none;
+}
+
+/* Login page -> account/login */
+body.is-ctl-auth.is-act-loginpage.is-sg-app {
+    display: none;
+}
+
+/* Registration page -> account/register */
+body.is-ctl-register.is-act-accountregisterpage.is-sg-app {
+    display: none;
+}
+```

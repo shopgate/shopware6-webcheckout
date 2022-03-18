@@ -1,0 +1,28 @@
+{% sw_extends '@Storefront/storefront/page/account/index.html.twig' %}
+
+{% block page_account_main_content %}
+    {{ parent() }}
+    {% if page.header.extensions.sg_connect_data %}
+        <script type="text/javascript">
+            function initPipelineCall() {
+                window.SGAppConnector.sendPipelineRequest(
+                    'shopgate.user.loginUser.v1',
+                    true,
+                    {
+                        'strategy': 'auth_code',
+                        'parameters': {'token': '{{ app.request.attributes.get("sw-context-token") }}'}
+                    },
+                    function () {
+                        const command = {
+                            'c': 'broadcastEvent',
+                            'p': {'event': 'userLoggedIn'}
+                        };
+
+                        window.SGAppConnector.sendAppCommand(command);
+                        window.location.href = '{{ path('frontend.checkout.cart.page') }}';
+                    }
+                );
+            }
+        </script>
+    {% endif %}
+{% endblock %}
