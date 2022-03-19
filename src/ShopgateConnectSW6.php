@@ -23,11 +23,26 @@ class ShopgateConnectSW6 extends Plugin
 /**
  * Global
  */
-.is-sg-app .header-search-col,
-.is-sg-app .header-actions-col,
-.is-sg-app .nav-main,
-.is-sg-app .top-bar-nav, {
-  display: none;
+.is-sg-app {
+
+  padding-top: 4em;
+
+  .header-search-col,
+  .header-main,
+  .header-actions-col,
+  .nav-main {
+    display: none;
+  }
+
+  .offcanvas, .modal {
+    margin-top: 4em;
+  }
+}
+
+/**
+ * Shopgate Connect Page Styles
+ */
+.is-ctl-sgconnect {
 }
 
 /**
@@ -36,6 +51,7 @@ class ShopgateConnectSW6 extends Plugin
 .is-ctl-auth.is-act-loginpage.is-sg-app .col-lg-4,
 .is-ctl-register.is-act-accountregisterpage.is-sg-app .col-lg-4 {
   display: none;
-}";
+}
+";
     }
 }
