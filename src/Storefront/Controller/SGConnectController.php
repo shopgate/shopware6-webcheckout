@@ -32,7 +32,7 @@ class SGConnectController extends StorefrontController
         }
         $page = $this->genericPageLoader->load($request, $context);
 
-        return $this->renderStorefront('@ShopgateConnectSW6/storefront/page/shopgate/registered.html.twig', [
+        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/registered.html.twig', [
             'page' => $page
         ]);
     }
