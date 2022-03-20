@@ -3,7 +3,6 @@ import Plugin from 'src/plugin-system/plugin.class';
 export default class SgConnectAppPlugin extends Plugin {
     init() {
         this.initSGApp(this);
-        //this.insertShopgateMetaTag()
 
         // just init once if not in Shopgate app (the Android app might not tell it's a Shopgate app)
         if (!this.isShopgateApp()) {
@@ -48,17 +47,6 @@ export default class SgConnectAppPlugin extends Plugin {
     }
 
     /**
-     * Inserts a meta tag that tells the inApp browser to avoid showing the zoom buttons.
-     */
-    disableBrowserZoom() {
-        // insert libshopgate meta tag, to tell the Shopgate app to send events
-        const metaTag = document.createElement('meta');
-        metaTag.setAttribute('name', 'viewport');
-        metaTag.setAttribute('content', 'user-scalable=no, width=device-width');
-        document.getElementsByTagName('head').item(0).appendChild(metaTag);
-    }
-
-    /**
      * Creates a key for the script cache functions
      *
      * @param {string} key
@@ -70,26 +58,6 @@ export default class SgConnectAppPlugin extends Plugin {
         }
 
         return '';
-    }
-
-    /**
-     * Inserts a "libshopgate" meta tag into the head of the page,
-     * to enable the Shopgate app event system.
-     */
-    insertShopgateMetaTag() {
-        // check if insertion is needed
-        const libshopgate = 'libshopgate';
-        if (document.getElementById(libshopgate)) {
-            return;
-        }
-
-        // insert libshopgate as meta tag, to tell the Shopgate app to send events
-        // not using a script tag to avoid "src unavailable" errors in the browsers console
-        const metaTag = document.createElement('meta');
-        metaTag.setAttribute('id', libshopgate);
-        // add a "src" property (not an attribute, because of the iOS app not receiving it otherwise)
-        metaTag.src = libshopgate;
-        document.getElementsByTagName('head').item(0).appendChild(metaTag);
     }
 
     /**
@@ -113,15 +81,9 @@ export default class SgConnectAppPlugin extends Plugin {
             return false;
         }
 
-        // disable in the Shopgate app only
-        //this.disableBrowserZoom()
-
         if (typeof initPipelineCall == 'function') {
             initPipelineCall();
         }
-
-        // call startup script
-        //window.SGAppConnector.loadPipelineScript('__init')
 
         // close loading spinner after 3 seconds, in case something goes wrong
         setTimeout(function () {
