@@ -12,5 +12,17 @@
             <argument key="$cssConfigKey" type="string">%sg_connect_config_css%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
+        <service id="Shopgate\ConnectSW6\Subscribers\IsShopgateSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+        <service id="Shopgate\ConnectSW6\Storefront\Controller\SGConnectController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+        <service id="Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader" public="true">
+            <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
     </services>
 </container>

@@ -20,7 +20,38 @@ class ShopgateConnectSW6 extends Plugin
     private function getDefaultCss(): string
     {
         return "
-            .test { padding: 0; };
-        ";
+/**
+ * Global
+ */
+.is-sg-app {
+
+  padding-top: 4em;
+
+  .header-search-col,
+  .header-main,
+  .header-actions-col,
+  .nav-main {
+    display: none;
+  }
+
+  .offcanvas, .modal {
+    margin-top: 4em;
+  }
+}
+
+/**
+ * Shopgate Connect Page Styles
+ */
+.is-ctl-sgconnect {
+}
+
+/**
+ * Login page
+ */
+.is-ctl-auth.is-act-loginpage.is-sg-app .col-lg-4,
+.is-ctl-register.is-act-accountregisterpage.is-sg-app .col-lg-4 {
+  display: none;
+}
+";
     }
 }
