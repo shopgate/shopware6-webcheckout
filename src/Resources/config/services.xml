@@ -22,11 +22,13 @@
             </call>
         </service>
         <service id="Shopgate\ConnectSW6\Services\TokenManager">
+            <argument key="$tokens" type="service" id="sgconnect.simple.jwt.tokens"/>
             <argument key="$secret" type="string">%kernel.secret%</argument>
         </service>
         <service id="Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader" public="true">
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
+        <service id="sgconnect.simple.jwt.tokens" class="ReallySimpleJWT\Tokens"/>
     </services>
 </container>

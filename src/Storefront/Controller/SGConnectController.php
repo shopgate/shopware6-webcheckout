@@ -2,7 +2,9 @@
 
 namespace Shopgate\ConnectSW6\Storefront\Controller;
 
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
@@ -30,10 +32,12 @@ class SGConnectController extends StorefrontController
     private AbstractLogoutRoute $logoutRoute;
     private TokenManager $tokenManager;
     private LoggerInterface $logger;
+    private CustomerManager $customerManager;
 
     public function __construct(
         GenericPageLoader $genericPageLoader,
         AbstractLogoutRoute $logoutRoute,
+        CustomerManager $customerManager,
         LoggerInterface $logger,
         TokenManager $tokenManager
     ) {
@@ -41,6 +45,7 @@ class SGConnectController extends StorefrontController
         $this->logoutRoute = $logoutRoute;
         $this->tokenManager = $tokenManager;
         $this->logger = $logger;
+        $this->customerManager = $customerManager;
     }
 
     /**
@@ -90,6 +95,36 @@ class SGConnectController extends StorefrontController
     }
 
     /**
+     * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
+     */
+    public function login(Request $request, SalesChannelContext $context): Response
+    {
+        // an already logged in customer just needs a redirect
+        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.cart.page');
+        $customer = $context->getCustomer();
+        if ($customer && $customer->getGuest() === false) {
+            return $this->redirectToRoute($redirectPage);
+        }
+
+        // todo: disable token use a second time?
+        $token = $request->query->get('token');
+        if (!$this->tokenManager->validateToken($token)) {
+            $this->log(Logger::WARNING, $request, 'Token expired or invalid');
+            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+        }
+
+        $customerId = $this->tokenManager->getCustomerId($token);
+        if (!$customerId) {
+            $this->log(Logger::ERROR, $request, 'Could not get customer ID from payload. Strange!');
+            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+        }
+
+        $this->customerManager->loginCustomerById($customerId, $context);
+
+        return $this->redirectToRoute('frontend.checkout.cart.page', []);
+    }
+
+    /**
      * @RouteScope(scopes={"store-api"})
      * @ContextTokenRequired()
      * @LoginRequired()
@@ -98,10 +133,7 @@ class SGConnectController extends StorefrontController
     public function loginToken(Request $request, CustomerEntity $customer)
     {
         if (!$this->tokenManager->isValidSecret()) {
-            $this->logger->critical(
-                $request->attributes->get('route'),
-                ['additionalData' => 'Insecure secret, please read README.md of our module']
-            );
+            $this->log(Logger::CRITICAL, $request, 'Insecure secret, please read README.md of our module');
             return new JsonApiResponse(
                 ['error' => 'SGCONNECT Secret error'],
                 Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -109,5 +141,10 @@ class SGConnectController extends StorefrontController
         $token = $this->tokenManager->createToken($customer->getId(), $request->getHost());
 
         return new JsonResponse(['token' => $token]);
+    }
+
+    private function log(int $code, Request $request, string $message): void
+    {
+        $this->logger->log($code, $request->attributes->get('_route'), ['additionalData' => $message]);
     }
 }
