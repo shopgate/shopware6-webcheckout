@@ -2,13 +2,20 @@
 
 namespace Shopgate\ConnectSW6\Storefront\Controller;
 
+use Psr\Log\LoggerInterface;
+use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
+use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
+use Shopware\Core\Framework\Api\Response\JsonApiResponse;
+use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
+use Shopware\Core\Framework\Routing\Annotation\LoginRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +28,19 @@ class SGConnectController extends StorefrontController
 {
     private GenericPageLoader $genericPageLoader;
     private AbstractLogoutRoute $logoutRoute;
+    private TokenManager $tokenManager;
+    private LoggerInterface $logger;
 
-    public function __construct(GenericPageLoader $genericPageLoader, AbstractLogoutRoute $logoutRoute)
-    {
+    public function __construct(
+        GenericPageLoader $genericPageLoader,
+        AbstractLogoutRoute $logoutRoute,
+        LoggerInterface $logger,
+        TokenManager $tokenManager
+    ) {
         $this->genericPageLoader = $genericPageLoader;
         $this->logoutRoute = $logoutRoute;
+        $this->tokenManager = $tokenManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -72,5 +87,27 @@ class SGConnectController extends StorefrontController
         return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/registered.html.twig', [
             'page' => $page
         ]);
+    }
+
+    /**
+     * @RouteScope(scopes={"store-api"})
+     * @ContextTokenRequired()
+     * @LoginRequired()
+     * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
+     */
+    public function loginToken(Request $request, CustomerEntity $customer)
+    {
+        if (!$this->tokenManager->isValidSecret()) {
+            $this->logger->critical(
+                $request->attributes->get('route'),
+                ['additionalData' => 'Insecure secret, please read README.md of our module']
+            );
+            return new JsonApiResponse(
+                ['error' => 'SGCONNECT Secret error'],
+                Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        $token = $this->tokenManager->createToken($customer->getId(), $request->getHost());
+
+        return new JsonResponse(['token' => $token]);
     }
 }

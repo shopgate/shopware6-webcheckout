@@ -8,6 +8,10 @@ use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
+
 class ShopgateConnectSW6 extends Plugin
 {
     public function install(InstallContext $installContext): void

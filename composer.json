@@ -15,7 +15,8 @@
     }
   ],
   "require": {
-    "shopware/core": "^6.4.4"
+    "shopware/core": "^6.4.4",
+    "rbdwllr/reallysimplejwt": "^4.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"
