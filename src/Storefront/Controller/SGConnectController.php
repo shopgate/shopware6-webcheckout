@@ -130,7 +130,7 @@ class SGConnectController extends StorefrontController
      * @LoginRequired()
      * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
      */
-    public function loginToken(Request $request, CustomerEntity $customer)
+    public function loginToken(Request $request, CustomerEntity $customer): JsonResponse
     {
         if (!$this->tokenManager->isValidSecret()) {
             $this->log(Logger::CRITICAL, $request, 'Insecure secret, please read README.md of our module');
@@ -138,9 +138,8 @@ class SGConnectController extends StorefrontController
                 ['error' => 'SGCONNECT Secret error'],
                 Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        $token = $this->tokenManager->createToken($customer->getId(), $request->getHost());
 
-        return new JsonResponse(['token' => $token]);
+        return new JsonResponse($this->tokenManager->createToken($customer->getId(), $request->getHost()));
     }
 
     private function log(int $code, Request $request, string $message): void

@@ -33,8 +33,12 @@ class TokenManager
         return (new Secret())->validate($this->secret);
     }
 
-    public function createToken(string $customerId, string $domain): string
+    public function createToken(string $customerId, string $domain): array
     {
-        return $this->tokens->create('user_id', $customerId, $this->secret, time() + 60, $domain)->getToken();
+        $expiration = time() + 60;
+        return [
+            'token' => $this->tokens->create('user_id', $customerId, $this->secret, $expiration, $domain)->getToken(),
+            'expiration' => $expiration
+        ];
     }
 }

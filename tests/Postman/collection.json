@@ -381,6 +381,7 @@
               "    var jsonData = pm.response.json();\r",
               "    pm.expect(jsonData.token).to.be.a('string')\r",
               "    pm.environment.set(\"gen_login_token\", jsonData.token);\r",
+              "    pm.expect(jsonData.expiration).to.be.a('number');\r",
               "});"
             ],
             "type": "text/javascript"
