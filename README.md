@@ -57,10 +57,9 @@ You may install and activate via the Shopware administration panel instead, if y
 
 The JWT library we use imposes strict secret security as follows:
 
-* the secret must be at least 12 characters in length;
+* the secret must be at least 8 characters in length;
 * contain numbers;
 * upper and lowercase letters;
-* one of the following special characters `*&!@%^#$`.
 
 You can set a secure secret for your store by running this command in the console:
 

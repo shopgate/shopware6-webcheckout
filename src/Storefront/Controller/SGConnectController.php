@@ -7,9 +7,9 @@ use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
+use Shopgate\ConnectSW6\Token\WeakAppSecretException;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
-use Shopware\Core\Framework\Api\Response\JsonApiResponse;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
 use Shopware\Core\Framework\Routing\Annotation\LoginRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -100,20 +100,21 @@ class SGConnectController extends StorefrontController
     public function login(Request $request, SalesChannelContext $context): Response
     {
         // an already logged in customer just needs a redirect
-        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.cart.page');
+        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
         $customer = $context->getCustomer();
         if ($customer && $customer->getGuest() === false) {
             return $this->redirectToRoute($redirectPage);
         }
 
-        // todo: disable token use a second time?
         $token = $request->query->get('token');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
+            // todo: best to redirect the user back to App
             return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
         }
 
         $customerId = $this->tokenManager->getCustomerId($token);
+        // todo: best to redirect the user back to App
         if (!$customerId) {
             $this->log(Logger::ERROR, $request, 'Could not get customer ID from payload. Strange!');
             return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
@@ -121,7 +122,7 @@ class SGConnectController extends StorefrontController
 
         $this->customerManager->loginCustomerById($customerId, $context);
 
-        return $this->redirectToRoute('frontend.checkout.cart.page', []);
+        return $this->redirectToRoute($redirectPage, []);
     }
 
     /**
@@ -134,9 +135,7 @@ class SGConnectController extends StorefrontController
     {
         if (!$this->tokenManager->isValidSecret()) {
             $this->log(Logger::CRITICAL, $request, 'Insecure secret, please read README.md of our module');
-            return new JsonApiResponse(
-                ['error' => 'SGCONNECT Secret error'],
-                Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new WeakAppSecretException();
         }
 
         return new JsonResponse($this->tokenManager->createToken($customer->getId(), $request->getHost()));
