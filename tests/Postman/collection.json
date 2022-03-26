@@ -472,19 +472,124 @@
               ]
             }
           },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"token\": \"osadpkasodkpod1219i2%#1mk121\"\n}\n"
-        }
-      ]
+			"status": "OK",
+			"code": 200,
+			"_postman_previewlanguage": "json",
+			"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"cookie": [],
+			"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBiYzI5MGYzM2E3NGRmOWI5NDRmZjBiMjI5ZjAzMWIiLCJleHAiOjE2NDgyOTU3NzcsImlzcyI6ImxvY2FsaG9zdCIsImlhdCI6MTY0ODI5NTcxN30.5M6nuv-PCELqWdiS-VKcmllNPlVtR4qpn7_3jS4Gu_8\",\n    \"expiration\": 1648295777\n}\n"
+		},
+		  {
+			  "name": "bad secret error",
+			  "originalRequest": {
+				  "method": "GET",
+				  "header": [
+					  {
+						  "description": "(Required) Content type of the request",
+						  "key": "Content-Type",
+						  "value": "application/json"
+					  },
+					  {
+						  "description": "(Required) Accepted response content types",
+						  "key": "Accept",
+						  "value": "application/json"
+					  },
+					  {
+						  "key": "sw-context-token",
+						  "value": "{{gen_contextToken}}",
+						  "type": "text"
+					  }
+				  ],
+				  "url": {
+					  "raw": "{{sw_store_api}}/sgconnect/login/token",
+					  "host": [
+						  "{{sw_store_api}}"
+					  ],
+					  "path": [
+						  "sgconnect",
+						  "login",
+						  "token"
+					  ]
+				  }
+			  },
+			  "status": "Internal Server Error",
+			  "code": 500,
+			  "_postman_previewlanguage": "json",
+			  "header": [
+				  {
+					  "key": "Date",
+					  "value": "Sat, 26 Mar 2022 11:53:37 GMT"
+				  },
+				  {
+					  "key": "Server",
+					  "value": "Apache/2.4.46 (Unix) OpenSSL/1.0.2u PHP/7.4.12 mod_wsgi/3.5 Python/2.7.13 mod_fastcgi/mod_fastcgi-SNAP-0910052141 mod_perl/2.0.11 Perl/v5.30.1"
+				  },
+				  {
+					  "key": "X-Powered-By",
+					  "value": "PHP/7.4.12"
+				  },
+				  {
+					  "key": "Cache-Control",
+					  "value": "no-cache, private"
+				  },
+				  {
+					  "key": "Access-Control-Allow-Origin",
+					  "value": "*"
+				  },
+				  {
+					  "key": "Access-Control-Allow-Methods",
+					  "value": "GET,POST,PUT,PATCH,DELETE"
+				  },
+				  {
+					  "key": "Access-Control-Allow-Headers",
+					  "value": "Content-Type,Authorization,sw-context-token,sw-access-key,sw-language-id,sw-version-id,sw-inheritance,fail-on-error,indexing-behavior,single-operation,sw-include-seo-urls"
+				  },
+				  {
+					  "key": "Access-Control-Expose-Headers",
+					  "value": "Content-Type,Authorization,sw-context-token,sw-access-key,sw-language-id,sw-version-id,sw-inheritance,fail-on-error,indexing-behavior,single-operation,sw-include-seo-urls"
+				  },
+				  {
+					  "key": "sw-context-token",
+					  "value": "0XC8rfRCsrjLNEpRrsaxoe28OvRLLNGd"
+				  },
+				  {
+					  "key": "x-frame-options",
+					  "value": "deny"
+				  },
+				  {
+					  "key": "X-Debug-Token",
+					  "value": "52f720"
+				  },
+				  {
+					  "key": "X-Debug-Token-Link",
+					  "value": "http://localhost:7777/_profiler/52f720"
+				  },
+				  {
+					  "key": "X-Robots-Tag",
+					  "value": "noindex"
+				  },
+				  {
+					  "key": "Connection",
+					  "value": "close"
+				  },
+				  {
+					  "key": "Transfer-Encoding",
+					  "value": "chunked"
+				  },
+				  {
+					  "key": "Content-Type",
+					  "value": "application/json"
+				  }
+			  ],
+			  "cookie": [],
+			  "body": "{\n    \"errors\": [\n        {\n            \"code\": \"9\",\n            \"status\": \"500\",\n            \"title\": \"Internal Server Error\",\n            \"detail\": \"Invalid secret.\",\n            \"meta\": {\n                \"trace\": [],\n                \"file\": \"vendor/rbdwllr/reallysimplejwt/src/Build.php\",\n                \"line\": 121\n            }\n        }\n    ]\n}"
+		  }
+	  ]
     },
     {
       "name": "Log out a customer",

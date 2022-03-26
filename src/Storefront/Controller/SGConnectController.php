@@ -7,7 +7,6 @@ use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
-use Shopgate\ConnectSW6\Token\WeakAppSecretException;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
@@ -133,11 +132,6 @@ class SGConnectController extends StorefrontController
      */
     public function loginToken(Request $request, CustomerEntity $customer): JsonResponse
     {
-        if (!$this->tokenManager->isValidSecret()) {
-            $this->log(Logger::CRITICAL, $request, 'Insecure secret, please read README.md of our module');
-            throw new WeakAppSecretException();
-        }
-
         return new JsonResponse($this->tokenManager->createToken($customer->getId(), $request->getHost()));
     }
 

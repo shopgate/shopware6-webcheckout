@@ -3,7 +3,6 @@
 namespace Shopgate\ConnectSW6\Services;
 
 use ReallySimpleJWT\Tokens;
-use Shopgate\ConnectSW6\Token\SecretValidator;
 
 class TokenManager
 {
@@ -26,11 +25,6 @@ class TokenManager
         $payload = $this->tokens->getPayload($token, $this->secret);
 
         return $payload['user_id'] ?? null;
-    }
-
-    public function isValidSecret(): bool
-    {
-        return (new SecretValidator())->validate($this->secret);
     }
 
     public function createToken(string $customerId, string $domain): array
