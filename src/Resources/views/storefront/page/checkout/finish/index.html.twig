@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/page/checkout/finish/index.html.twig' %}
+
+{% block base_header %}
+
+    {{ parent() }}
+
+    {% if page.header.extensions.sg_connect_data %}
+
+        {# we are using the login pipeline to update both user & cart extension sw-context-token #}
+        {% block sgconnect_login %}
+            {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login.html.twig' %}
+        {% endblock %}
+
+    {% endif %}
+{% endblock %}

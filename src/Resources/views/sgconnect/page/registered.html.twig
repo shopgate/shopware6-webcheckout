@@ -1,16 +1,25 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
 {% block base_body_inner %}
-    {% block sgconnect_login_redirect %}
-        {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login-redirect.html.twig' %}
+
+    {% block sgconnect_spinner %}
+        {% sw_include '@ShopgateConnectSW6/sgconnect/component/spinner.html.twig' %}
     {% endblock %}
+
+    {% block sgconnect_login %}
+        {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login.html.twig' %}
+    {% endblock %}
+
     {% block base_scroll_up %}
         {# empty #}
     {% endblock %}
+
     {% block base_cookie_permission %}
         {# empty #}
     {% endblock %}
+
     {% block base_pseudo_modal %}
         {# empty #}
     {% endblock %}
+
 {% endblock %}
