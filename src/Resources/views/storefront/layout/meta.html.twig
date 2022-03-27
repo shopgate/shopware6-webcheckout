@@ -20,13 +20,3 @@
     {% endif %}
 
 {% endblock %}
-
-{% block layout_head_javascript_token %}
-
-    {{ parent() }}
-
-    {% if page.header.extensions.sg_connect_data %}
-        <template data-sg-connect-app-plugin></template>
-    {% endif %}
-
-{% endblock %}

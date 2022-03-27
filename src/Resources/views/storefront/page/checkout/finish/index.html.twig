@@ -1,15 +1,56 @@
 {% sw_extends '@Storefront/storefront/page/checkout/finish/index.html.twig' %}
 
-{% block base_header %}
+{# Find out currency of the order (fallback to context) #}
+{% set currency = page.header.currencies.get(page.order.currencyId) %}
+{% if not currency %}
+    {% set currency = context.currency %}
+{% endif %}
 
-    {{ parent() }}
+{# Porduct data #}
+{% set SGCproducts = [] %}
 
-    {% if page.header.extensions.sg_connect_data %}
-
-        {# we are using the login pipeline to update both user & cart extension sw-context-token #}
-        {% block sgconnect_login %}
-            {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login.html.twig' %}
-        {% endblock %}
-
+{% for lineItem in page.order.nestedLineItems %}
+    {% set calculatedTax = lineItem.price.calculatedTaxes.getAmount %}
+    {% if context.taxState == "gross" %}
+        {% set grossPrice = lineItem.price.unitPrice %}
+        {% set netPrice = lineItem.price.unitPrice - calculatedTax %}
+    {% else %}
+        {% set netPrice = lineItem.price.unitPrice %}
+        {% set grossPrice = lineItem.price.unitPrice + calculatedTax %}
     {% endif %}
-{% endblock %}
+    {% set SGCproducts = SGCproducts|merge([{
+        id: lineItem.productId,
+        name: lineItem.label,
+        quantity: lineItem.quantity,
+        price: {
+            withTax: grossPrice,
+            net: netPrice
+        }
+    }]) %}
+{% endfor %}
+
+{# Passing options to the plugin to catch & handle sending event #}
+{# replace_recursive makes sure we do not rewrite our controller/action data #}
+{% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
+    properties: {
+        order: {
+            number: page.order.orderNumber,
+            currency: currency.isoCode,
+            totals: [
+                {
+                    type: 'shipping',
+                    amount: page.order.shippingTotal,
+                },
+                {
+                    type: 'tax',
+                    amount: page.order.amountTotal - page.order.amountNet
+                },
+                {
+                    type: 'grandTotal',
+                    amount: page.order.amountTotal
+                }
+            ],
+            products: SGCproducts
+        }
+    }
+}) %}

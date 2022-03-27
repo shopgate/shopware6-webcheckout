@@ -1,13 +1,16 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
+{# pass sw-context-token to the login pipeline call #}
+{% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
+    properties: {
+        token: app.request.attributes.get('sw-sales-channel-context').token
+    }
+}) %}
+
 {% block base_body_inner %}
 
     {% block sgconnect_spinner %}
         {% sw_include '@ShopgateConnectSW6/sgconnect/component/spinner.html.twig' %}
-    {% endblock %}
-
-    {% block sgconnect_login %}
-        {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login.html.twig' %}
     {% endblock %}
 
     {% block base_scroll_up %}
