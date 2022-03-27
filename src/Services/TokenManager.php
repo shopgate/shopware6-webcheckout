@@ -2,14 +2,14 @@
 
 namespace Shopgate\ConnectSW6\Services;
 
-use ReallySimpleJWT\Tokens;
+use Shopgate\ConnectSW6\Token\TokenBuilder;
 
 class TokenManager
 {
     private string $secret;
-    private Tokens $tokens;
+    private TokenBuilder $tokens;
 
-    public function __construct(Tokens $tokens, string $secret)
+    public function __construct(TokenBuilder $tokens, string $secret)
     {
         $this->secret = $secret;
         $this->tokens = $tokens;
