@@ -2,6 +2,7 @@
 
 namespace Shopgate\ConnectSW6\Services;
 
+use ReallySimpleJWT\Exception\BuildException;
 use Shopgate\ConnectSW6\Token\TokenBuilder;
 
 class TokenManager
@@ -24,14 +25,27 @@ class TokenManager
     {
         $payload = $this->tokens->getPayload($token, $this->secret);
 
-        return $payload['user_id'] ?? null;
+        return $payload['user-id'] ?? null;
     }
 
-    public function createToken(string $customerId, string $domain): array
+    public function getContextToken(string $token): ?string
+    {
+        $payload = $this->tokens->getPayload($token, $this->secret);
+
+        return $payload['sw-context-token'] ?? null;
+    }
+
+    /**
+     * @throws BuildException
+     */
+    public function createToken(string $swContextToken, string $domain, ?string $customerId): array
     {
         $expiration = time() + 60;
         return [
-            'token' => $this->tokens->create('user_id', $customerId, $this->secret, $expiration, $domain)->getToken(),
+            'token' => $this->tokens->createCustomPayload($this->secret, $expiration, $domain, [
+                'user-id' => $customerId,
+                'sw-context-token' => $swContextToken
+            ])->getToken(),
             'expiration' => $expiration
         ];
     }

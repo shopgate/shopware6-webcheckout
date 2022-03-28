@@ -4,13 +4,12 @@ namespace Shopgate\ConnectSW6\Storefront\Controller;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use ReallySimpleJWT\Exception\BuildException;
 use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
-use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
-use Shopware\Core\Framework\Routing\Annotation\LoginRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
@@ -98,45 +97,60 @@ class SGConnectController extends StorefrontController
      */
     public function login(Request $request, SalesChannelContext $context): Response
     {
-        // an already logged in customer just needs a redirect
-        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
         $customer = $context->getCustomer();
+        // an already logged in customer just needs a redirect
         if ($customer && $customer->getGuest() === false) {
-            return $this->redirectToRoute($redirectPage);
+            return $this->getRedirect($request);
         }
 
         $token = $request->query->get('token');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
-            // todo: best to redirect the user back to App
+            // todo: best to redirect the user back to App with message?
             return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
         }
 
         $customerId = $this->tokenManager->getCustomerId($token);
-        // todo: best to redirect the user back to App
-        if (!$customerId) {
-            $this->log(Logger::ERROR, $request, 'Could not get customer ID from payload. Strange!');
-            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+        if ($customerId) {
+            $this->customerManager->loginCustomerById($customerId, $context);
+        } else {
+            $this->log(Logger::INFO, $request, 'Signing in as guest token');
+            $contextToken = $this->tokenManager->getContextToken($token);
+            $this->customerManager->loginByContextToken($contextToken, $request, $context);
         }
 
-        $this->customerManager->loginCustomerById($customerId, $context);
-
-        return $this->redirectToRoute($redirectPage, []);
+        return $this->getRedirect($request);
     }
 
     /**
+     * This endpoint creates tokens for customers & guests
+     *
      * @RouteScope(scopes={"store-api"})
      * @ContextTokenRequired()
-     * @LoginRequired()
      * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
+     * @throws BuildException
      */
-    public function loginToken(Request $request, CustomerEntity $customer): JsonResponse
+    public function loginToken(Request $request, SalesChannelContext $context): JsonResponse
     {
-        return new JsonResponse($this->tokenManager->createToken($customer->getId(), $request->getHost()));
+        $customerId = $context->getCustomer() ? $context->getCustomer()->getId() : null;
+        return new JsonResponse(
+            $this->tokenManager->createToken($context->getToken(), $request->getHost(), $customerId)
+        );
     }
 
     private function log(int $code, Request $request, string $message): void
     {
         $this->logger->log($code, $request->attributes->get('_route'), ['additionalData' => $message]);
+    }
+
+    /**
+     * Handles redirect with fallback
+     */
+    private function getRedirect(Request $request): RedirectResponse
+    {
+        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
+        return $this->redirect(
+            strpos($redirectPage, 'http') === false ? $this->generateUrl($redirectPage) : $redirectPage
+        );
     }
 }
