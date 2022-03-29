@@ -1,17 +1,20 @@
 import Plugin from 'src/plugin-system/plugin.class';
+import SGConnectEventManager from './event.manager';
 
 export default class SgConnectAppPlugin extends Plugin {
+    options = {
+        controllerName: null,
+        actionName: null,
+        properties: null,
+        env: null
+    };
+
     init() {
-        this.initSGApp(this);
+        const {controllerName, actionName, properties, env} = this.options;
+        this.eventManager = new SGConnectEventManager(controllerName, actionName, properties, env);
+        this.initSGBridge();
 
-        // just init once if not in Shopgate app (the Android app might not tell it's a Shopgate app)
-        if (!this.isShopgateApp()) {
-            // No retry required for Android devices in the app; init contains another check
-            return this.initShopgateApp();
-        }
-
-        // try to init the app scripts with a retry mechanism as fallback
-        this.executeWithRetry(40, 3000, this.initShopgateApp);
+        this.executeWithRetry(40, 3000, this.initShopgateApp.bind(this));
     }
 
     /**
@@ -47,29 +50,6 @@ export default class SgConnectAppPlugin extends Plugin {
     }
 
     /**
-     * Creates a key for the script cache functions
-     *
-     * @param {string} key
-     * @return {string}
-     */
-    createScriptCacheKey(key) {
-        if ((typeof key === 'string') && key !== '') {
-            return 'sgCodeCache: ' + key;
-        }
-
-        return '';
-    }
-
-    /**
-     * Checks if the current user agent is a mobile device with a Shopgate App.
-     *
-     * @return {boolean}
-     */
-    isShopgateApp() {
-        return (navigator.userAgent.indexOf('libshopgate') !== -1);
-    }
-
-    /**
      * Inserts a vew scripts if the current context is right, so the browser can
      * communicate with the Shopgate App.
      *
@@ -81,9 +61,8 @@ export default class SgConnectAppPlugin extends Plugin {
             return false;
         }
 
-        if (typeof initPipelineCall == 'function') {
-            initPipelineCall();
-        }
+        this.eventManager.registerDefaultEvents();
+        this.eventManager.executeEvents();
 
         // close loading spinner after 3 seconds, in case something goes wrong
         setTimeout(function () {
@@ -91,14 +70,10 @@ export default class SgConnectAppPlugin extends Plugin {
             window.SGAppConnector.closeLoadingSpinner();
         }, 3000);
 
-        // mark the retry attempt as successful
         return true;
     }
 
-    /**
-     * @param {SgConnectAppPlugin} curClass
-     */
-    initSGApp(curClass) {
+    initSGBridge() {
         window.SGAppConnector = {
             /**
              * Stores response callbacks and pass through params for pipeline calls
@@ -113,48 +88,6 @@ export default class SgConnectAppPlugin extends Plugin {
              */
             functionExists: function (func) {
                 return (typeof func === 'function');
-            },
-
-            /**
-             * Takes a length param and creates a random passphrase and returns it.
-             *
-             * @param {number} len
-             * @return {string}
-             */
-            getRandomPassPhrase: function (len) {
-                if (!len) len = 16;
-                return (new Array(len))
-                    .fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!Â§$%&/()=?ÃŸ+*~#\'-_.:,;<>|{[]}^Â°')
-                    .map(function (x) {
-                        return x[Math.floor(Math.random() * x.length)];
-                    }).join('');
-            },
-
-            /**
-             * Takes a URL string and parses a given GET param out of it. Uses the window.location if no url given.
-             *
-             * @param {string} paramName
-             * @param {string|null} url
-             * @return {string|null}
-             */
-            getParameterByName: function (paramName, url) {
-                if (!url) {
-                    url = window.location.href;
-                }
-
-                paramName = paramName.replace(/[\[\]]/g, '\\$&');
-                const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
-                const results = regex.exec(url);
-
-                if (!results) {
-                    return null;
-                }
-
-                if (!results[2]) {
-                    return '';
-                }
-
-                return decodeURIComponent(results[2].replace(/\+/g, ' '));
             },
 
             /**
@@ -237,126 +170,14 @@ export default class SgConnectAppPlugin extends Plugin {
 
                 this.sendAppCommand(appCommand);
             },
-
-            /**
-             * Injects the given script code as a script-tag into the html-head-tag as last element.
-             * Injected code is automatically scoped if not forced global scope.
-             *
-             * @param {string} scriptContent
-             * @param {boolean|null} globalScope
-             */
-            includeScript: function (scriptContent, globalScope) {
-                if (!globalScope) {
-                    scriptContent = '(function () {' + scriptContent + ';})();';
-                }
-                const scriptElement = document.createElement('script');
-                scriptElement.setAttribute('type', 'text/javascript');
-                scriptElement.appendChild(document.createTextNode(scriptContent));
-                document.getElementsByTagName('head').item(0).appendChild(scriptElement);
-            },
-
-            /**
-             * Takes script code and puts it into the localStorage to allow faster loading times when it is needed again.
-             *
-             * @param {string} key
-             * @param {string} scriptCode
-             */
-            saveScriptToCache: function (key, scriptCode) {
-                const cacheKey = curClass.createScriptCacheKey(key);
-                if (!cacheKey || (typeof scriptCode !== 'string')) {
-                    return;
-                }
-
-                window.localStorage.setItem(cacheKey, btoa(scriptCode));
-            },
-
-            /**
-             * Tries to load a script from the localStorage.
-             *
-             * @param {string} key
-             * @return {?string} Returns an empty string if nothing is available in the cache.
-             */
-            getScriptFromCache: function (key) {
-                const cacheKey = curClass.createScriptCacheKey(key);
-                if (cacheKey) {
-                    const scriptCode = window.localStorage.getItem(cacheKey);
-                    return ((typeof scriptCode === 'string') ? atob(scriptCode) : null);
-                }
-
-                return null;
-            },
-
-            /**
-             * Loads a script file from a given url and injects it into the current page.
-             *
-             * @param {string} url
-             * @param {boolean|null} globalScope
-             */
-            loadRemoteScript: function (url, globalScope) {
-                const cachedScript = this.getScriptFromCache(url);
-                if (cachedScript) {
-                    this.includeScript(cachedScript, globalScope);
-                    return;
-                }
-
-                const client = new XMLHttpRequest();
-                client.open('GET', url);
-                client.onreadystatechange = function () {
-                    window.SGAppConnector.saveScriptToCache(url, client.responseText);
-                    window.SGAppConnector.includeScript(client.responseText, globalScope);
-                };
-                client.send();
-            },
-
-            /**
-             * Calls a pipeline to get script code to be injected.
-             *
-             * @param {string} scriptName
-             * @param {*|null} passThroughParams Parameters to be passed to the pipelines' entry function
-             */
-            loadPipelineScript: function (scriptName, passThroughParams) {
-                const cachedScript = this.getScriptFromCache(scriptName);
-                if (cachedScript) {
-                    this.includeScript(cachedScript, null);
-                    if (this.functionExists(window.SGPipelineScript[scriptName])) {
-                        console.log('## -> calling: SGPipelineScript.' + scriptName + '(' + JSON.stringify(passThroughParams) + ')');
-                        window.SGPipelineScript[scriptName](passThroughParams);
-                    }
-                    return;
-                }
-
-                // get script from pipeline if not cached, yet
-                this.sendPipelineRequest('getScript_v1', false, {scriptName: scriptName}, function (err, output, cbParams) {
-                    console.log('## -> including pipeline script: ' + cbParams.scriptName + '.js');
-
-                    const scriptCode = atob(output.scriptCode);
-
-                    // cache the script in case another page needs it
-                    window.SGAppConnector.saveScriptToCache(cbParams.scriptName, scriptCode);
-
-                    window.SGAppConnector.includeScript(scriptCode, null);
-                    if (window.SGAppConnector.functionExists(window.SGPipelineScript[cbParams.scriptName])) {
-                        console.log(
-                            '## -> calling: SGPipelineScript.' + cbParams.scriptName +
-                            '(' + JSON.stringify(cbParams.passthroughParams) + ')'
-                        );
-                        window.SGPipelineScript[cbParams.scriptName](passThroughParams);
-                    }
-                }, {scriptName: scriptName, passthroughParams: passThroughParams, this: this});
-            }
         };
 
-        /**
-         * Empty object to place pipeline script code inside
-         */
-        window.SGPipelineScript = {};
-
+        // noinspection JSUnusedGlobalSymbols
         window.SGEvent = {
             __call: function (eventName, eventArguments) {
 
                 console.log(
                     '# Received event ' + eventName
-                    // + ' with args ' + JSON.stringify(eventArguments)
                 );
 
                 if (!eventArguments || !Array.isArray(eventArguments)) {
@@ -397,12 +218,5 @@ export default class SgConnectAppPlugin extends Plugin {
                 return true;
             }
         };
-
-        // add String.prototype.endsWith backwards compatibility
-        if (window.SGAppConnector.functionExists(String.prototype.endsWith)) {
-            String.prototype.endsWith = function (suffix) {
-                return this.indexOf(suffix, this.length - suffix.length) !== -1;
-            };
-        }
     }
 }

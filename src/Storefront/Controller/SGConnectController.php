@@ -2,13 +2,20 @@
 
 namespace Shopgate\ConnectSW6\Storefront\Controller;
 
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use ReallySimpleJWT\Exception\BuildException;
+use Shopgate\ConnectSW6\Services\CustomerManager;
+use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
+use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +28,22 @@ class SGConnectController extends StorefrontController
 {
     private GenericPageLoader $genericPageLoader;
     private AbstractLogoutRoute $logoutRoute;
+    private TokenManager $tokenManager;
+    private LoggerInterface $logger;
+    private CustomerManager $customerManager;
 
-    public function __construct(GenericPageLoader $genericPageLoader, AbstractLogoutRoute $logoutRoute)
-    {
+    public function __construct(
+        GenericPageLoader $genericPageLoader,
+        AbstractLogoutRoute $logoutRoute,
+        CustomerManager $customerManager,
+        LoggerInterface $logger,
+        TokenManager $tokenManager
+    ) {
         $this->genericPageLoader = $genericPageLoader;
         $this->logoutRoute = $logoutRoute;
+        $this->tokenManager = $tokenManager;
+        $this->logger = $logger;
+        $this->customerManager = $customerManager;
     }
 
     /**
@@ -72,5 +90,67 @@ class SGConnectController extends StorefrontController
         return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/registered.html.twig', [
             'page' => $page
         ]);
+    }
+
+    /**
+     * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
+     */
+    public function login(Request $request, SalesChannelContext $context): Response
+    {
+        $customer = $context->getCustomer();
+        // an already logged in customer just needs a redirect
+        if ($customer && $customer->getGuest() === false) {
+            return $this->getRedirect($request);
+        }
+
+        $token = $request->query->get('token');
+        if (!$this->tokenManager->validateToken($token)) {
+            $this->log(Logger::WARNING, $request, 'Token expired or invalid');
+            // todo: best to redirect the user back to App with message?
+            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+        }
+
+        $customerId = $this->tokenManager->getCustomerId($token);
+        if ($customerId) {
+            $this->customerManager->loginCustomerById($customerId, $context);
+        } else {
+            $this->log(Logger::INFO, $request, 'Signing in as guest token');
+            $contextToken = $this->tokenManager->getContextToken($token);
+            $this->customerManager->loginByContextToken($contextToken, $request, $context);
+        }
+
+        return $this->getRedirect($request);
+    }
+
+    /**
+     * This endpoint creates tokens for customers & guests
+     *
+     * @RouteScope(scopes={"store-api"})
+     * @ContextTokenRequired()
+     * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
+     * @throws BuildException
+     */
+    public function loginToken(Request $request, SalesChannelContext $context): JsonResponse
+    {
+        $customerId = $context->getCustomer() ? $context->getCustomer()->getId() : null;
+        return new JsonResponse(
+            $this->tokenManager->createToken($context->getToken(), $request->getHost(), $customerId)
+        );
+    }
+
+    private function log(int $code, Request $request, string $message): void
+    {
+        $this->logger->log($code, $request->attributes->get('_route'), ['additionalData' => $message]);
+    }
+
+    /**
+     * Handles redirect with fallback
+     */
+    private function getRedirect(Request $request): RedirectResponse
+    {
+        $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
+        return $this->redirect(
+            strpos($redirectPage, 'http') === false ? $this->generateUrl($redirectPage) : $redirectPage
+        );
     }
 }

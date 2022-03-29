@@ -1,12 +1,14 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Shopgate\ConnectSW6;
 
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
 
 class ShopgateConnectSW6 extends Plugin
 {
@@ -28,21 +30,21 @@ class ShopgateConnectSW6 extends Plugin
   padding-top: 4em;
 
   .header-search-col,
-  .header-main,
   .header-actions-col,
-  .nav-main {
+  .nav-main,
+  .scroll-up-container {
     display: none;
   }
 
-  .offcanvas, .modal {
+  .offcanvas {
     margin-top: 4em;
+    padding-bottom: 4em;
   }
-}
 
-/**
- * Shopgate Connect Page Styles
- */
-.is-ctl-sgconnect {
+  .modal {
+    top: 4em;
+    padding-bottom: 4em;
+  }
 }
 
 /**
@@ -51,6 +53,24 @@ class ShopgateConnectSW6 extends Plugin
 .is-ctl-auth.is-act-loginpage.is-sg-app .col-lg-4,
 .is-ctl-register.is-act-accountregisterpage.is-sg-app .col-lg-4 {
   display: none;
+}
+
+/**
+ * Checkout / Finish pages
+ */
+.is-ctl-checkout.is-act-finishpage.is-sg-app,
+.is-ctl-checkout.is-act-confirmpage.is-sg-app {
+  .header-minimal-back-to-shop {
+    display: none;
+  }
+
+  .checkout {
+    padding-top: 0;
+  }
+
+  .finish-content {
+    margin-bottom: 3rem;
+  }
 }
 ";
     }

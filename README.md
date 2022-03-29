@@ -18,7 +18,15 @@ version.
 ### Folder install
 
 It can be installed manually by copying the plugin folder to `custom/plugins` directory. Like
-so `custom/plugins/ShopgateConnectSW6`. Then you can install & enable like any other plugin.
+so `custom/plugins/ShopgateConnectSW6`. Then you can install & enable like any other plugin. For this install method,
+please make sure that there is a `vendor` directory inside the plugin folder as we have composer dependencies. You could
+do it yourself by running:
+
+```shell
+cd [plugin folder]
+# this is because we do not want to install shopware core files
+composer remove shopware/core
+```
 
 ### Composer symlink
 
@@ -44,6 +52,28 @@ php bin/console plugin:install --activate ShopgateConnectSW6
 ```
 
 You may install and activate via the Shopware administration panel instead, if you prefer.
+
+## Signature Secret
+
+The JWT library imposes strict `APP_SECRET` security rules as follows:
+
+* the secret must be at least 8 characters in length;
+* contain numbers;
+* upper and lowercase letters;
+
+You can set a secure secret for your store by running this command in the console:
+
+```shell
+bin/console secrets:set APP_SECRET
+```
+
+Check that a local value inside `.env` file is not rewriting you secret:
+
+```shell
+bin/console secrets:list
+```
+
+You can find out more on the Symfony [doc pages](https://symfony.com/doc/5.4/configuration/secrets.html).
 
 ## Development
 

@@ -1,8 +1,9 @@
 {% sw_extends '@Storefront/storefront/page/account/index.html.twig' %}
 
-{% block page_account_main_content %}
-    {% if page.header.extensions.sg_connect_data %}
-        {% sw_include '@ShopgateConnectSW6/sgconnect/component/pipelines/login-redirect.html.twig' %}
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
+{# todo: remove, as requirement is to let the customer browser account pages #}
+{# pass sw-context-token to the login pipeline call #}
+{% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
+    properties: {
+        token: app.request.attributes.get('sw-sales-channel-context').token
+    }
+}) %}
