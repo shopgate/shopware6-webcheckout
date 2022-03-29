@@ -55,7 +55,7 @@ You may install and activate via the Shopware administration panel instead, if y
 
 ## Signature Secret
 
-The JWT library we use imposes strict secret security as follows:
+The JWT library imposes strict `APP_SECRET` security rules as follows:
 
 * the secret must be at least 8 characters in length;
 * contain numbers;
