@@ -21,7 +21,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
     public function addIsShopgate(HeaderPageletLoadedEvent $event): void
     {
         $sgCookie = $this->handleDevelopmentCookie($event->getRequest());
-        $sgAgent = strpos($event->getRequest()->headers->get('User-Agent'), 'libshopgate') !== false;
+        $sgAgent = strpos((string) $event->getRequest()->headers->get('User-Agent'), 'libshopgate') !== false;
         $hasSession = $event->getRequest()->hasSession();
         $sgSession = $hasSession && $event->getRequest()->getSession()->get(self::SG_SESSION_KEY, 0);
 
