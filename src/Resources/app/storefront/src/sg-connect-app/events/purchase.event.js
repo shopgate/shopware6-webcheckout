@@ -5,7 +5,7 @@ export default class PurchaseEvent extends AbstractEvent {
         return controllerName === 'checkout' && actionName === 'finishpage';
     }
 
-    /*
+    /**
      * @param {Object} parameters
      * @param {Object} parameters.order
      */

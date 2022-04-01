@@ -19,8 +19,6 @@ export default class AbstractEvent {
         return false;
     }
 
-    /* eslint-enable no-unused-vars */
-
     execute() {
         console.warn(`[${this.pluginName}] Method \'execute\' was not overridden by "` + this.constructor.name + '".');
     }
