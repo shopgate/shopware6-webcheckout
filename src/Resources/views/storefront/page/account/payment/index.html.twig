@@ -1,0 +1,9 @@
+{% sw_extends '@Storefront/storefront/page/account/payment/index.html.twig' %}
+
+{% block page_account_payment_actions %}
+
+    {{ parent() }}
+
+    {% sw_include '@ShopgateConnectSW6/sgconnect/component/back-to-overview.html.twig' %}
+
+{% endblock %}

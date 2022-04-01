@@ -1,0 +1,13 @@
+{% if page.header.extensions.sg_connect_data %}
+
+    {% block sgconnect_account_back_to_overview %}
+
+        <a href="{{ path('frontend.account.home.page') }}"
+           title="{{ "account.editOrderBackToAccountButton"|trans|striptags }}"
+           class="btn btn-light sg-connect-nav">
+            {{ "account.editOrderBackToAccountButton"|trans|sw_sanitize }}
+        </a>
+
+    {% endblock %}
+
+{% endif %}

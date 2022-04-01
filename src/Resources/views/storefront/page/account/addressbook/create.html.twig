@@ -1,0 +1,9 @@
+{% sw_extends '@Storefront/storefront/page/account/addressbook/create.html.twig' %}
+
+{% block page_account_address_action_button_send %}
+
+    {{ parent() }}
+
+    {% sw_include '@ShopgateConnectSW6/sgconnect/component/back-to-address.html.twig' %}
+
+{% endblock %}
