@@ -742,14 +742,6 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Should be cart page\", function () {\r",
-                      "    pm.response.headers.all().map(header => {\r",
-                      "        if(header.key === 'X-Symfony-Cache'){\r",
-                      "            pm.expect(header.value).to.include('/checkout/cart', 'should be cart page');\r",
-                      "        }\r",
-                      "    })\r",
-                      "});\r",
-                      "\r",
                       "// Load the HTML response to $\r",
                       "const $ = cheerio.load(pm.response.text());\r",
                       "pm.test(\"Check cart page\", function () {\r",
@@ -758,6 +750,11 @@
                       "    pm.expect(totals).to.be.not.undefined;\r",
                       "    pm.expect(lineItem).to.be.not.undefined;\r",
                       "    pm.expect(lineItem.attr('data-quantity')).to.eq('3')\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check we are in cart confirm page\", function () {\r",
+                      "    const bodyClass = $('.is-ctl-checkout.is-act-confirmpage')\r",
+                      "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                       "});\r",
                       ""
                     ],
@@ -1693,14 +1690,6 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Should be cart page\", function () {\r",
-                      "    pm.response.headers.all().map(header => {\r",
-                      "        if(header.key === 'X-Symfony-Cache'){\r",
-                      "            pm.expect(header.value).to.include('/checkout/cart', 'should be cart page');\r",
-                      "        }\r",
-                      "    })\r",
-                      "});\r",
-                      "\r",
                       "// Load the HTML response to $\r",
                       "const $ = cheerio.load(pm.response.text());\r",
                       "pm.test(\"Check cart page\", function () {\r",
@@ -1710,7 +1699,11 @@
                       "    pm.expect(lineItem).to.be.not.undefined;\r",
                       "    pm.expect(lineItem.length).to.eq(2, 'Should have 1 qty main + 3 qty main product');\r",
                       "});\r",
-                      ""
+                      "\r",
+                      "pm.test(\"Check we are in cart confirm page\", function () {\r",
+                      "    const bodyClass = $('.is-ctl-checkout.is-act-confirmpage')\r",
+                      "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                      "});"
                     ],
                     "type": "text/javascript"
                   }
@@ -2050,11 +2043,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Save context token\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                  "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
-                  "});"
+                  ""
                 ],
                 "type": "text/javascript"
               }
@@ -2681,14 +2670,6 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Should be cart page\", function () {\r",
-                  "    pm.response.headers.all().map(header => {\r",
-                  "        if(header.key === 'X-Symfony-Cache'){\r",
-                  "            pm.expect(header.value).to.include('/checkout/cart', 'should be cart page');\r",
-                  "        }\r",
-                  "    })\r",
-                  "});\r",
-                  "\r",
                   "// Load the HTML response to $\r",
                   "const $ = cheerio.load(pm.response.text());\r",
                   "pm.test(\"Check cart page\", function () {\r",
@@ -2697,6 +2678,11 @@
                   "    pm.expect(totals).to.be.not.undefined;\r",
                   "    pm.expect(lineItem).to.be.not.undefined;\r",
                   "    pm.expect(lineItem.attr('data-quantity')).to.eq('2')\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Check we redirected to logged out cart page\", function () {\r",
+                  "    const bodyClass = $('.is-ctl-checkout.is-act-cartpage')\r",
+                  "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -2717,7 +2703,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}?redirectTo=frontend.checkout.cart.page",
+              "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
               "host": [
                 "{{sw_endpoint_frontend}}"
               ],
@@ -2728,7 +2714,11 @@
               "query": [
                 {
                   "key": "token",
-                  "value": "{{gen_login_token}}?redirectTo=frontend.checkout.cart.page"
+                  "value": "{{gen_login_token}}"
+                },
+                {
+                  "key": "redirectTo",
+                  "value": "frontend.checkout.cart.page"
                 }
               ]
             }
@@ -2787,11 +2777,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Save context token\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                  "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
-                  "});"
+                  ""
                 ],
                 "type": "text/javascript"
               }
