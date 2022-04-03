@@ -104,12 +104,6 @@ class SGConnectController extends StorefrontController
      */
     public function login(Request $request, SalesChannelContext $context): Response
     {
-        $customer = $context->getCustomer();
-        // an already logged in customer just needs a redirect
-        if ($customer && $customer->getGuest() === false) {
-            return $this->getRedirect($request);
-        }
-
         $token = $request->query->get('token');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
