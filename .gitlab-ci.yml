@@ -1,0 +1,116 @@
+stages:
+  - test
+  - build
+
+variables:
+  PROJECT_ROOT: ${CI_PROJECT_DIR}
+  WEB_DOCUMENT_ROOT: $CI_PROJECT_DIR/public
+  LOG_STDOUT: $CI_PROJECT_DIR/var/log/stdout.log
+  MYSQL_DATABASE: root
+  MYSQL_ROOT_PASSWORD: root
+  GIT_STRATEGY: clone
+  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.cache/npm"
+  # things plugins might want to override
+  DEV_IMAGE: shopware/development:7.4-composer-2
+  MYSQL_IMAGE: mariadb:10.3
+  MYSQL_CMD: mysqld
+  PLATFORM_BRANCH: '6.4.6.0'
+  PLUGIN_NAME: 'ShopgateConnectSW6'
+  APP_SECRET: '!21k1ABigSecret'
+
+# Cache libraries in between PR commits
+cache:
+  key: $PLUGIN_NAME-$PLATFORM_BRANCH
+  paths:
+    - .cache/npm
+    - vendor/
+
+workflow:
+  rules:
+    # do not run on push
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG == null'
+      when: never
+    - when: always
+
+default:
+  image: $DEV_IMAGE
+  services:
+    - name: $MYSQL_IMAGE
+      alias: database
+      entrypoint: [ "sh", "-c", "docker-entrypoint.sh $MYSQL_CMD" ]
+  before_script:
+    - export APP_URL="http://$HOSTNAME"
+    - export PLUGIN_FOLDER="custom/static-plugins/$PLUGIN_NAME"
+    - >
+      [ -d vendor ] && mv vendor /tmp/
+      [ -d .cache/npm ] && mv .cache/npm /tmp/
+    - zip -rq plugin.zip .
+    - mv plugin.zip /tmp/plugin.zip
+    - rm -Rf .* * || true
+    - git clone https://github.com/shopware/platform.git . --branch $PLATFORM_BRANCH
+    - >
+      [ -d /tmp/vendor ] && mv /tmp/vendor ./
+      [ -d /tmp/.cache ] && mv /tmp/.cache ./
+    - mkdir -p custom/plugins || true
+    - mkdir -p custom/static-plugins || true
+    - unzip -q /tmp/plugin.zip -d $PLUGIN_FOLDER
+    - >
+      composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
+    - composer config allow-plugins true
+    - composer require shopgate/connect-shopware6 --no-update
+    - composer install -n --quiet
+    - mkdir -p config/jwt || true
+    - bin/console system:install --drop-database --basic-setup --force --no-interaction --quiet
+    - chown -R 1000:1000 .
+    - bin/console plugin:refresh --quiet
+    - APP_ENV=prod php bin/console store:download -p SwagPlatformDemoData
+    - bin/console plugin:install --quiet --activate SwagPlatformDemoData
+    - bin/console plugin:install --quiet --activate $PLUGIN_NAME
+    - >
+      if bin/console debug:container --parameter kernel.plugin_infos --format json | grep -q "$PLUGIN_NAME";
+        then echo "$PLUGIN_NAME is active";
+        else echo "$PLUGIN_NAME is not active"; exit 1;
+      fi
+    - /entrypoint supervisord > /dev/null 2>&1 &
+
+newman:
+  stage: test
+  rules:
+    - if: '$CI_COMMIT_TAG == null'
+  script:
+    - npm install -g newman@^5.3.0 newman-reporter-htmlextra newman-reporter-junitfull > /dev/null
+    - cd $PLUGIN_FOLDER/tests/Postman;
+    - newman run ./collection.json -e ./environment.json -r cli,htmlextra,junitfull
+      --reporter-htmlextra-export ${PROJECT_ROOT}/postman-report.html --reporter-junitfull-export ${PROJECT_ROOT}/newman.junit.xml
+      --color on --insecure --no-insecure-file-read
+      --env-var "host=$APP_URL";
+  artifacts:
+    when: on_failure
+    expire_in: 30 days
+    reports:
+      junit: newman.junit.xml
+    paths:
+      - ./postman-report.html
+
+build zip:
+  stage: build
+  image:
+    name: ghcr.io/friendsofshopware/platform-plugin-dev:v6.4.4
+    entrypoint: [ "" ]
+  services: [ ]
+  before_script: [ ]
+  rules:
+    - if: $CI_COMMIT_TAG != null && $CI_COMMIT_TAG !~ /beta|alpha/i
+  script:
+    - ln -s "$(pwd)" "/plugins/${PLUGIN_NAME}"
+    - cd /plugins/${PLUGIN_NAME}
+    - plugin-uploader ext:zip --strategy=plain -- "$PWD"
+    - mv ${PLUGIN_NAME}.zip $PROJECT_ROOT/
+    - cd $PROJECT_ROOT
+    - zip -d $(realpath "$PLUGIN_NAME.zip") "$PLUGIN_NAME/composer.lock"
+    - '[[ -r $PLUGIN_NAME.zip ]] || (echo "failed to create $PLUGIN_NAME.zip. Please run ./bin/init $PLUGIN_NAME" && exit 1)'
+  artifacts:
+    name: '${PLUGIN_NAME}'
+    expire_in: never
+    paths:
+      - '${PLUGIN_NAME}.zip'
