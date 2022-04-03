@@ -3,10 +3,14 @@
 namespace Shopgate\ConnectSW6\Services;
 
 use DateTimeImmutable;
+use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
+use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
+use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
+use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\PlatformRequest;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextRestorer;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -19,17 +23,20 @@ class CustomerManager
     private EventDispatcherInterface $dispatcher;
     private EntityRepositoryInterface $customerRepository;
     private SalesChannelRequestContextResolver $contextResolver;
+    private AbstractLogoutRoute $logoutRoute;
 
     public function __construct(
         SalesChannelContextRestorer $contextRestorer,
         EventDispatcherInterface $dispatcher,
         EntityRepositoryInterface $customerRepository,
-        SalesChannelRequestContextResolver $contextResolver
+        SalesChannelRequestContextResolver $contextResolver,
+        AbstractLogoutRoute $logoutRoute
     ) {
         $this->contextRestorer = $contextRestorer;
         $this->dispatcher = $dispatcher;
         $this->customerRepository = $customerRepository;
         $this->contextResolver = $contextResolver;
+        $this->logoutRoute = $logoutRoute;
     }
 
     public function loginByContextToken(
@@ -64,5 +71,19 @@ class CustomerManager
         $this->dispatcher->dispatch($event);
 
         return $newContext;
+    }
+
+    /**
+     * @return Exception[]|ConstraintViolationException[]
+     */
+    public function logoutCustomer(SalesChannelContext $context, RequestDataBag $dataBag): array
+    {
+        try {
+            $this->logoutRoute->logout($context, $dataBag);
+        } catch (ConstraintViolationException $formViolations) {
+            return ['formViolations' => $formViolations];
+        }
+
+        return [];
     }
 }
