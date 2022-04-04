@@ -8,11 +8,9 @@ use ReallySimpleJWT\Exception\BuildException;
 use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopgate\ConnectSW6\Services\TokenManager;
 use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
-use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
-use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,20 +25,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class SGConnectController extends StorefrontController
 {
     private GenericPageLoader $genericPageLoader;
-    private AbstractLogoutRoute $logoutRoute;
     private TokenManager $tokenManager;
     private LoggerInterface $logger;
     private CustomerManager $customerManager;
 
     public function __construct(
         GenericPageLoader $genericPageLoader,
-        AbstractLogoutRoute $logoutRoute,
         CustomerManager $customerManager,
         LoggerInterface $logger,
         TokenManager $tokenManager
     ) {
         $this->genericPageLoader = $genericPageLoader;
-        $this->logoutRoute = $logoutRoute;
         $this->tokenManager = $tokenManager;
         $this->logger = $logger;
         $this->customerManager = $customerManager;
@@ -63,14 +58,9 @@ class SGConnectController extends StorefrontController
         if ($context->getCustomer() === null) {
             return $this->redirectToRoute('frontend.account.login.page', $parameters);
         }
+        $violations = $this->customerManager->logoutCustomer($context, $dataBag);
 
-        try {
-            $this->logoutRoute->logout($context, $dataBag);
-        } catch (ConstraintViolationException $formViolations) {
-            $parameters = array_merge($parameters, ['formViolations' => $formViolations]);
-        }
-
-        return $this->redirectToRoute('frontend.account.login.page', $parameters);
+        return $this->redirectToRoute('frontend.account.login.page', array_merge($parameters, $violations));
     }
 
     /**
@@ -87,7 +77,24 @@ class SGConnectController extends StorefrontController
         }
         $page = $this->genericPageLoader->load($request, $context);
 
-        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/registered.html.twig', [
+        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
+            'page' => $page
+        ]);
+    }
+
+    /**
+     * Helps logout the user from the
+     *
+     * @Route("/sgconnect/logout", name="frontend.sgconnect.logout", methods={"GET"})
+     */
+    public function logout(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
+    {
+        if ($context->getCustomer()) {
+            $this->customerManager->logoutCustomer($context, $dataBag);
+        }
+        $page = $this->genericPageLoader->load($request, $context);
+
+        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
             'page' => $page
         ]);
     }
@@ -97,12 +104,6 @@ class SGConnectController extends StorefrontController
      */
     public function login(Request $request, SalesChannelContext $context): Response
     {
-        $customer = $context->getCustomer();
-        // an already logged in customer just needs a redirect
-        if ($customer && $customer->getGuest() === false) {
-            return $this->getRedirect($request);
-        }
-
         $token = $request->query->get('token');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
@@ -117,6 +118,7 @@ class SGConnectController extends StorefrontController
             $this->log(Logger::INFO, $request, 'Signing in as guest token');
             $contextToken = $this->tokenManager->getContextToken($token);
             $this->customerManager->loginByContextToken($contextToken, $request, $context);
+            $this->logoutOnDeSync($request);
         }
 
         return $this->getRedirect($request);
@@ -133,6 +135,7 @@ class SGConnectController extends StorefrontController
     public function loginToken(Request $request, SalesChannelContext $context): JsonResponse
     {
         $customerId = $context->getCustomer() ? $context->getCustomer()->getId() : null;
+        $this->log(Logger::DEBUG, $request, 'Token for customerId: ' . $customerId);
         return new JsonResponse(
             $this->tokenManager->createToken($context->getToken(), $request->getHost(), $customerId)
         );
@@ -152,5 +155,18 @@ class SGConnectController extends StorefrontController
         return $this->redirect(
             strpos($redirectPage, 'http') === false ? $this->generateUrl($redirectPage) : $redirectPage
         );
+    }
+
+    /**
+     * Sometimes the App might have a strange state where the guest thinks
+     * he is an authenticated user (logged in the App, but not SW API).
+     * We need to fix the App state by logging the user out in the App.
+     */
+    private function logoutOnDeSync(Request $request): void
+    {
+        if ($request->query->get('isLoggedIn', 'false') === 'true') {
+            $this->log(Logger::DEBUG, $request, 'De-synced App & API logged in states');
+            $request->query->set('redirectTo', 'frontend.sgconnect.logout');
+        }
     }
 }

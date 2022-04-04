@@ -2,15 +2,14 @@ import AbstractEvent from './abstract-event';
 
 export default class LoginEvent extends AbstractEvent {
     supports(controllerName, actionName) {
-        return (controllerName === 'accountprofile' && actionName === 'index') || (controllerName === 'sgconnect' && actionName === 'registered');
+        return controllerName === 'sgconnect' && actionName === 'registered';
     }
 
     /**
      * @typedef SGTokenParams
      * @property {string} token - customer sw-context token
      */
-
-    /*
+    /**
      * @param {SGTokenParams} parameters
      */
     execute(parameters) {

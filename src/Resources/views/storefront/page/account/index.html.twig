@@ -1,9 +1,0 @@
-{% sw_extends '@Storefront/storefront/page/account/index.html.twig' %}
-
-{# todo: remove, as requirement is to let the customer browser account pages #}
-{# pass sw-context-token to the login pipeline call #}
-{% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
-    properties: {
-        token: app.request.attributes.get('sw-sales-channel-context').token
-    }
-}) %}

@@ -16,10 +16,7 @@
   ],
   "require": {
     "shopware/core": "^6.4.4",
-    "rbdwllr/reallysimplejwt": "^4.0"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "rbdwllr/reallysimplejwt": "^4.0.3"
   },
   "extra": {
     "shopware-plugin-class": "Shopgate\\ConnectSW6\\ShopgateConnectSW6",

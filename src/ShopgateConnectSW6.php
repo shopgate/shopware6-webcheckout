@@ -29,6 +29,11 @@ class ShopgateConnectSW6 extends Plugin
 
   padding-top: 4em;
 
+  .header-logo-main-link {
+    pointer-events: none;
+    cursor: default;
+  }
+
   .header-search-col,
   .header-actions-col,
   .nav-main,
@@ -44,6 +49,16 @@ class ShopgateConnectSW6 extends Plugin
   .modal {
     top: 4em;
     padding-bottom: 4em;
+  }
+}
+
+/**
+ * Account pages
+ */
+.is-ctl-accountprofile.is-act-index.is-sg-app,
+.is-ctl-accountorder.is-act-orderoverview.is-sg-app {
+  .order-table-header-context-menu-content-form {
+    display: none;
   }
 }
 

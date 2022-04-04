@@ -1,0 +1,9 @@
+{% sw_extends '@Storefront/storefront/page/account/profile/index.html.twig' %}
+
+{% block page_account_profile_personal_action_button_send %}
+
+    {{ parent() }}
+
+    {% sw_include '@ShopgateConnectSW6/sgconnect/component/back-to-overview.html.twig' %}
+
+{% endblock %}
