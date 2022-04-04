@@ -104,11 +104,10 @@ class SGConnectController extends StorefrontController
      */
     public function login(Request $request, SalesChannelContext $context): Response
     {
-        $token = $request->query->get('token');
+        $token = $request->query->get('token', '');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
-            // todo: best to redirect the user back to App with message?
-            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+            return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig');
         }
 
         $customerId = $this->tokenManager->getCustomerId($token);
