@@ -1,6 +1,7 @@
-import PurchaseEvent from './events/purchase.event';
+import CloseBrowserEvent from './events/closeBrowser.event';
 import LoginEvent from './events/login.event';
 import LogoutEvent from './events/logout.event';
+import PurchaseEvent from './events/purchase.event';
 
 export default class SGConnectEventManager {
 
@@ -16,9 +17,10 @@ export default class SGConnectEventManager {
     }
 
     registerDefaultEvents() {
-        this.registerEvent(PurchaseEvent);
+        this.registerEvent(CloseBrowserEvent);
         this.registerEvent(LoginEvent);
         this.registerEvent(LogoutEvent);
+        this.registerEvent(PurchaseEvent);
     }
 
     /**
@@ -30,10 +32,7 @@ export default class SGConnectEventManager {
 
     executeEvents() {
         this.events.forEach(event => {
-            if (!event.supports(this.controllerName, this.actionName)) {
-                return;
-            }
-            if (!event.active) {
+            if (!event.supports(this.controllerName, this.actionName) || !event.active) {
                 return;
             }
             event.log('Executing event > ' + event.constructor.name);

@@ -100,15 +100,20 @@ class SGConnectController extends StorefrontController
     }
 
     /**
+     * Note that an error is not shown to the customer of the App in case the token
+     * is not good anymore. They are just redirect back to App.
+     *
      * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
      */
     public function login(Request $request, SalesChannelContext $context): Response
     {
-        $token = $request->query->get('token');
+        $token = $request->query->get('token', '');
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
-            // todo: best to redirect the user back to App with message?
-            return $this->renderStorefront('@Storefront/storefront/page/error/error-404.html.twig');
+            $page = $this->genericPageLoader->load($request, $context);
+            return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
+                'page' => $page
+            ]);
         }
 
         $customerId = $this->tokenManager->getCustomerId($token);
