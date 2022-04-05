@@ -38,7 +38,7 @@ workflow:
     - when: always
 
 .defaults: &defaults
-  image: $DEV_IMAGE
+  image: shopware/development:$PHP-composer-2
   cache:
     <<: *cache
   services:
