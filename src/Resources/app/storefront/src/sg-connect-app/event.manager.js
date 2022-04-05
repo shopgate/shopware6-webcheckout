@@ -32,10 +32,7 @@ export default class SGConnectEventManager {
 
     executeEvents() {
         this.events.forEach(event => {
-            if (!event.supports(this.controllerName, this.actionName)) {
-                return;
-            }
-            if (!event.active) {
+            if (!event.supports(this.controllerName, this.actionName) || !event.active) {
                 return;
             }
             event.log('Executing event > ' + event.constructor.name);
