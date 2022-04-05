@@ -100,6 +100,9 @@ class SGConnectController extends StorefrontController
     }
 
     /**
+     * Note that an error is not shown to the customer of the App in case the token
+     * is not good anymore. They are just redirect back to App.
+     *
      * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
      */
     public function login(Request $request, SalesChannelContext $context): Response
