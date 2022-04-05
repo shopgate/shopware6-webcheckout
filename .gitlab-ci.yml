@@ -6,21 +6,26 @@ variables:
   PROJECT_ROOT: ${CI_PROJECT_DIR}
   WEB_DOCUMENT_ROOT: $CI_PROJECT_DIR/public
   LOG_STDOUT: $CI_PROJECT_DIR/var/log/stdout.log
-  MYSQL_DATABASE: root
-  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: shopware
+  MYSQL_ROOT_PASSWORD: rootPass
+  DATABASE_URL: "mysql://root:rootPass@database:3306/shopware?sslmode=disable&charset=utf8mb4"
   GIT_STRATEGY: clone
   NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.cache/npm"
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$PLUGIN_NAME
   # things plugins might want to override
-  DEV_IMAGE: shopware/development:7.4-composer-2
+  APP_ENV: dev
+  APP_DEBUG: 1
+  APP_SECRET: '!21k1ABigSecret'
   MYSQL_IMAGE: mariadb:10.3
   MYSQL_CMD: mysqld
-  PLATFORM_BRANCH: '6.4.6.0'
+  PHP: '7.4'
+  PLATFORM_BRANCH: 6.4.6.0
   PLUGIN_NAME: 'ShopgateConnectSW6'
-  APP_SECRET: '!21k1ABigSecret'
 
 # Cache libraries in between PR commits
-cache:
+.cache: &cache
   key: $PLUGIN_NAME-$PLATFORM_BRANCH
+  policy: pull
   paths:
     - .cache/npm
     - vendor/
@@ -32,8 +37,10 @@ workflow:
       when: never
     - when: always
 
-default:
+.defaults: &defaults
   image: $DEV_IMAGE
+  cache:
+    <<: *cache
   services:
     - name: $MYSQL_IMAGE
       alias: database
@@ -74,7 +81,18 @@ default:
     - /entrypoint supervisord > /dev/null 2>&1 &
 
 newman:
+  <<: *defaults
   stage: test
+  cache:
+    <<: *cache
+    policy: pull-push
+  parallel:
+    matrix:
+      - PLATFORM_BRANCH:
+          - 6.4.6.0
+          - 6.4.10.0
+      - PHP:
+          - '8.0'
   rules:
     - if: '$CI_COMMIT_TAG == null'
   script:
