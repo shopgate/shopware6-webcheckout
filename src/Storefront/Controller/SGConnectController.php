@@ -83,23 +83,6 @@ class SGConnectController extends StorefrontController
     }
 
     /**
-     * Helps logout the user from the
-     *
-     * @Route("/sgconnect/logout", name="frontend.sgconnect.logout", methods={"GET"})
-     */
-    public function logout(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
-    {
-        if ($context->getCustomer()) {
-            $this->customerManager->logoutCustomer($context, $dataBag);
-        }
-        $page = $this->genericPageLoader->load($request, $context);
-
-        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
-            'page' => $page
-        ]);
-    }
-
-    /**
      * Note that an error is not shown to the customer of the App in case the token
      * is not good anymore. They are just redirect back to App.
      *
@@ -127,7 +110,6 @@ class SGConnectController extends StorefrontController
             $this->log(Logger::INFO, $request, 'Signing in as guest token');
             $contextToken = $this->tokenManager->getContextToken($token);
             $this->customerManager->loginByContextToken($contextToken, $request, $context);
-            $this->logoutOnDeSync($request);
         }
 
         return $this->getRedirect($request);
@@ -164,18 +146,5 @@ class SGConnectController extends StorefrontController
         return $this->redirect(
             strpos($redirectPage, 'http') === false ? $this->generateUrl($redirectPage) : $redirectPage
         );
-    }
-
-    /**
-     * Sometimes the App might have a strange state where the guest thinks
-     * he is an authenticated user (logged in the App, but not SW API).
-     * We need to fix the App state by logging the user out in the App.
-     */
-    private function logoutOnDeSync(Request $request): void
-    {
-        if ($request->query->get('isLoggedIn', 'false') === 'true') {
-            $this->log(Logger::DEBUG, $request, 'De-synced App & API logged in states');
-            $request->query->set('redirectTo', 'frontend.sgconnect.logout');
-        }
     }
 }
