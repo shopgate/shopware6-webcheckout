@@ -18,6 +18,13 @@ export default class LogoutEvent extends AbstractEvent {
                     {
                         'c': 'broadcastEvent',
                         'p': {'event': 'userLoggedOut'}
+                    },
+                    {
+                        'c': 'broadcastEvent',
+                        'p': {
+                            'event': 'closeInAppBrowser',
+                            'parameters': [{'redirectTo': '/'}]
+                        }
                     }
                 ]);
             },
