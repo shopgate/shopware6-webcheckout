@@ -105,7 +105,7 @@ class SGConnectController extends StorefrontController
      *
      * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
      */
-    public function login(Request $request, SalesChannelContext $context): Response
+    public function login(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
     {
         $token = $request->query->get('token', '');
         if (!$this->tokenManager->validateToken($token)) {
@@ -114,6 +114,10 @@ class SGConnectController extends StorefrontController
             return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
                 'page' => $page
             ]);
+        }
+        if ($context->getCustomer()) {
+            // if not t log out, then context token can change. Which de-sync's /w App context token.
+            $this->customerManager->logoutCustomer($context, $dataBag);
         }
 
         $customerId = $this->tokenManager->getCustomerId($token);
