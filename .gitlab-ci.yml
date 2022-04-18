@@ -64,6 +64,7 @@ workflow:
     - >
       composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
     - composer config allow-plugins true
+    - rm -f vendor/shopgate/connect-shopware6
     - composer require shopgate/connect-shopware6 --no-update
     - composer install -n --quiet
     - mkdir -p config/jwt || true
