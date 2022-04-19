@@ -79,6 +79,8 @@ workflow:
         else echo "$PLUGIN_NAME is not active"; exit 1;
       fi
     - /entrypoint supervisord > /dev/null 2>&1 &
+  after_script:
+    - rm -f vendor/shopgate/connect-shopware6
 
 newman:
   <<: *defaults

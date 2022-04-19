@@ -12,6 +12,7 @@ use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\PlatformRequest;
+use Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextRestorer;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,17 +25,20 @@ class CustomerManager
     private EntityRepositoryInterface $customerRepository;
     private SalesChannelRequestContextResolver $contextResolver;
     private AbstractLogoutRoute $logoutRoute;
+    private SalesChannelContextPersister $contextPersist;
 
     public function __construct(
         SalesChannelContextRestorer $contextRestorer,
         EventDispatcherInterface $dispatcher,
         EntityRepositoryInterface $customerRepository,
+        SalesChannelContextPersister $contextPersist,
         SalesChannelRequestContextResolver $contextResolver,
         AbstractLogoutRoute $logoutRoute
     ) {
         $this->contextRestorer = $contextRestorer;
         $this->dispatcher = $dispatcher;
         $this->customerRepository = $customerRepository;
+        $this->contextPersist = $contextPersist;
         $this->contextResolver = $contextResolver;
         $this->logoutRoute = $logoutRoute;
     }
@@ -59,6 +63,7 @@ class CustomerManager
 
     public function loginCustomerById(string $customerId, SalesChannelContext $context): SalesChannelContext
     {
+        $this->handleCustomerContext($customerId, $context);
         $newContext = $this->contextRestorer->restore($customerId, $context);
         $this->customerRepository->update([
             [
@@ -85,5 +90,19 @@ class CustomerManager
         }
 
         return [];
+    }
+
+    /**
+     * Since it will attempt to create a new token & syncing it with the App requires
+     * the user to log back in, we try to extend the token life if it expired.
+     */
+    private function handleCustomerContext(string $customerId, SalesChannelContext $currentContext): void
+    {
+        $channelId = $currentContext->getSalesChannel()->getId();
+        $customerPayload = $this->contextPersist->load($currentContext->getToken(), $channelId, $customerId);
+
+        if ($customerPayload['expired'] ?? null) {
+            $this->contextPersist->save($customerPayload['token'], ['expired' => false], $channelId, $customerId);
+        }
     }
 }

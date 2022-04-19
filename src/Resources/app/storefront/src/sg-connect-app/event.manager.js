@@ -1,6 +1,5 @@
 import CloseBrowserEvent from './events/closeBrowser.event';
 import LoginEvent from './events/login.event';
-import LogoutEvent from './events/logout.event';
 import PurchaseEvent from './events/purchase.event';
 
 export default class SGConnectEventManager {
@@ -19,7 +18,6 @@ export default class SGConnectEventManager {
     registerDefaultEvents() {
         this.registerEvent(CloseBrowserEvent);
         this.registerEvent(LoginEvent);
-        this.registerEvent(LogoutEvent);
         this.registerEvent(PurchaseEvent);
     }
 
