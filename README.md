@@ -59,7 +59,7 @@ The JWT library imposes strict `APP_SECRET` security rules as follows:
 
 * the secret must be at least 8 characters in length;
 * contain numbers;
-* upper and lowercase letters;
+* upper and/or lowercase letters;
 
 You can set a secure secret for your store by running this command in the console:
 
