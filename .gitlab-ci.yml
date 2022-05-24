@@ -15,7 +15,7 @@ variables:
   # things plugins might want to override
   APP_ENV: dev
   APP_DEBUG: 1
-  APP_SECRET: '!21k1ABigSecret'
+  APP_SECRET: '1122333secret'
   MYSQL_IMAGE: mariadb:10.3
   MYSQL_CMD: mysqld
   PHP: '7.4'
@@ -92,7 +92,7 @@ newman:
     matrix:
       - PLATFORM_BRANCH:
           - 6.4.6.0
-          - 6.4.10.0
+          - 6.4.11.0
       - PHP:
           - '8.0'
   rules:

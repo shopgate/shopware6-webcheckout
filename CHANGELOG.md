@@ -1,3 +1,7 @@
+# 0.1.1
+
+- Fixed validation to allow only lower or upper case characters in the secret
+
 # 0.1.0
 
 - Added storefront API token generating endpoint for login purposes

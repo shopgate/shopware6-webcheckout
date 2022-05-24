@@ -3,7 +3,7 @@
   "description": "Shopgate Connect for Shopware 6",
   "license": "proprietary",
   "type": "shopware-platform-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "mobile",
     "app"
