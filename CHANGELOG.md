@@ -1,3 +1,7 @@
+# 0.1.2
+
+- Added Shopgate logo
+
 # 0.1.1
 
 - Fixed validation to allow only lower or upper case characters in the secret
