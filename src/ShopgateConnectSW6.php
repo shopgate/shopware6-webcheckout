@@ -37,8 +37,13 @@ class ShopgateConnectSW6 extends Plugin
   .header-search-col,
   .header-actions-col,
   .nav-main,
-  .scroll-up-container {
+  .scroll-up-container,
+  .footer-main {
     display: none;
+  }
+
+  .cookie-permission-container {
+    display: none !important;
   }
 
   .offcanvas {

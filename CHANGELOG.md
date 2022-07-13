@@ -1,3 +1,7 @@
+# 0.2.0
+
+- Removed footer & cookie drawer via CSS
+
 # 0.1.2
 
 - Added Shopgate logo
