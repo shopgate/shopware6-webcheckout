@@ -64,9 +64,8 @@ workflow:
     - unzip -q /tmp/plugin.zip -d $PLUGIN_FOLDER
     - >
       composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
-    - composer config --no-interaction allow-plugins.bamarni/composer-bin-plugin true
     - composer require shopgate/connect-shopware6 --no-update
-    - composer install -n
+    - composer install --no-interaction --quiet
     - mkdir -p config/jwt || true
     - bin/console system:install --drop-database --basic-setup --force --no-interaction --quiet
     - bin/console plugin:refresh --quiet
