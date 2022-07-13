@@ -54,7 +54,8 @@ workflow:
     - zip -rq plugin.zip .
     - mv plugin.zip /tmp/plugin.zip
     - rm -Rf .* * || true
-    - git clone https://github.com/shopware/platform.git . --branch $PLATFORM_BRANCH
+    - git clone https://github.com/shopware/platform.git . --branch $PLATFORM_BRANCH --depth 1
+    - git rev-parse --abbrev-ref HEAD
     - >
       [ -d /tmp/vendor ] && mv /tmp/vendor ./
       [ -d /tmp/.cache ] && mv /tmp/.cache ./
@@ -63,14 +64,15 @@ workflow:
     - unzip -q /tmp/plugin.zip -d $PLUGIN_FOLDER
     - >
       composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
+    - composer config --no-interaction allow-plugins.bamarni/composer-bin-plugin true
     - composer require shopgate/connect-shopware6 --no-update
-    - composer install -n --quiet
+    - composer install -n
     - mkdir -p config/jwt || true
     - bin/console system:install --drop-database --basic-setup --force --no-interaction --quiet
     - bin/console plugin:refresh --quiet
     - APP_ENV=prod php bin/console store:download -p SwagPlatformDemoData
-    - bin/console plugin:install --quiet --activate SwagPlatformDemoData
-    - bin/console plugin:install --quiet --activate $PLUGIN_NAME
+    - bin/console plugin:install --quiet --activate --skip-asset-build SwagPlatformDemoData
+    - bin/console plugin:install --quiet --activate --clearCache $PLUGIN_NAME
     - >
       if bin/console debug:container --parameter kernel.plugin_infos --format json | grep -q "$PLUGIN_NAME";
         then echo "$PLUGIN_NAME is active";
@@ -91,7 +93,7 @@ newman:
     matrix:
       - PLATFORM_BRANCH:
           - 6.4.8.0
-          - 6.4.11.0
+          - 6.4.13.0
       - PHP:
           - '8.0'
   rules:
