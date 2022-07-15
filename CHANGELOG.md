@@ -1,5 +1,6 @@
 # 0.2.0
 
+- Added `close` button to success purchase page
 - Removed footer & cookie drawer via CSS
 
 # 0.1.2
