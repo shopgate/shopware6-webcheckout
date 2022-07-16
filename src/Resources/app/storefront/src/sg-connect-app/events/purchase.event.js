@@ -23,9 +23,10 @@ export default class PurchaseEvent extends AbstractEvent {
                     'c': 'setNavigationBarParams',
                     'p': {
                         'navigationBarParams': {
-                            'leftButton': true,
-                            'leftButtonType': 'close',
-                            'leftButtonCallback': 'SGAction.broadcastEvent({event: \'closeInAppBrowser\',\'parameters\': [{\'redirectTo\': \'/\'}]});'
+                            'leftButton': false,
+                            'rightButton': true,
+                            'rightButtonType': 'close',
+                            'rightButtonCallback': 'SGAction.broadcastEvent({event: \'closeInAppBrowser\',\'parameters\': [{\'redirectTo\': \'/\'}]});'
                         }
                     }
                 }
