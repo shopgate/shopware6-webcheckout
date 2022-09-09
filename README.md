@@ -64,16 +64,21 @@ The JWT library imposes strict `APP_SECRET` security rules as follows:
 You can set a secure secret for your store by running this command in the console:
 
 ```shell
-bin/console secrets:set APP_SECRET
+bin/console secrets:set APP_SECRET --random
 ```
 
 Check that a local value inside `.env` file is not rewriting you secret:
 
 ```shell
-bin/console secrets:list
+bin/console secrets:list --reveal
 ```
 
 You can find out more on the Symfony [doc pages](https://symfony.com/doc/5.4/configuration/secrets.html).
+
+## Session extending
+
+A header `shopgate-check: 1` needs to be provided with the regular SW6 Storefront API call to extend the current
+session (in case it expired).
 
 ## Development
 

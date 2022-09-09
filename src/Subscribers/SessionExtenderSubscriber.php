@@ -24,9 +24,7 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            ControllerEvent::class => ['handleSession', 40]
-        ];
+        return [ControllerEvent::class => ['handleSession', 40]];
     }
 
     /**
