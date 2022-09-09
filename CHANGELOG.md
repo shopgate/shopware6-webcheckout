@@ -1,6 +1,7 @@
 # 0.3.0
 
 - Added ability to extend expired sessions when default Storefront API calls are made
+- Changed validation to accept secret without numbers
 
 # 0.2.0
 
