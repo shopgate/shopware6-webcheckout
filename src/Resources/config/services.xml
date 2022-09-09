@@ -15,6 +15,10 @@
         <service id="Shopgate\ConnectSW6\Subscribers\IsShopgateSubscriber">
             <tag name="kernel.event_subscriber"/>
         </service>
+        <service id="Shopgate\ConnectSW6\Subscribers\SessionExtenderSubscriber">
+            <argument key="$entityRepository" type="service" id="sales_channel.repository"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
         <service id="Shopgate\ConnectSW6\Storefront\Controller\SGConnectController" public="true">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
@@ -30,6 +34,7 @@
         </service>
         <service id="Shopgate\ConnectSW6\Services\CustomerManager">
             <argument key="$logoutRoute" type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
+            <argument key="$customerRepository" type="service" id="customer.repository"/>
         </service>
         <service id="Shopgate\ConnectSW6\Token\TokenBuilder"/>
     </services>

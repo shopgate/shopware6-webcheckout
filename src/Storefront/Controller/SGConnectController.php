@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @RouteScope(scopes={"storefront"})
+ * @Route(defaults={"_routeScope"={"storefront"}})
  */
 class SGConnectController extends StorefrontController
 {
@@ -120,6 +121,7 @@ class SGConnectController extends StorefrontController
      *
      * @RouteScope(scopes={"store-api"})
      * @ContextTokenRequired()
+     * @Route(defaults={"_routeScope"={"store-api"},"_contextTokenRequired"=true})
      * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
      * @throws BuildException
      */
