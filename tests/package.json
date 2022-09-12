@@ -1,0 +1,17 @@
+{
+  "name": "apite-sgsw6-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "local": "node_modules/.bin/newman run ./Postman/collection.json -e ./Postman/environment.json --color=on --bail",
+    "ci": "node_modules/.bin/newman run -r cli,htmlextra,junitfull ./Postman/collection.json -e ./Postman/environment.json --color=on --insecure --no-insecure-file-read"
+  },
+  "author": "Konstantin Kiritsenko",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "latest",
+    "newman-reporter-htmlextra": "latest",
+    "newman-reporter-junitfull": "latest"
+  }
+}
