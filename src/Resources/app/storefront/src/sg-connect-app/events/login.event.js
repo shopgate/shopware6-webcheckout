@@ -33,5 +33,15 @@ export default class LoginEvent extends AbstractEvent {
             },
             []
         );
+        
+        // fix SW6M-27: We don't get an event on iOS after the pipeline process completes.
+        setTimeout(() => {
+            window.SGAppConnector.sendAppCommands([
+                {
+                    'c': 'broadcastEvent',
+                    'p': {'event': 'userLoggedIn'}
+                }
+            ]);
+        }, 5000);      
     }
 }
