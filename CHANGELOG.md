@@ -1,3 +1,7 @@
+# 0.3.1
+
+- Fixed iOS inApp browser closing after 5 seconds (during registration) if no response is received from App
+
 # 0.3.0
 
 - Added ability to extend expired sessions when default Storefront API calls are made
