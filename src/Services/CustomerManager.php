@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -22,7 +22,7 @@ class CustomerManager
 {
     private SalesChannelContextRestorer $contextRestorer;
     private EventDispatcherInterface $dispatcher;
-    private EntityRepository $customerRepository;
+    private EntityRepositoryInterface $customerRepository;
     private SalesChannelRequestContextResolver $contextResolver;
     private AbstractLogoutRoute $logoutRoute;
     private SalesChannelContextPersister $contextPersist;
@@ -30,7 +30,7 @@ class CustomerManager
     public function __construct(
         SalesChannelContextRestorer $contextRestorer,
         EventDispatcherInterface $dispatcher,
-        EntityRepository $customerRepository,
+        EntityRepositoryInterface $customerRepository,
         SalesChannelContextPersister $contextPersist,
         SalesChannelRequestContextResolver $contextResolver,
         AbstractLogoutRoute $logoutRoute
