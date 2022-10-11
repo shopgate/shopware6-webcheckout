@@ -1,3 +1,7 @@
+# 0.3.2
+
+- Removed entity repository references as SW6 `SwagMarkets` is not ready for 6.5 yet
+
 # 0.3.1
 
 - Fixed iOS inApp browser closing after 5 seconds (during registration) if no response is received from App

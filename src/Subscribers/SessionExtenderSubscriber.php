@@ -4,7 +4,7 @@ namespace Shopgate\ConnectSW6\Subscribers;
 
 use Shopgate\ConnectSW6\Services\CustomerManager;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,9 +14,9 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
 {
     protected const SHOPGATE_CHECK = 'shopgate-check';
     private CustomerManager $customerManager;
-    private EntityRepository $entityRepository;
+    private EntityRepositoryInterface $entityRepository;
 
-    public function __construct(CustomerManager $customerManager, EntityRepository $entityRepository)
+    public function __construct(CustomerManager $customerManager, EntityRepositoryInterface $entityRepository)
     {
         $this->customerManager = $customerManager;
         $this->entityRepository = $entityRepository;
