@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Storefront\Controller;
+namespace Shopgate\WebcheckoutSW6\Storefront\Controller;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use ReallySimpleJWT\Exception\BuildException;
-use Shopgate\ConnectSW6\Services\CustomerManager;
-use Shopgate\ConnectSW6\Services\TokenManager;
-use Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader;
+use Shopgate\WebcheckoutSW6\Services\CustomerManager;
+use Shopgate\WebcheckoutSW6\Services\TokenManager;
+use Shopgate\WebcheckoutSW6\Storefront\Page\GenericPageLoader;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @RouteScope(scopes={"storefront"})
  * @Route(defaults={"_routeScope"={"storefront"}})
  */
-class SGConnectController extends StorefrontController
+class SGWebcheckoutController extends StorefrontController
 {
     private GenericPageLoader $genericPageLoader;
     private TokenManager $tokenManager;
@@ -47,12 +47,12 @@ class SGConnectController extends StorefrontController
      * but loggedIn the inApp browser. If a customer decides to register
      * again we log them out first, and redirect them to the registration page.
      *
-     * @Route("/sgconnect/register", name="frontend.sgconnect.register", methods={"GET"})
+     * @Route("/sgwebcheckout/register", name="frontend.sgwebcheckout.register", methods={"GET"})
      */
     public function register(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
     {
         $parameters = array_merge(
-            ['redirectTo' => 'frontend.sgconnect.registered'],
+            ['redirectTo' => 'frontend.sgwebcheckout.registered'],
             $request->query->all()
         );
         // no need to check for guest as we need to log them out as well
@@ -68,7 +68,7 @@ class SGConnectController extends StorefrontController
      * Route handles the "after" login state of the App user. It is just a loader
      * page that logsIn the customer in the App & closes the inApp browser.
      *
-     * @Route("/sgconnect/registered", name="frontend.sgconnect.registered", methods={"GET"})
+     * @Route("/sgwebcheckout/registered", name="frontend.sgwebcheckout.registered", methods={"GET"})
      */
     public function registered(Request $request, SalesChannelContext $context): Response
     {
@@ -78,7 +78,7 @@ class SGConnectController extends StorefrontController
         }
         $page = $this->genericPageLoader->load($request, $context);
 
-        return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
+        return $this->renderStorefront('@SgateWebcheckoutSW6/sgwebcheckout/page/spinner.html.twig', [
             'page' => $page
         ]);
     }
@@ -87,7 +87,7 @@ class SGConnectController extends StorefrontController
      * Note that an error is not shown to the customer of the App in case the token
      * is not good anymore. They are just redirect back to App.
      *
-     * @Route("/sgconnect/login", name="frontend.sgconnect.login", methods={"GET"})
+     * @Route("/sgwebcheckout/login", name="frontend.sgwebcheckout.login", methods={"GET"})
      */
     public function login(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
     {
@@ -95,7 +95,7 @@ class SGConnectController extends StorefrontController
         if (!$this->tokenManager->validateToken($token)) {
             $this->log(Logger::WARNING, $request, 'Token expired or invalid');
             $page = $this->genericPageLoader->load($request, $context);
-            return $this->renderStorefront('@ShopgateConnectSW6/sgconnect/page/spinner.html.twig', [
+            return $this->renderStorefront('@SgateWebcheckoutSW6/sgwebcheckout/page/spinner.html.twig', [
                 'page' => $page
             ]);
         }
@@ -122,7 +122,7 @@ class SGConnectController extends StorefrontController
      * @RouteScope(scopes={"store-api"})
      * @ContextTokenRequired()
      * @Route(defaults={"_routeScope"={"store-api"},"_contextTokenRequired"=true})
-     * @Route("/store-api/sgconnect/login/token", name="store-api.sgconnect.login.token", methods={"GET", "POST"})
+     * @Route("/store-api/sgwebcheckout/login/token", name="store-api.sgwebcheckout.login.token", methods={"GET", "POST"})
      * @throws BuildException
      */
     public function loginToken(Request $request, SalesChannelContext $context): JsonResponse

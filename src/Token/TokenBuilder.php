@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Token;
+namespace Shopgate\WebcheckoutSW6\Token;
 
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Encoders\EncodeHS256;

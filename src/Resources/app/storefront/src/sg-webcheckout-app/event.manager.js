@@ -2,7 +2,7 @@ import CloseBrowserEvent from './events/closeBrowser.event';
 import LoginEvent from './events/login.event';
 import PurchaseEvent from './events/purchase.event';
 
-export default class SGConnectEventManager {
+export default class SGWebcheckoutEventManager {
 
     constructor(controllerName, actionName, properties, env) {
         this.controllerName = controllerName;

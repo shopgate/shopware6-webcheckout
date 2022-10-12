@@ -4,38 +4,38 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="sg_connect_config_css" type="constant">Shopgate\ConnectSW6\Config::KEY_CSS</parameter>
+        <parameter key="sg_webcheckout_config_css" type="constant">Shopgate\WebcheckoutSW6\Config::KEY_CSS</parameter>
     </parameters>
     <services>
         <defaults autowire="true" autoconfigure="true"/>
-        <service id="Shopgate\ConnectSW6\Subscribers\SystemConfigSubscriber">
-            <argument key="$cssConfigKey" type="string">%sg_connect_config_css%</argument>
+        <service id="Shopgate\WebcheckoutSW6\Subscribers\SystemConfigSubscriber">
+            <argument key="$cssConfigKey" type="string">%sg_webcheckout_config_css%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
-        <service id="Shopgate\ConnectSW6\Subscribers\IsShopgateSubscriber">
+        <service id="Shopgate\WebcheckoutSW6\Subscribers\IsShopgateSubscriber">
             <tag name="kernel.event_subscriber"/>
         </service>
-        <service id="Shopgate\ConnectSW6\Subscribers\SessionExtenderSubscriber">
+        <service id="Shopgate\WebcheckoutSW6\Subscribers\SessionExtenderSubscriber">
             <argument key="$entityRepository" type="service" id="sales_channel.repository"/>
             <tag name="kernel.event_subscriber"/>
         </service>
-        <service id="Shopgate\ConnectSW6\Storefront\Controller\SGConnectController" public="true">
+        <service id="Shopgate\WebcheckoutSW6\Storefront\Controller\SGWebcheckoutController" public="true">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
-        <service id="Shopgate\ConnectSW6\Services\TokenManager">
-            <argument key="$tokens" type="service" id="Shopgate\ConnectSW6\Token\TokenBuilder"/>
+        <service id="Shopgate\WebcheckoutSW6\Services\TokenManager">
+            <argument key="$tokens" type="service" id="Shopgate\WebcheckoutSW6\Token\TokenBuilder"/>
             <argument key="$secret" type="string">%kernel.secret%</argument>
         </service>
-        <service id="Shopgate\ConnectSW6\Storefront\Page\GenericPageLoader" public="true">
+        <service id="Shopgate\WebcheckoutSW6\Storefront\Page\GenericPageLoader" public="true">
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
-        <service id="Shopgate\ConnectSW6\Services\CustomerManager">
+        <service id="Shopgate\WebcheckoutSW6\Services\CustomerManager">
             <argument key="$logoutRoute" type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
             <argument key="$customerRepository" type="service" id="customer.repository"/>
         </service>
-        <service id="Shopgate\ConnectSW6\Token\TokenBuilder"/>
+        <service id="Shopgate\WebcheckoutSW6\Token\TokenBuilder"/>
     </services>
 </container>

@@ -1,10 +1,10 @@
-{% if page.header.extensions.sg_connect_data %}
+{% if page.header.extensions.sg_webcheckout_data %}
 
-    {% block sgconnect_account_back_to_address %}
+    {% block sgwebcheckout_account_back_to_address %}
 
         <a href="{{ path('frontend.account.address.page') }}"
            title="{{ "account.editOrderCancelOrderModalFooterButtonBack"|trans|striptags }}"
-           class="btn btn-light sg-connect-nav">
+           class="btn btn-light sg-webcheckout-nav">
             {{ "account.editOrderCancelOrderModalFooterButtonBack"|trans|sw_sanitize }}
         </a>
 

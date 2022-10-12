@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Subscribers;
+namespace Shopgate\WebcheckoutSW6\Subscribers;
 
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Shopware\Storefront\Pagelet\Header\HeaderPageletLoadedEvent;
@@ -30,7 +30,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
             return;
         }
         $event->getRequest()->getSession()->set(self::SG_SESSION_KEY, 1);
-        $event->getPagelet()->addExtension('sg_connect_data', new ArrayStruct());
+        $event->getPagelet()->addExtension('sg_webcheckout_data', new ArrayStruct());
     }
 
     /**

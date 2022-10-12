@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Storefront\Page;
+namespace Shopgate\WebcheckoutSW6\Storefront\Page;
 
-use Shopgate\ConnectSW6\Storefront\Events\GenericPageLoadedEvent;
+use Shopgate\WebcheckoutSW6\Storefront\Events\GenericPageLoadedEvent;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Page\GenericPageLoaderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

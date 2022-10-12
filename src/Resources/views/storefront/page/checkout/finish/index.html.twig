@@ -31,7 +31,7 @@
 
 {# Passing options to the plugin to catch & handle sending event #}
 {# replace_recursive makes sure we do not rewrite our controller/action data #}
-{% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
+{% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
     properties: {
         order: {
             number: page.order.orderNumber,

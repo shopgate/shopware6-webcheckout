@@ -1,7 +1,7 @@
 export default class AbstractEvent {
 
     active = true;
-    pluginName = 'Shopgate Connect Plugin';
+    pluginName = 'Shopgate Webcheckout Plugin';
     isDev = false;
 
     constructor(env) {

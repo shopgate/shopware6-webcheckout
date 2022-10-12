@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "1f66b7dc-21b8-4886-bb54-7917b9786664",
-    "name": "SW6 SG Connect",
+    "name": "SW6 SG Webcheckout",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "5289226"
   },
@@ -1054,12 +1054,12 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_store_api}}/sgconnect/login/token",
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                   "host": [
                     "{{sw_store_api}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login",
                     "token"
                   ]
@@ -1132,12 +1132,12 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{sw_store_api}}/sgconnect/login/token",
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                       "host": [
                         "{{sw_store_api}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login",
                         "token"
                       ]
@@ -1257,12 +1257,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}",
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                   "host": [
                     "{{sw_endpoint_frontend}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login"
                   ],
                   "query": [
@@ -1280,12 +1280,12 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}",
+                      "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                       "host": [
                         "{{sw_endpoint_frontend}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login"
                       ],
                       "query": [
@@ -2002,12 +2002,12 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_store_api}}/sgconnect/login/token",
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                   "host": [
                     "{{sw_store_api}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login",
                     "token"
                   ]
@@ -2080,12 +2080,12 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{sw_store_api}}/sgconnect/login/token",
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                       "host": [
                         "{{sw_store_api}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login",
                         "token"
                       ]
@@ -2204,12 +2204,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}",
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                   "host": [
                     "{{sw_endpoint_frontend}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login"
                   ],
                   "query": [
@@ -2227,12 +2227,12 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}",
+                      "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                       "host": [
                         "{{sw_endpoint_frontend}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login"
                       ],
                       "query": [
@@ -2764,12 +2764,12 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_store_api}}/sgconnect/login/token",
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                   "host": [
                     "{{sw_store_api}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login",
                     "token"
                   ]
@@ -2842,12 +2842,12 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{sw_store_api}}/sgconnect/login/token",
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                       "host": [
                         "{{sw_store_api}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login",
                         "token"
                       ]
@@ -2958,12 +2958,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
                   "host": [
                     "{{sw_endpoint_frontend}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login"
                   ],
                   "query": [
@@ -3042,12 +3042,12 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_store_api}}/sgconnect/login/token",
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                   "host": [
                     "{{sw_store_api}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login",
                     "token"
                   ]
@@ -3120,12 +3120,12 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{sw_store_api}}/sgconnect/login/token",
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                       "host": [
                         "{{sw_store_api}}"
                       ],
                       "path": [
-                        "sgconnect",
+                        "sgwebcheckout",
                         "login",
                         "token"
                       ]
@@ -3235,12 +3235,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}&redirectTo=frontend.account.home.page",
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.account.home.page",
                   "host": [
                     "{{sw_endpoint_frontend}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login"
                   ],
                   "query": [
@@ -3841,12 +3841,12 @@
               }
             ],
             "url": {
-              "raw": "{{sw_store_api}}/sgconnect/login/token",
+              "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
               "host": [
                 "{{sw_store_api}}"
               ],
               "path": [
-                "sgconnect",
+                "sgwebcheckout",
                 "login",
                 "token"
               ]
@@ -3919,12 +3919,12 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_store_api}}/sgconnect/login/token",
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
                   "host": [
                     "{{sw_store_api}}"
                   ],
                   "path": [
-                    "sgconnect",
+                    "sgwebcheckout",
                     "login",
                     "token"
                   ]
@@ -4044,12 +4044,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
+              "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
               "host": [
                 "{{sw_endpoint_frontend}}"
               ],
               "path": [
-                "sgconnect",
+                "sgwebcheckout",
                 "login"
               ],
               "query": [
@@ -4384,7 +4384,7 @@
                   "// Load the HTML response to $\r",
                   "const $ = cheerio.load(pm.response.text());\r",
                   "pm.test(\"Check we are on spinner page when token is bad\", function () {\r",
-                  "    const bodyClass = $('.is-ctl-sgconnect.is-act-login');\r",
+                  "    const bodyClass = $('.is-ctl-sgwebcheckout.is-act-login');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "    const spinner = $('.sg-spinner');\r",
                   "    pm.expect(spinner).to.be.lengthOf(1);\r",
@@ -4408,12 +4408,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{sw_endpoint_frontend}}/sgconnect/login?token=111",
+              "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token=111",
               "host": [
                 "{{sw_endpoint_frontend}}"
               ],
               "path": [
-                "sgconnect",
+                "sgwebcheckout",
                 "login"
               ],
               "query": [

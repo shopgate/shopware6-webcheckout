@@ -18,9 +18,9 @@ variables:
   PHP_VERSION: '7.4'
   PLATFORM_BRANCH: '6.4.14.0'
   # things plugins might want to override
-  PLUGIN_NAME: 'ShopgateConnectSW6'
+  PLUGIN_NAME: 'SgateWebcheckoutSW6'
   PLUGIN_FOLDER: $PROJECT_ROOT/custom/static-plugins/$PLUGIN_NAME
-  PLUGIN_COMPOSER: 'shopgate/connect-shopware6'
+  PLUGIN_COMPOSER: 'shopgate/webcheckout-shopware6'
 
 # Cache libraries in between PR commits
 .cache: &cache

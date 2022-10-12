@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Subscribers;
+namespace Shopgate\WebcheckoutSW6\Subscribers;
 
-use Shopgate\ConnectSW6\Services\CustomerManager;
+use Shopgate\WebcheckoutSW6\Services\CustomerManager;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;

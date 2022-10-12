@@ -1,6 +1,6 @@
 {
-  "name": "shopgate/connect-shopware6",
-  "description": "Shopgate Connect for Shopware 6",
+  "name": "shopgate/webcheckout-shopware6",
+  "description": "Shopgate Webcheckout for Shopware 6",
   "license": "proprietary",
   "type": "shopware-platform-plugin",
   "version": "0.3.2",
@@ -19,16 +19,16 @@
     "rbdwllr/reallysimplejwt": "^4.0.3"
   },
   "extra": {
-    "shopware-plugin-class": "Shopgate\\ConnectSW6\\ShopgateConnectSW6",
+    "shopware-plugin-class": "Shopgate\\WebcheckoutSW6\\SgateWebcheckoutSW6",
     "plugin-icon": "src/Resources/public/shopgate_logo.png",
     "copyright": "by Apite",
     "label": {
-      "de-DE": "Shopgate Connect",
-      "en-GB": "Shopgate Connect"
+      "de-DE": "Shopgate Webcheckout",
+      "en-GB": "Shopgate Webcheckout"
     },
     "description": {
-      "de-DE": "Shopgate Connect Integration",
-      "en-GB": "Shopgate Connect integration"
+      "de-DE": "Shopgate Webcheckout Integration",
+      "en-GB": "Shopgate Webcheckout integration"
     },
     "manufacturerLink": {
       "en-GB": "https://apite.io",
@@ -41,7 +41,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Shopgate\\ConnectSW6\\": "src/"
+      "Shopgate\\WebcheckoutSW6\\": "src/"
     }
   }
 }
