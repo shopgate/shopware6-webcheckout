@@ -1,4 +1,4 @@
-# Shopgate Shopware6 Connect
+# Shopgate Shopware6 Webcheckout
 
 ## Install
 
@@ -9,7 +9,7 @@ composer:
 
 ```shell
 cd [shopware6 root folder]
-composer require shopgate/connect-shopware6
+composer require shopgate/webcheckout-shopware6
 ```
 
 Afterwards just increment the plugin version inside `root/composer.json`, and run `composer update` to get the latest
@@ -18,7 +18,7 @@ version.
 ### Folder install
 
 It can be installed manually by copying the plugin folder to `custom/plugins` directory. Like
-so `custom/plugins/ShopgateConnectSW6`. Then you can install & enable like any other plugin. For this install method,
+so `custom/plugins/SgateWebcheckoutSW6`. Then you can install & enable like any other plugin. For this install method,
 please make sure that there is a `vendor` directory inside the plugin folder as we have composer dependencies. You could
 do it yourself by running:
 
@@ -38,7 +38,7 @@ cd [shopware6 root folder]
 
 # this step is required only in case you do not already have this in the root composer.json specified
 composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
-composer require shopgate/connect-shopware6:^0.1
+composer require shopgate/webcheckout-shopware6:^0.1
 ```
 
 ## Enable & Activate
@@ -48,7 +48,7 @@ Install and activate the module:
 ```shell
 cd [shopware6 root folder]
 php bin/console plugin:refresh
-php bin/console plugin:install --activate ShopgateConnectSW6
+php bin/console plugin:install --activate SgateWebcheckoutSW6
 ```
 
 You may install and activate via the Shopware administration panel instead, if you prefer.

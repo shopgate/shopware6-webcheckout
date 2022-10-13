@@ -1,21 +1,21 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
-{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_connect_data %} is-sg-app{% endif %}{% endblock %}
+{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app{% endif %}{% endblock %}
 
 {% block base_body_script %}
     {{ parent() }}
 
-    {% set sgConnectOptions = sgConnectOptions|default({})|replace_recursive({
+    {% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
         controllerName: controllerName|lower,
         actionName: controllerAction|lower,
         env: app.environment
     }) %}
 
-    {% block sgconnect_plugin_init %}
+    {% block sgwebcheckout_plugin_init %}
 
-        {% if page.header.extensions.sg_connect_data %}
-            <template data-sg-connect-app-plugin
-                      data-sg-connect-app-plugin-options="{{ sgConnectOptions|json_encode }}"></template>
+        {% if page.header.extensions.sg_webcheckout_data %}
+            <template data-sg-webcheckout-app-plugin
+                      data-sg-webcheckout-app-plugin-options="{{ sgWebcheckoutOptions|json_encode }}"></template>
         {% endif %}
 
     {% endblock %}

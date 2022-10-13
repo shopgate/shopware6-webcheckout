@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6;
+namespace Shopgate\WebcheckoutSW6;
 
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
@@ -10,7 +10,7 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
 }
 
-class ShopgateConnectSW6 extends Plugin
+class SgateWebcheckoutSW6 extends Plugin
 {
     public function install(InstallContext $installContext): void
     {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Subscribers;
+namespace Shopgate\WebcheckoutSW6\Subscribers;
 
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Storefront\Event\ThemeCompilerConcatenatedStylesEvent;

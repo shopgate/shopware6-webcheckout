@@ -1,7 +1,7 @@
 import Plugin from 'src/plugin-system/plugin.class';
-import SGConnectEventManager from './event.manager';
+import SGWebcheckoutEventManager from './event.manager';
 
-export default class SgConnectAppPlugin extends Plugin {
+export default class SgWebcheckoutAppPlugin extends Plugin {
     options = {
         controllerName: null,
         actionName: null,
@@ -11,7 +11,7 @@ export default class SgConnectAppPlugin extends Plugin {
 
     init() {
         const {controllerName, actionName, properties, env} = this.options;
-        this.eventManager = new SGConnectEventManager(controllerName, actionName, properties, env);
+        this.eventManager = new SGWebcheckoutEventManager(controllerName, actionName, properties, env);
         this.initSGBridge();
 
         this.executeWithRetry(40, 3000, this.initShopgateApp.bind(this));

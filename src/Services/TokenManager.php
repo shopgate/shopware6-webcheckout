@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\ConnectSW6\Services;
+namespace Shopgate\WebcheckoutSW6\Services;
 
 use ReallySimpleJWT\Exception\BuildException;
-use Shopgate\ConnectSW6\Token\TokenBuilder;
+use Shopgate\WebcheckoutSW6\Token\TokenBuilder;
 
 class TokenManager
 {

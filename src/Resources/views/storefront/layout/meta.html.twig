@@ -2,7 +2,7 @@
 
 {% block layout_head_meta_tags_viewport %}
 
-    {% if page.header.extensions.sg_connect_data %}
+    {% if page.header.extensions.sg_webcheckout_data %}
         <meta name="viewport" content="user-scalable=no, width=device-width">
     {% else %}
         {{ parent() }}
@@ -14,7 +14,7 @@
 
     {{ parent() }}
 
-    {% if page.header.extensions.sg_connect_data %}
+    {% if page.header.extensions.sg_webcheckout_data %}
         <!--suppress HtmlUnknownAttribute -->
         <meta id="libshopgate" src="libshopgate"/>
     {% endif %}

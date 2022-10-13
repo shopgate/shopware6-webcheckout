@@ -2,7 +2,7 @@ import AbstractEvent from './abstract-event';
 
 export default class LoginEvent extends AbstractEvent {
     supports(controllerName, actionName) {
-        return controllerName === 'sgconnect' && actionName === 'registered';
+        return controllerName === 'sgwebcheckout' && actionName === 'registered';
     }
 
     /**
