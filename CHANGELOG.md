@@ -1,3 +1,7 @@
+# 1.0.0
+
+- Changed name from `Connect` to `Webcheckout` in preparation for public release
+
 # 0.3.2
 
 - Removed entity repository references as SW6 `SwagMarkets` is not ready for 6.5 yet
