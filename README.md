@@ -1,8 +1,10 @@
 # Shopgate Shopware6 Webcheckout
 
-## Install
+## Production Checklist
 
-### Packagist install (recommended)
+### Install
+
+#### Packagist install (recommended)
 
 If this plugin is available on `packagist.org` to install simply add the composer package to the shopware's root
 composer:
@@ -15,7 +17,7 @@ composer require shopgate/webcheckout-shopware6
 Afterwards just increment the plugin version inside `root/composer.json`, and run `composer update` to get the latest
 version.
 
-### Folder install
+#### Folder install
 
 It can be installed manually by copying the plugin folder to `custom/plugins` directory. Like
 so `custom/plugins/SgateWebcheckoutSW6`. Then you can install & enable like any other plugin. For this install method,
@@ -28,7 +30,7 @@ cd [plugin folder]
 composer remove shopware/core
 ```
 
-### Composer symlink
+#### Composer symlink
 
 Adjust the location of the previous step & place the plugin in the `static-plugins` folder. You can now link it to
 composer by running this command in the root directory:
@@ -41,9 +43,9 @@ composer config repositories.sym '{"type": "path", "url": "custom/static-plugins
 composer require shopgate/webcheckout-shopware6:^0.1
 ```
 
-## Enable & Activate
+### Enable & Activate
 
-Install and activate the module:
+Install and activate the module via command line:
 
 ```shell
 cd [shopware6 root folder]
@@ -53,31 +55,47 @@ php bin/console plugin:install --activate SgateWebcheckoutSW6
 
 You may install and activate via the Shopware administration panel instead, if you prefer.
 
-## Signature Secret
+### CSS Compilation
 
-The JWT library imposes strict `APP_SECRET` security rules as follows:
-
-* the secret must be at least 8 characters in length;
-* upper and/or lowercase letters;
-
-You can set a secure secret for your store by running this command in the console:
+After installation, and after every time you configure CSS in the `Admin > Extensions > Shopgate Webcheckout Config >
+Custom CSS` you will need to recompile your theme.
 
 ```shell
-bin/console secrets:set APP_SECRET --random
+bin/console theme:compile
 ```
 
-Check that a local value inside `.env` file is not rewriting you secret:
+### Signature Secret
+
+The App will be redirecting the customer to the checkout page or their account pages. In order to keep the login
+information secure we will need to encrypt the calls the App makes. Therefore, we need a secure password of sorts
+to encrypt this login data. Shopware 6 has a native security key that it uses for such cases, it's called
+an `APP_SECRET`.
+
+Firstly, you can check this value inside `[root]/.env` file. In development mode, it could be set to `APP_SECRET: 1`.
+Which will not work as that's a lousy secret, and is meant to be changed.
+
+If you do not see it there or want Shopware 6 to manage this data instead of leaving in a file.
+Then you can do the following to check the secret value:
 
 ```shell
 bin/console secrets:list --reveal
 ```
 
-You can find out more on the Symfony [doc pages](https://symfony.com/doc/5.4/configuration/secrets.html).
+If no value is set, you can set a secure secret for your store by running this command in the console:
 
-## Session extending
+```shell
+bin/console secrets:set APP_SECRET --random
+```
 
-A header `shopgate-check: 1` needs to be provided with the regular SW6 Storefront API call to extend the current
-session (in case it expired).
+Make sure you adhere to these minimum requirements when creating the secret key:
+
+* the secret must be at least 8 characters in length;
+* upper and/or lowercase letters are used;
+
+### Configurations
+
+- Currently, we do not support enabling `Settings  Login / Registration > Clear and delete cart on log out` setting. If
+  you must keep it enabled, you could create a separate Sales Channel for the Shopgate App to use.
 
 ## Development
 
@@ -100,7 +118,7 @@ document.cookie="sgWebView=0; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/; Sam
 If you need to work with CSS quicker, you can enable SW6's storefront-watch & update our CSS file
 `src/Resources/app/storefront/src/scss/base.scss`
 
-#### Example css handles
+#### Example CSS handles
 
 These are just examples, look at the body classes to see what page has what handles
 
@@ -120,3 +138,9 @@ body.is-ctl-register.is-act-accountregisterpage.is-sg-app {
     display: none;
 }
 ```
+
+### Session extending
+
+If you are creating a custom extension. A header `shopgate-check: 1` needs to be provided with the regular SW6
+Storefront API calls to extend the current customer session (in case it expired). This will make sure they don't get
+logged out too often.
