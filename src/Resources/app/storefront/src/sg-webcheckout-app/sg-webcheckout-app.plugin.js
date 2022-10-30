@@ -2,18 +2,22 @@ import Plugin from 'src/plugin-system/plugin.class';
 import SGWebcheckoutEventManager from './event.manager';
 
 export default class SgWebcheckoutAppPlugin extends Plugin {
+    /**
+     * @type {{isSgWebView: boolean, controllerName: ?string, env: ?string, properties: object, actionName: ?string}}
+     */
     options = {
         controllerName: null,
         actionName: null,
         properties: null,
-        env: null
+        env: null,
+        isSgWebView: false
     };
 
     init() {
-        const {controllerName, actionName, properties, env} = this.options;
+        const {controllerName, actionName, properties, env, isSgWebView} = this.options;
         this.eventManager = new SGWebcheckoutEventManager(controllerName, actionName, properties, env);
-        this.initSGBridge();
-
+        this.devMode = isSgWebView
+        this.initSGBridge(this.devMode)
         this.executeWithRetry(40, 3000, this.initShopgateApp.bind(this));
     }
 
@@ -57,7 +61,7 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
      */
     initShopgateApp() {
         /** @typedef {object} window.SGJavascriptBridge */
-        if (!window.SGJavascriptBridge) {
+        if (!window.SGJavascriptBridge && !this.devMode) {
             return false;
         }
 
@@ -73,7 +77,7 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
         return true;
     }
 
-    initSGBridge() {
+    initSGBridge(devMode) {
         window.SGAppConnector = {
             /**
              * Stores response callbacks and pass through params for pipeline calls
@@ -96,6 +100,9 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
              * @param {object[]} appCommands
              */
             sendAppCommands: function (appCommands) {
+                if (devMode) {
+                    console.log(JSON.stringify(appCommands));
+                }
                 const jsBridgeVersion = '12.0';
                 if ('dispatchCommandsForVersion' in window.SGJavascriptBridge) {
                     window.SGJavascriptBridge.dispatchCommandsForVersion(appCommands, jsBridgeVersion);

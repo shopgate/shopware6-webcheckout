@@ -1,11 +1,13 @@
 import AbstractEvent from './abstract-event';
 
 export default class CloseBrowserEvent extends AbstractEvent {
-    /**
-     * Supposedly we should not hit this route (we redirect) unless it's rendered as a 404 page
-     */
+
     supports(controllerName, actionName) {
-        return controllerName === 'sgwebcheckout' && actionName === 'login';
+        // Supposedly we should not hit this route (we redirect) unless it's rendered as a 404 page
+        const isLoginRoute = controllerName === 'sgwebcheckout' && actionName === 'login';
+        const isCartRoute = controllerName === 'checkout' && actionName === 'cartpage';
+
+        return isLoginRoute || isCartRoute;
     }
 
     /**

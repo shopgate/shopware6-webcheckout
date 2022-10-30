@@ -8,7 +8,8 @@
     {% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
         controllerName: controllerName|lower,
         actionName: controllerAction|lower,
-        env: app.environment
+        env: app.environment,
+        isSgWebView: app.request.cookies.get('sgWebView') === '1'
     }) %}
 
     {% block sgwebcheckout_plugin_init %}
