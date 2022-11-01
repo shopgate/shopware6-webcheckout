@@ -3,7 +3,12 @@ import LoginEvent from './events/login.event';
 import PurchaseEvent from './events/purchase.event';
 
 export default class SGWebcheckoutEventManager {
-
+    /**
+     * @param {?string} controllerName
+     * @param {?string} actionName
+     * @param {?object} properties
+     * @param {'production'|'dev'|null} env
+     */
     constructor(controllerName, actionName, properties, env) {
         this.controllerName = controllerName;
         this.actionName = actionName;

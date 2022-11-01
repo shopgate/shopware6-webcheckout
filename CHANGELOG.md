@@ -1,3 +1,7 @@
+# 1.1.0
+
+- Added a close inApp browser call when we hit the `cart` page
+
 # 1.0.0
 
 - Changed name from `Connect` to `Webcheckout` in preparation for public release
