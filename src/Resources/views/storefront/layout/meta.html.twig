@@ -9,14 +9,3 @@
     {% endif %}
 
 {% endblock %}
-
-{% block layout_head_meta_tags_general %}
-
-    {{ parent() }}
-
-    {% if page.header.extensions.sg_webcheckout_data %}
-        <!--suppress HtmlUnknownAttribute -->
-        <meta id="libshopgate" src="libshopgate"/>
-    {% endif %}
-
-{% endblock %}
