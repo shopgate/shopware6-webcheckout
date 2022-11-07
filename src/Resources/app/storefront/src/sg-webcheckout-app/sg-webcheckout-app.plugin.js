@@ -17,8 +17,29 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
         const {controllerName, actionName, properties, env, isSgWebView} = this.options;
         this.eventManager = new SGWebcheckoutEventManager(controllerName, actionName, properties, env);
         this.devMode = isSgWebView
+        this.enableShopgateAppEvents()
         this.initSGBridge(this.devMode)
         this.executeWithRetry(40, 3000, this.initShopgateApp.bind(this));
+    }
+
+    /**
+     * Inserts a "libshopgate" meta tag into the head of the page,
+     * to enable the Shopgate app event system.
+     */
+    enableShopgateAppEvents() {
+        // check if insertion is needed
+        const libshopgate = 'libshopgate'
+        if (document.getElementById(libshopgate)) {
+            return
+        }
+
+        // insert libshopgate as meta tag, to tell the Shopgate app to send events
+        // not using a script tag to avoid "src unavailable" errors in the browsers console
+        const metaTag = document.createElement('meta')
+        metaTag.setAttribute('id', libshopgate)
+        // add a "src" property (not an attribute, because of the iOS app not receiving it otherwise)
+        metaTag.src = libshopgate
+        document.getElementsByTagName('head').item(0).appendChild(metaTag)
     }
 
     /**

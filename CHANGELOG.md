@@ -1,3 +1,8 @@
+# 1.1.1
+
+- Changed how meta tag is injected to support Safari inApp browser on IOS devices
+- Removed previously added close inApp browser call after registration
+
 # 1.1.0
 
 - Added a close inApp browser call when we hit the `cart` page
