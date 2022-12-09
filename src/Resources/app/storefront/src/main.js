@@ -7,6 +7,6 @@ const PluginManager = window.PluginManager;
 PluginManager.register('SgWebcheckoutAppPlugin', SgWebcheckoutAppPlugin, '[data-sg-webcheckout-app-plugin]');
 
 // Necessary for the webpack hot module reloading server
-if (module && module.hot) {
+if (module.hot) {
     module.hot.accept();
 }

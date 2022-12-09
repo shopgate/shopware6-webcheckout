@@ -1,3 +1,7 @@
+# 1.1.1
+
+- Changed condition for webpack hot module reloading to avoid compatibility issues on production environment
+
 # 1.1.0
 
 - Added a close inApp browser call when we hit the `cart` page
