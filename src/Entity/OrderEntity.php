@@ -30,6 +30,7 @@ class OrderEntity extends Entity
     public function setShopwareOrderId(string $shopwareOrderId): self
     {
         $this->shopwareOrderId = $shopwareOrderId;
+
         return $this;
     }
 
@@ -40,6 +41,7 @@ class OrderEntity extends Entity
     public function setUserAgent(string $userAgent): self
     {
         $this->userAgent = $userAgent;
+
         return $this;
     }
 

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait ShopgateDetectTrait
 {
-
     /**
      * Helper logic for developers to enable "mobile" call
      * without needing the SG App. More in the README.md
