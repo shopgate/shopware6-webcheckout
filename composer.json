@@ -3,7 +3,7 @@
   "description": "Shopgate Webcheckout for Shopware 6",
   "license": "proprietary",
   "type": "shopware-platform-plugin",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "keywords": [
     "mobile",
     "app"

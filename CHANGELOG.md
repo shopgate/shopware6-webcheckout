@@ -1,3 +1,7 @@
+# 1.2.0
+
+- Added order table to save `User-Agent` when an order is created via Web Checkout
+
 # 1.1.1
 
 - Changed condition for webpack hot module reloading to avoid compatibility issues on production environment
