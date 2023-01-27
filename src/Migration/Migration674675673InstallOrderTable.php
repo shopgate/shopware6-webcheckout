@@ -6,7 +6,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Shopware\Core\Framework\Migration\MigrationStep;
 
-class Migration674675673InstallOrderTable extends MigrationStep {
+class Migration674675673InstallOrderTable extends MigrationStep
+{
 
     public function getCreationTimestamp(): int
     {
