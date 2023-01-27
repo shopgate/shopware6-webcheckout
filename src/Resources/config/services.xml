@@ -8,6 +8,12 @@
     </parameters>
     <services>
         <defaults autowire="true" autoconfigure="true"/>
+        <service id="Shopgate\WebcheckoutSW6\Entity\OrderDefinition">
+            <tag name="shopware.entity.definition" entity="shopgate_webc_order"/>
+        </service>
+        <service id="Shopgate\WebcheckoutSW6\Entity\OrderExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
         <service id="Shopgate\WebcheckoutSW6\Subscribers\SystemConfigSubscriber">
             <argument key="$cssConfigKey" type="string">%sg_webcheckout_config_css%</argument>
             <tag name="kernel.event_subscriber"/>
@@ -17,6 +23,10 @@
         </service>
         <service id="Shopgate\WebcheckoutSW6\Subscribers\SessionExtenderSubscriber">
             <argument key="$entityRepository" type="service" id="sales_channel.repository"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+        <service id="Shopgate\WebcheckoutSW6\Subscribers\WebCheckoutOrderSubscriber">
+            <argument key="$entityRepository" type="service" id="shopgate_webc_order.repository"/>
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="Shopgate\WebcheckoutSW6\Storefront\Controller\SGWebcheckoutController" public="true">
