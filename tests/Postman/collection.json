@@ -91,7 +91,7 @@
                   "pm.test(\"Check that context token session is extended\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.token).to.be.a('string');\r",
-                  "    pm.expect(jsonData.token).to.eq(pm.environment.get(\"gen_contextToken\"));\r",
+                  "    pm.expect(jsonData.token).to.eq(pm.environment.get(\"migration_user_contextToken\"));\r",
                   "    pm.expect(jsonData.customer,'Customer should be still logged in').to.haveOwnProperty('id');\r",
                   "});"
                 ],
@@ -193,6 +193,7 @@
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.token).to.be.a('string');\r",
                   "    pm.expect(jsonData.token).to.eq(pm.environment.get(\"migration_guest_contextToken\"));\r",
+                  "    pm.expect(jsonData.customer).to.eql(null);\r",
                   "});"
                 ],
                 "type": "text/javascript"
