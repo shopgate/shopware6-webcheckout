@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
@@ -103,62 +104,20 @@ class CustomerManager
      */
     public function extendCustomerTokenLife(string $token, string $channelId, ?string $customerId = null): void
     {
-        if (!$customerId) {
-            $customerPayload = $this->loadWithoutCustomerId($token, $channelId);
-        } else {
-            $customerPayload = $this->contextPersist->load($token, $channelId, $customerId);
+        $customerPayload = $this->contextPersist->load($token, $channelId, $customerId);
+        if ($customerPayload['expired'] ?? false) {
+            try {
+                $this->connection->executeStatement(
+                    'UPDATE `sales_channel_api_context`
+                       SET `updated_at` = :updatedAt
+                       WHERE `token` = :token',
+                    [
+                        'token' => $customerPayload['token'] ?? $token,
+                        'updatedAt' => (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+                    ]
+                );
+            } catch (\Doctrine\DBAL\Exception $e) {
+            }
         }
-
-        if ($customerPayload['expired'] ?? null) {
-            $newToken = $customerPayload['token'] ?? $token;
-            $newCustomerId = $customerId ?: $customerPayload['customerId'] ?? null;
-            $this->contextPersist->save(
-                $newToken,
-                ['expired' => false, 'customerId' => $newCustomerId, 'permissions' => []],
-                $channelId,
-                $newCustomerId
-            );
-        }
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     * @throws Exception
-     */
-    private function loadWithoutCustomerId(string $token, string $salesChannelId): array
-    {
-        $qb = $this->connection->createQueryBuilder();
-
-        $qb->select('*');
-        $qb->from('sales_channel_api_context');
-        $qb->where('sales_channel_id = :salesChannelId');
-        $qb->setParameter('salesChannelId', Uuid::fromHexToBytes($salesChannelId));
-        $qb->andWhere('token = :token');
-        $qb->setParameter('token', $token);
-        $qb->setMaxResults(1);
-
-        $data = $qb->executeQuery()->fetchAllAssociative();
-
-        if (empty($data)) {
-            return [];
-        }
-
-        $context = array_shift($data);
-        $updatedAt = new \DateTimeImmutable($context['updated_at']);
-        $expiredTime = $updatedAt->add(new \DateInterval('P1D'));
-
-        $payload = array_filter(json_decode($context['payload'], true));
-        $now = new \DateTimeImmutable();
-        if ($expiredTime < $now) {
-            // context is expired
-            $payload['expired'] = true;
-        } else {
-            $payload['expired'] = false;
-        }
-
-        $payload['token'] = $context['token'];
-
-        return $payload;
     }
 }
