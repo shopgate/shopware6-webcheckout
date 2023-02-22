@@ -1,3 +1,7 @@
+# 1.2.1
+
+- Fixed token extension for `getContext` store API call
+
 # 1.2.0
 
 - Added order table to save `User-Agent` when an order is created via Web Checkout
