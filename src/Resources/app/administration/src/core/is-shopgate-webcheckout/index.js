@@ -27,7 +27,7 @@ Shopware.Component.extend('is-shopgate-webcheckout', 'sw-condition-base', {
             },
             set(isShopgateWebcheckout) {
                 this.ensureValueExist();
-                this.condition.value = {...this.condition.value, isShopgateWebcheckout: isShopgateWebcheckout};
+                this.condition.value = {...this.condition.value, isShopgateWebcheckout};
             }
         }
     }

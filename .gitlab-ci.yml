@@ -41,7 +41,7 @@ workflow:
   cache:
     <<: *cache
   before_script:
-    - cp $CI_PROJECT_DIR/tests/assets/Migration1661693083TokenTestSamples.php $CI_PROJECT_DIR/src/Migration/
+    - cp $CI_PROJECT_DIR/tests/assets/Migration1661693083TokenTestSamples.php $CI_PROJECT_DIR/src/System/Db/Migration/
     - cd $PROJECT_ROOT
     - '[ -d $CI_PROJECT_DIR/.cache ] && mv $CI_PROJECT_DIR/.cache $PROJECT_ROOT/'
     - ln -fs $CI_PROJECT_DIR $PLUGIN_FOLDER

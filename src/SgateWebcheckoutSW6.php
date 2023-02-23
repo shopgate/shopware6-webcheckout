@@ -19,11 +19,19 @@ class SgateWebcheckoutSW6 extends Plugin
         /** @var SystemConfigService $configBridge */
         $configBridge = $this->container->get(SystemConfigService::class);
         $configBridge->set(Config::KEY_CSS, $this->getDefaultCss());
-    
+
         (new RuleInstaller($this->container))->install($installContext);
         (new RuleConditionInstaller($this->container))->install();
-    
+
         parent::install($installContext);
+    }
+
+    /**
+     * Where you should look for Migration database scripts
+     */
+    public function getMigrationNamespace(): string
+    {
+        return 'Shopgate\WebcheckoutSW6\System\Db\Migration';
     }
 
     private function getDefaultCss(): string
