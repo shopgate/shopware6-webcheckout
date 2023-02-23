@@ -3,12 +3,15 @@
 namespace Shopgate\WebcheckoutSW6\Services;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Connection;
 use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
+use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\PlatformRequest;
@@ -26,6 +29,7 @@ class CustomerManager
     private SalesChannelRequestContextResolver $contextResolver;
     private AbstractLogoutRoute $logoutRoute;
     private SalesChannelContextPersister $contextPersist;
+    private Connection $connection;
 
     public function __construct(
         SalesChannelContextRestorer $contextRestorer,
@@ -33,7 +37,8 @@ class CustomerManager
         EntityRepositoryInterface $customerRepository,
         SalesChannelContextPersister $contextPersist,
         SalesChannelRequestContextResolver $contextResolver,
-        AbstractLogoutRoute $logoutRoute
+        AbstractLogoutRoute $logoutRoute,
+        Connection $connection
     ) {
         $this->contextRestorer = $contextRestorer;
         $this->dispatcher = $dispatcher;
@@ -41,6 +46,7 @@ class CustomerManager
         $this->contextPersist = $contextPersist;
         $this->contextResolver = $contextResolver;
         $this->logoutRoute = $logoutRoute;
+        $this->connection = $connection;
     }
 
     public function loginByContextToken(
@@ -99,11 +105,19 @@ class CustomerManager
     public function extendCustomerTokenLife(string $token, string $channelId, ?string $customerId = null): void
     {
         $customerPayload = $this->contextPersist->load($token, $channelId, $customerId);
-
-        if ($customerPayload['expired'] ?? null) {
-            $newToken = $customerPayload['token'] ?? $token;
-            $newCustomerId = $customerId ?: $customerPayload['customerId'] ?? null;
-            $this->contextPersist->save($newToken, ['expired' => false], $channelId, $newCustomerId);
+        if ($customerPayload['expired'] ?? false) {
+            try {
+                $this->connection->executeStatement(
+                    'UPDATE `sales_channel_api_context`
+                       SET `updated_at` = :updatedAt
+                       WHERE `token` = :token',
+                    [
+                        'token' => $customerPayload['token'] ?? $token,
+                        'updatedAt' => (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+                    ]
+                );
+            } catch (\Doctrine\DBAL\Exception $e) {
+            }
         }
     }
 }
