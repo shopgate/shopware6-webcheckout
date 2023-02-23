@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Shopgate\WebcheckoutSW6\System\Db\Installers;
 
@@ -17,17 +16,11 @@ abstract class EntityInstaller
     /** @var EntityRepositoryInterface */
     protected $entityRepo;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->entityRepo = $container->get($this->entityName . '.repository');
     }
 
-    /**
-     * @param InstallContext $context
-     */
     public function install(InstallContext $context): void
     {
         foreach ($this->getEntities() as $method) {
@@ -45,10 +38,6 @@ abstract class EntityInstaller
         }, $this->entityInstallList);
     }
 
-    /**
-     * @param ClassCastInterface $entity
-     * @param Context $context
-     */
     protected function upsertEntity(ClassCastInterface $entity, Context $context): void
     {
         $data = $entity->toArray();
@@ -61,8 +50,6 @@ abstract class EntityInstaller
     }
 
     /**
-     * @param string $id
-     * @param Context $context
      * @return object|null
      */
     protected function findEntity(string $id, Context $context): ?object
@@ -70,19 +57,11 @@ abstract class EntityInstaller
         return $this->entityRepo->search(new Criteria([$id]), $context)->first();
     }
 
-    /**
-     * @param array $data
-     * @param Context $context
-     */
     protected function updateEntity(array $data, Context $context): void
     {
         $this->entityRepo->update([$data], $context);
     }
 
-    /**
-     * @param array $info
-     * @param Context $context
-     */
     protected function installEntity(array $info, Context $context): void
     {
         $this->entityRepo->create([$info], $context);

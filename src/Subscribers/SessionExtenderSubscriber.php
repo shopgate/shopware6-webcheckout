@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class SessionExtenderSubscriber implements EventSubscriberInterface
 {
-    protected const SHOPGATE_CHECK = 'shopgate-check';
+    public const SHOPGATE_CHECK = 'shopgate-check';
     private CustomerManager $customerManager;
     private EntityRepositoryInterface $entityRepository;
 

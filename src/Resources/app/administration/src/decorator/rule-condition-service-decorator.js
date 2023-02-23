@@ -1,4 +1,4 @@
-import '../core/component/is-shopgate';
+import '../core/component/is-shopgate-webcheckout';
 
 /* global Shopware */
 Shopware.Application.addServiceProviderDecorator('ruleConditionDataProviderService', (ruleConditionService) => {

@@ -46,6 +46,9 @@
             <argument key="$logoutRoute" type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
             <argument key="$customerRepository" type="service" id="customer.repository"/>
         </service>
+        <service id="Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleCondition">
+            <tag name="shopware.rule.definition"/>
+        </service>
         <service id="Shopgate\WebcheckoutSW6\Token\TokenBuilder"/>
     </services>
 </container>
