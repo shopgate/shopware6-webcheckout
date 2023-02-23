@@ -5,6 +5,8 @@ namespace Shopgate\WebcheckoutSW6;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -17,6 +19,11 @@ class SgateWebcheckoutSW6 extends Plugin
         /** @var SystemConfigService $configBridge */
         $configBridge = $this->container->get(SystemConfigService::class);
         $configBridge->set(Config::KEY_CSS, $this->getDefaultCss());
+    
+        (new RuleInstaller($this->container))->install($installContext);
+        (new RuleConditionInstaller($this->container))->install();
+    
+        parent::install($installContext);
     }
 
     private function getDefaultCss(): string

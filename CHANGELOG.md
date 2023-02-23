@@ -1,3 +1,7 @@
+# 1.3.0
+
+- Added Cart Rule Condition for Webcheckout only Discounts
+
 # 1.2.0
 
 - Added order table to save `User-Agent` when an order is created via Web Checkout
