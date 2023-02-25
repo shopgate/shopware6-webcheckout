@@ -16,7 +16,7 @@ variables:
   APP_DEBUG: '0'
   XDEBUG_ENABLED: '0'
   PHP_VERSION: '7.4'
-  PLATFORM_BRANCH: '6.4.19.0'
+  PLATFORM_BRANCH: '6.4.20.0'
   # things plugins might want to override
   PLUGIN_NAME: 'SgateWebcheckoutSW6'
   PLUGIN_FOLDER: $PROJECT_ROOT/custom/static-plugins/$PLUGIN_NAME
@@ -70,7 +70,7 @@ newman:
     matrix:
       - PLATFORM_BRANCH:
           - 6.4.8.0
-          - 6.4.19.0
+          - 6.4.20.0
       - PHP_VERSION:
           - '8.1'
   except:
