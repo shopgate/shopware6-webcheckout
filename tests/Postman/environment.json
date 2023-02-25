@@ -1,5 +1,5 @@
 {
-  "id": "a642838b-a64a-4f94-814a-af72e7fd64fd",
+  "id": "7ecaeecb-d8cd-42f4-a66c-6c56828dfe34",
   "name": "SW6 SG Webcheckout",
   "values": [
     {
@@ -38,13 +38,8 @@
       "enabled": true
     },
     {
-      "key": "userEmail",
-      "value": "test@example.com",
-      "enabled": true
-    },
-    {
-      "key": "userPass",
-      "value": "shopware",
+      "key": "sw_client_id",
+      "value": "administration",
       "enabled": true
     },
     {
@@ -58,8 +53,30 @@
       "enabled": true
     },
     {
-      "key": "sw_client_id",
-      "value": "administration",
+      "key": "userEmail",
+      "value": "test@example.com",
+      "enabled": true
+    },
+    {
+      "key": "userPass",
+      "value": "shopware",
+      "enabled": true
+    },
+    {
+      "key": "created_isSg_code_promo_code",
+      "value": "API-IS-SG-PROMO",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "created_isSg_code_promo_id",
+      "value": "07764394d1114d719643a5dd99e8f3f8",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "default_rule_isShopgateWebcheckout_id",
+      "value": "7d24818ee04546d797cb6fc1a604a777",
       "enabled": true
     },
     {
@@ -73,26 +90,9 @@
       "value": "dc03e666f44e4129a12f3b6ccdbaae27",
       "type": "default",
       "enabled": true
-    },
-    {
-      "key": "created_promotion_byCode_code",
-      "value": "API-PROMO-BY_CODE",
-      "type": "default",
-      "enabled": true
-    },
-    {
-      "key": "created_promotion_byCode_id",
-      "value": "a10923e207367d25ee81511ae40b473c",
-      "type": "default",
-      "enabled": true
-    },
-    {
-      "key": "default_rule_isShopgateWebcheckout_id",
-      "value": "7d24818ee04546d797cb6fc1a604a777",
-      "enabled": true
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2022-09-09T15:56:57.313Z",
-  "_postman_exported_using": "Postman/9.31.0"
+  "_postman_exported_at": "2023-02-25T20:58:44.818Z",
+  "_postman_exported_using": "Postman/10.10.9"
 }
