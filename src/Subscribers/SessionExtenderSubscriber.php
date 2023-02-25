@@ -12,7 +12,8 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class SessionExtenderSubscriber implements EventSubscriberInterface
 {
-    public const SHOPGATE_CHECK = 'shopgate-check';
+    use ShopgateDetectTrait;
+
     private CustomerManager $customerManager;
     private EntityRepositoryInterface $entityRepository;
 
@@ -33,9 +34,7 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
     public function handleSession(ControllerEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->headers->has(self::SHOPGATE_CHECK) ||
-            !$request->headers->has('sw-context-token') ||
-            !$request->headers->has('sw-access-key')) {
+        if (!$this->isShopgateApiCall($request)) {
             return;
         }
         // necessary evil because this event happens before argument resolving
