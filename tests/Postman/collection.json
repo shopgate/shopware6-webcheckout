@@ -13,7 +13,7 @@
           "name": "System",
           "item": [
             {
-              "name": "SW: get channel key",
+              "name": "SWA: get channel key",
               "event": [
                 {
                   "listen": "test",
@@ -91,7 +91,7 @@
           "name": "Rules",
           "item": [
             {
-              "name": "SW: get Rules",
+              "name": "SWA: check & get rules",
               "event": [
                 {
                   "listen": "test",
@@ -102,10 +102,16 @@
                       "});\r",
                       "\r",
                       "const jsonData = pm.response.json();\r",
-                      "pm.test(\"Is Shopgate WebCheckout rule\", function () {\r",
-                      "    const isShopgateWebcheckoutRule = getByName('Is Shopgate Webcheckout');\r",
+                      "pm.test(\"Is Shopgate Webchekout rule\", function () {\r",
+                      "    const isShopgateWebcheckoutRule = Utility.getByName(jsonData.data, 'Is Shopgate Webcheckout');\r",
                       "    pm.expect(isShopgateWebcheckoutRule).to.have.ownProperty('id');\r",
                       "    pm.expect(isShopgateWebcheckoutRule.id,'Is Shopgate Webcheckout rule has correct id').to.eql(pm.environment.get(\"default_rule_isShopgateWebcheckout_id\"));\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Cart >= 0 rule\", function () {\r",
+                      "    const cartRule = Utility.getByName(jsonData.data, 'Cart >= 0');\r",
+                      "    pm.expect(cartRule).to.have.ownProperty('id');\r",
+                      "    pm.environment.set(\"gen_rule_cartGreaterThan0_id\", cartRule.id);\r",
                       "});\r",
                       "\r",
                       "function getByName(name) {\r",
@@ -140,7 +146,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"filter\": [\r\n        {\r\n            \"type\": \"multi\",\r\n            \"operator\": \"or\",\r\n            \"queries\": [\r\n                {\r\n                    \"type\": \"equals\",\r\n                    \"field\": \"name\",\r\n                    \"value\": \"Is Shopgate Webcheckout\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+                  "raw": "{\r\n    \"filter\": [\r\n        {\r\n            \"type\": \"multi\",\r\n            \"operator\": \"or\",\r\n            \"queries\": [\r\n                {\r\n                    \"type\": \"equals\",\r\n                    \"field\": \"name\",\r\n                    \"value\": \"Is Shopgate Webcheckout\"\r\n                },\r\n                {\r\n                    \"type\": \"equals\",\r\n                    \"field\": \"name\",\r\n                    \"value\": \"Cart >= 0\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"includes\": {\r\n        \"rule\": [\r\n            \"id\",\r\n            \"name\"\r\n        ]\r\n    }\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -166,7 +172,7 @@
           "name": "Promo / Coupons",
           "item": [
             {
-              "name": "SWA: create isShopgate promo",
+              "name": "SWA: create isShoopgate promo",
               "event": [
                 {
                   "listen": "test",
@@ -260,6 +266,206 @@
                     "promotion-cart-rule"
                   ]
                 }
+              },
+              "response": []
+            },
+            {
+              "name": "SWA: check promo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Created entity successfully\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check condition applied to Promo\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.data).to.not.be.empty;\r",
+                      "    pm.expect(jsonData.data[0]).to.haveOwnProperty('id').to.eq(pm.environment.get('default_rule_isShopgateWebcheckout_id'));\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{gen_access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{sw_endpoint_api}}/promotion/:promoId/cartRules",
+                  "host": [
+                    "{{sw_endpoint_api}}"
+                  ],
+                  "path": [
+                    "promotion",
+                    ":promoId",
+                    "cartRules"
+                  ],
+                  "variable": [
+                    {
+                      "key": "promoId",
+                      "value": "{{created_isSg_code_promo_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Shipping",
+          "item": [
+            {
+              "name": "SWA: find all shipping",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const jsonData = pm.response.json();\r",
+                      "pm.test(\"Check express\", function () {\r",
+                      "    const express = Utility.getByName(jsonData.data, 'Express');\r",
+                      "    pm.expect(express, 'expected Express ship method to exist').to.not.be.undefined;\r",
+                      "    pm.environment.set(\"gen_shippingMethod_express\", express.id);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check standard\", function () {\r",
+                      "    const standard = Utility.getByName(jsonData.data, 'Standard');\r",
+                      "    pm.expect(standard, 'expected Standard ship method to exist').to.not.be.undefined;\r",
+                      "    pm.environment.set(\"gen_shippingMethod_standard\", standard.id);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{gen_access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"includes\": {\r\n        \"shipping_method\": [\r\n            \"id\",\r\n            \"name\"\r\n        ]\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{sw_endpoint_api}}/search/shipping-method",
+                  "host": [
+                    "{{sw_endpoint_api}}"
+                  ],
+                  "path": [
+                    "search",
+                    "shipping-method"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "SWA: update rule IDs",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// marked as temp because of ticket SGSW6-88\r",
+                      "pm.test(\"Successfully updated all entities with proper Rules\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disabledSystemHeaders": {
+                  "accept": true
+                }
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{gen_access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"update-shipping-method\": {\r\n        \"entity\": \"shipping_method\",\r\n        \"action\": \"upsert\",\r\n        \"payload\": [\r\n            {\r\n                \"id\": \"{{gen_shippingMethod_express}}\",\r\n                \"availabilityRuleId\": \"{{gen_rule_cartGreaterThan0_id}}\"\r\n            },\r\n            {\r\n                \"id\": \"{{gen_shippingMethod_standard}}\",\r\n                \"availabilityRuleId\": \"{{gen_rule_cartGreaterThan0_id}}\"\r\n            }\r\n        ]\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{sw_endpoint_api}}/_action/sync",
+                  "host": [
+                    "{{sw_endpoint_api}}"
+                  ],
+                  "path": [
+                    "_action",
+                    "sync"
+                  ]
+                },
+                "description": "Supposed to be a temp solution until Shopware fixes an issue with their rule assignment when installing sample data. Sometimes a shipping can be assigned a rule that renders in \"invalid\" during our tests."
               },
               "response": []
             }
@@ -7752,7 +7958,18 @@
           "        pm.environment.set('gen_refresh_token', responseJson.refresh_token);",
           "        console.log('Saved the token and expiry date');",
           "    });",
-          "}"
+          "}",
+          "",
+          "Utility = {};",
+          "// JSON handlers",
+          "Utility.getByLabel = (list, value) => getItemByKey(list, 'label', value);",
+          "Utility.getByName = (list, value) => getItemByKey(list, 'name', value);",
+          "Utility.getByCode = (list, value) => getItemByKey(list, 'code', value);",
+          "Utility.getById = (list, value, strict = true) => getItemByKey(list, 'id', value, strict);",
+          "Utility.getByItemNumber = (list, value) => getItemByKey(list, 'item_number', value);",
+          "function getItemByKey(list, key, value, strict = true) {",
+          "    return list.find(item => strict ? item[key] === value : item[key].includes(value));",
+          "};"
         ]
       }
     },
