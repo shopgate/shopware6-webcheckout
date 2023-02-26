@@ -4336,6 +4336,51 @@
           "name": "Is Shopgate rule",
           "item": [
             {
+              "name": "unset front session",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                      "const jar = pm.cookies.jar();\r",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});\r",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{sw_endpoint_frontend}}",
+                  "host": [
+                    "{{sw_endpoint_frontend}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "SWS: Fetch the current context",
               "event": [
                 {
@@ -4852,6 +4897,51 @@
                   "body": "<!DOCTYPE html>\n<html lang=\"en-GB\"\n      itemscope=\"itemscope\"\n      itemtype=\"https://schema.org/WebPage\">\n    <head>\n    </head>\n    <body class=\"is-ctl-checkout is-act-confirmpage\">\n        <header class=\"header-minimal\">\n        </header>\n        <main class=\"content-main\">\n            <div class=\"container\">\n                <div class=\"container-main\">\n                    <div class=\"checkout\">\n                        <div class=\"checkout-container\">\n                            <div class=\"checkout-main\">\n                                 <h1 class=\"confirm-main-header\">Complete order </h1>\n                                <div class=\"d-none hidden-line-items-information\"\n         data-currency=\"EUR\"\n         data-shipping=\"5.5\"\n         data-value=\"1493.35\"\n         data-tax=\"238.44\"\n    >\n                                    <span class=\"hidden-line-item\"\n                      data-id=\"5c5ad48ee35a441d8057ae7433f840a2\"\n                      data-name=\"Main product\"\n                      data-quantity=\"3\"\n                      data-price=\"495.95\">\n                </span>\n                                </div>\n                            </div>\n                            <div class=\"checkout-aside \">\n                                <div class=\"checkout-aside-container\">\n                                    <div class=\"checkout-aside-summary\">\n                                        <h2 class=\"checkout-aside-summary-header\">\n                                                    Summary\n                                                </h2>\n                                        <div class=\"checkout-aside-summary-list-container\">\n                                            <div class=\"checkout-aside-summary-container\">\n                                                <dl class=\"row checkout-aside-summary-list no-gutters \">\n                                                    <dt class=\"col-7 checkout-aside-summary-label\">\n            Total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value\">\n            €1,487.85*\n        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label\">\n                    Shipping costs\n                </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value\">\n                    €5.50*\n                </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label checkout-aside-summary-total\">\n            Grand total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value checkout-aside-summary-total\">\n            €1,493.35*        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label summary-net\">\n            Net total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value summary-net\">\n            €1,254.91\n        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label summary-tax\">\n                    plus 19% VAT\n                </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value summary-tax\">\n                    €238.44\n                </dd>\n                                                </dl>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"checkout-aside-action\">\n                                        <form id=\"confirmOrderForm\"\n              action=\"/checkout/order\"\n              data-form-csrf-handler=\"true\"\n              data-form-preserver=\"true\"\n              data-form-submit-loader=\"true\"\n              method=\"post\">\n                                            <input type=\"hidden\" name=\"_csrf_token\" value=\"965.YpHY3rFSoHnWYiHlt25UP_e-MkKxcTyePWxI-LC3Nfk.Mua9jsIx0DuOOn6J1RcfRbLpAXaEElrGECAPgtHQVsEE54nm4SjCTrhbEQ\">\n                                            <button id=\"confirmFormSubmit\"\n                        class=\"btn btn-primary btn-block btn-lg\"\n                        form=\"confirmOrderForm\"\n                                            type=\"submit\">\n                    Submit order\n                </button>\n                                        </form>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </main>\n        <footer class=\"footer-minimal\">\n        </footer>\n</body>\n</html>"
                 }
               ]
+            },
+            {
+              "name": "unset front session",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                      "const jar = pm.cookies.jar();\r",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});\r",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{sw_endpoint_frontend}}",
+                  "host": [
+                    "{{sw_endpoint_frontend}}"
+                  ]
+                }
+              },
+              "response": []
             }
           ],
           "description": "Any tests related to Is Shopgate WebC check"
