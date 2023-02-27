@@ -5,6 +5,8 @@ namespace Shopgate\WebcheckoutSW6;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -12,11 +14,26 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 
 class SgateWebcheckoutSW6 extends Plugin
 {
+    public const IS_SHOPGATE_CHECK = 'shopgate-check';
+
     public function install(InstallContext $installContext): void
     {
         /** @var SystemConfigService $configBridge */
         $configBridge = $this->container->get(SystemConfigService::class);
         $configBridge->set(Config::KEY_CSS, $this->getDefaultCss());
+
+        (new RuleInstaller($this->container))->install($installContext);
+        (new RuleConditionInstaller($this->container))->install();
+
+        parent::install($installContext);
+    }
+
+    /**
+     * Where you should look for Migration database scripts
+     */
+    public function getMigrationNamespace(): string
+    {
+        return 'Shopgate\WebcheckoutSW6\System\Db\Migration';
     }
 
     private function getDefaultCss(): string

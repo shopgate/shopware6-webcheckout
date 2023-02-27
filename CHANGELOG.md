@@ -1,5 +1,6 @@
-# 1.2.1
+# 1.3.0
 
+- Added Cart Rule Condition for Webcheckout only Discounts
 - Fixed token extension for `getContext` store API call
 
 # 1.2.0

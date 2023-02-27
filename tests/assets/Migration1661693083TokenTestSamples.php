@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopgate\WebcheckoutSW6\Migration;
+namespace Shopgate\WebcheckoutSW6\System\Db\Migration;
 
 use DateTime;
 use Doctrine\DBAL\Connection;
