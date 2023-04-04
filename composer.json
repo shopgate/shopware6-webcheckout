@@ -16,7 +16,8 @@
   ],
   "require": {
     "shopware/core": "^6.4.4",
-    "rbdwllr/reallysimplejwt": "^4.0.3"
+    "rbdwllr/reallysimplejwt": "^4.0.3",
+    "jakeasmith/http_build_url": "^1.0.1"
   },
   "extra": {
     "shopware-plugin-class": "Shopgate\\WebcheckoutSW6\\SgateWebcheckoutSW6",

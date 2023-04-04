@@ -14,7 +14,7 @@ cd [shopware6 root folder]
 composer require shopgate/webcheckout-shopware6
 ```
 
-Afterwards just increment the plugin version inside `root/composer.json`, and run `composer update` to get the latest
+Afterward just increment the plugin version inside `root/composer.json`, and run `composer update` to get the latest
 version.
 
 #### Folder install
