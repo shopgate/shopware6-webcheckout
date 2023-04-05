@@ -46,18 +46,26 @@ class SGWebcheckoutController extends StorefrontController
      * We could have a state where the customer is loggedOut of the App,
      * but loggedIn the inApp browser. If a customer decides to register
      * again we log them out first, and redirect them to the registration page.
+     * SW6 allows the user to check out as guest, but that is only possible
+     * when they are checking out & therefore directed to a special registry page.
      *
      * @Route("/sgwebcheckout/register", name="frontend.sgwebcheckout.register", methods={"GET"})
      */
     public function register(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
     {
+        // identifies the registration call coming from App's checkout page
+        $isCheckout = $request->get('sgcloud_checkout') === '1';
         $parameters = array_merge(
-            ['redirectTo' => 'frontend.sgwebcheckout.registered'],
+            $isCheckout ? [] : ['redirectTo' => 'frontend.sgwebcheckout.registered'],
             $request->query->all()
         );
-        // no need to check for guest as we need to log them out as well
+
+        // no need to check for guest here as we need to log out the "guest customer" as well
         if ($context->getCustomer() === null) {
-            return $this->redirectToRoute('frontend.account.login.page', $parameters);
+            // redirect to checkouts' registration where the user has the option to select guest checkout
+            $registerRoute = $isCheckout ? 'frontend.checkout.register.page' : 'frontend.account.login.page';
+
+            return $this->redirectToRoute($registerRoute, $parameters);
         }
         $violations = $this->customerManager->logoutCustomer($context, $dataBag);
 
@@ -85,7 +93,7 @@ class SGWebcheckoutController extends StorefrontController
 
     /**
      * Note that an error is not shown to the customer of the App in case the token
-     * is not good anymore. They are just redirect back to App.
+     * is not good anymore. They are just redirected back to App.
      *
      * @Route("/sgwebcheckout/login", name="frontend.sgwebcheckout.login", methods={"GET"})
      */
@@ -100,7 +108,7 @@ class SGWebcheckoutController extends StorefrontController
             ]);
         }
         if ($context->getCustomer()) {
-            // if not t log out, then context token can change. Which de-sync's /w App context token.
+            // if we don't log out, then context token can change. Which de-sync's /w App context token.
             $this->customerManager->logoutCustomer($context, $dataBag);
         }
 
@@ -145,8 +153,12 @@ class SGWebcheckoutController extends StorefrontController
     private function getRedirect(Request $request): RedirectResponse
     {
         $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
+        $isCheckout = $request->get('sgcloud_checkout', '0');
+
         return $this->redirect(
-            strpos($redirectPage, 'http') === false ? $this->generateUrl($redirectPage) : $redirectPage
+            strpos($redirectPage, 'http') === false
+                ? $this->generateUrl($redirectPage)
+                : http_build_url($redirectPage, ['query' => 'sgcloud_checkout=' . $isCheckout], HTTP_URL_JOIN_QUERY)
         );
     }
 }

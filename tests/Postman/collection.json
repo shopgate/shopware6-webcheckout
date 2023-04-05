@@ -3740,6 +3740,673 @@
       ]
     },
     {
+      "name": "Registration",
+      "item": [
+        {
+          "name": "Checkout",
+          "item": [
+            {
+              "name": "Guest",
+              "item": [
+                {
+                  "name": "Log out a customer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "sw-context-token",
+                        "value": "{{gen_contextToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{sw_store_api}}/account/logout",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "account",
+                        "logout"
+                      ]
+                    },
+                    "description": "Logs out a customer."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Fetch the current context",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Save context token\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.token).to.be.a('string');\r",
+                          "    pm.environment.set(\"gen_contextToken\", jsonData.token);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{sw_store_api}}/context",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "context"
+                      ]
+                    },
+                    "description": "Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Add items to the cart",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {",
+                          "    pm.response.to.have.status(200);",
+                          "});",
+                          "",
+                          "pm.test(\"has 1 item\", function () {",
+                          "    var jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.lineItems).to.be.lengthOf(1);",
+                          "    pm.expect(jsonData.lineItems[0]).to.haveOwnProperty('quantity').to.eq(2);",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "sw-context-token",
+                        "value": "{{gen_contextToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n \"items\": [\n    {\n        \"id\": \"16d5986a83da4a92b6ec1f11a5a0874e\",\n        \"referencedId\": \"2a88d9b59d474c7e869d8071649be43c\",\n        \"quantity\": 2,\n        \"type\": \"product\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{sw_store_api}}/checkout/cart/line-item",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "checkout",
+                        "cart",
+                        "line-item"
+                      ]
+                    },
+                    "description": "This route adds items to the cart. An item can be a product or promotion for example. They are referenced by the `referencedId`-parameter.\n\nExample: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#adding-new-items-to-the-cart)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "get sg login token",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Has token\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.token).to.be.a('string')\r",
+                          "    pm.environment.set(\"gen_login_token\", jsonData.token);\r",
+                          "    pm.expect(jsonData.expiration).to.be.a('number');\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "sw-context-token",
+                        "value": "{{gen_contextToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "sgwebcheckout",
+                        "login",
+                        "token"
+                      ]
+                    },
+                    "description": "Fetches a list of compressed sitemap files, which are often used by search engines."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Frontend login",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "// Load the HTML response to $\r",
+                          "const $ = cheerio.load(pm.response.text());\r",
+                          "\r",
+                          "pm.test(\"Check we redirected to register cart page\", function () {\r",
+                          "    const bodyClass = $('.is-ctl-register.is-act-checkoutregisterpage')\r",
+                          "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const endpoint = pm.globals.replaceIn(pm.environment.replaceIn(pm.environment.get(\"sw_endpoint_frontend\")));\r",
+                          "const encodedUrl = encodeURIComponent(endpoint + '/sgwebcheckout/register');\r",
+                          "console.log(encodedUrl)\r",
+                          "pm.variables.set('redirect', encodedUrl);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?redirectTo={{redirect}}&sgcloud_checkout=1&token={{gen_login_token}}",
+                      "host": [
+                        "{{sw_endpoint_frontend}}"
+                      ],
+                      "path": [
+                        "sgwebcheckout",
+                        "login"
+                      ],
+                      "query": [
+                        {
+                          "key": "redirectTo",
+                          "value": "{{redirect}}"
+                        },
+                        {
+                          "key": "sgcloud_checkout",
+                          "value": "1"
+                        },
+                        {
+                          "key": "token",
+                          "value": "{{gen_login_token}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "unset front session",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                          "const jar = pm.cookies.jar();\r",
+                          "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                          "    if (error) {\r",
+                          "        console.log(error.message)\r",
+                          "    }\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{sw_endpoint_frontend}}",
+                      "host": [
+                        "{{sw_endpoint_frontend}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Customer",
+              "item": [
+                {
+                  "name": "Log in a customer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Save context token\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
+                          "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "sw-context-token",
+                        "value": "{{gen_contextToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"username\": \"{{userEmail}}\",\n  \"password\": \"{{userPass}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{sw_store_api}}/account/login",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "account",
+                        "login"
+                      ]
+                    },
+                    "description": "Logs in customers given their credentials."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "get sg login token",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Has token\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.token).to.be.a('string')\r",
+                          "    pm.environment.set(\"gen_login_token\", jsonData.token);\r",
+                          "    pm.expect(jsonData.expiration).to.be.a('number');\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "value",
+                          "value": "{{gen_accessKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "key",
+                          "value": "sw-access-key",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) Content type of the request",
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "(Required) Accepted response content types",
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "sw-context-token",
+                        "value": "{{gen_contextToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
+                      "host": [
+                        "{{sw_store_api}}"
+                      ],
+                      "path": [
+                        "sgwebcheckout",
+                        "login",
+                        "token"
+                      ]
+                    },
+                    "description": "Fetches a list of compressed sitemap files, which are often used by search engines."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Frontend login",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "// Load the HTML response to $\r",
+                          "const $ = cheerio.load(pm.response.text());\r",
+                          "\r",
+                          "pm.test(\"Check we redirected to regular registration page as we are logged out\", function () {\r",
+                          "    const bodyClass = $('.is-ctl-auth.is-act-loginpage');\r",
+                          "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const endpoint = pm.globals.replaceIn(pm.environment.replaceIn(pm.environment.get(\"sw_endpoint_frontend\")));\r",
+                          "const encodedUrl = encodeURIComponent(endpoint + '/sgwebcheckout/register');\r",
+                          "pm.variables.set('redirect', encodedUrl);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?redirectTo={{redirect}}&sgcloud_checkout=1&token={{gen_login_token}}",
+                      "host": [
+                        "{{sw_endpoint_frontend}}"
+                      ],
+                      "path": [
+                        "sgwebcheckout",
+                        "login"
+                      ],
+                      "query": [
+                        {
+                          "key": "redirectTo",
+                          "value": "{{redirect}}"
+                        },
+                        {
+                          "key": "sgcloud_checkout",
+                          "value": "1"
+                        },
+                        {
+                          "key": "token",
+                          "value": "{{gen_login_token}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "unset front session",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                          "const jar = pm.cookies.jar();\r",
+                          "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                          "    if (error) {\r",
+                          "        console.log(error.message)\r",
+                          "    }\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{sw_endpoint_frontend}}",
+                      "host": [
+                        "{{sw_endpoint_frontend}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ],
+          "description": "Checks if the user is redirected to the proper registration page (see [SG-170](https://apite.atlassian.net/browse/SG-170))"
+        }
+      ]
+    },
+    {
       "name": "Invalid token",
       "item": [
         {

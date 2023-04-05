@@ -1,3 +1,7 @@
+# 1.4.0
+
+- Added support for guest checkout
+
 # 1.3.0
 
 - Added Cart Rule Condition for Webcheckout only Discounts
