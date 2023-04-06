@@ -2,10 +2,10 @@
 
 namespace Shopgate\WebcheckoutSW6\Subscribers;
 
+use Shopware\Core\Checkout\Order\SalesChannel\OrderService;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Shopware\Storefront\Pagelet\Header\HeaderPageletLoadedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IsShopgateSubscriber implements EventSubscriberInterface
@@ -20,17 +20,18 @@ class IsShopgateSubscriber implements EventSubscriberInterface
     {
         return [
             HeaderPageletLoadedEvent::class => ['addPageData', 30],
-            ControllerEvent::class => [['addIsShopgate', 40], ['checkShopgateApiCall', 50]]
+            ControllerEvent::class => [['addTrackers', 40], ['checkShopgateApiCall', 50]]
         ];
     }
 
-    public function addIsShopgate(ControllerEvent $event): void
+    public function addTrackers(ControllerEvent $event): void
     {
         if (!$this->isShopgate($event->getRequest())) {
             return;
         }
         $event->getRequest()->getSession()->set(self::SG_SESSION_KEY, 1);
-        define(self::IS_WEBCHECKOUT, true);
+        $event->getRequest()->getSession()->set(OrderService::AFFILIATE_CODE_KEY, 'SGConnect_App');
+        defined(self::IS_WEBCHECKOUT) || define(self::IS_WEBCHECKOUT, true);
     }
 
     public function addPageData(HeaderPageletLoadedEvent $event)
@@ -45,7 +46,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
     {
         $isWebcheckoutCall = strpos($event->getRequest()->getPathInfo(), 'api/sgwebcheckout') !== false;
         if ($isWebcheckoutCall || $this->isShopgateApiCall($event->getRequest())) {
-            define(self::IS_API_CALL, true);
+            defined(self::IS_API_CALL) || define(self::IS_API_CALL, true);
         }
     }
 }

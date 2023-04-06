@@ -9,7 +9,10 @@
         controllerName: controllerName|lower,
         actionName: controllerAction|lower,
         env: app.environment,
-        isSgWebView: app.request.cookies.get('sgWebView') === '1'
+        isSgWebView: app.request.cookies.get('sgWebView') === '1',
+        properties: {
+            referer: app.request.headers.get('referer', '')|sw_sanitize
+        }
     }) %}
 
     {% block sgwebcheckout_plugin_init %}

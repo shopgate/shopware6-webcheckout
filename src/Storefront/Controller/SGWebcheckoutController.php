@@ -8,6 +8,7 @@ use ReallySimpleJWT\Exception\BuildException;
 use Shopgate\WebcheckoutSW6\Services\CustomerManager;
 use Shopgate\WebcheckoutSW6\Services\TokenManager;
 use Shopgate\WebcheckoutSW6\Storefront\Page\GenericPageLoader;
+use Shopware\Core\Checkout\Order\SalesChannel\OrderService;
 use Shopware\Core\Framework\Routing\Annotation\ContextTokenRequired;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -154,11 +155,12 @@ class SGWebcheckoutController extends StorefrontController
     {
         $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
         $isCheckout = $request->get('sgcloud_checkout', '0');
+        $query = http_build_query(['sgcloud_checkout' => $isCheckout]);
 
         return $this->redirect(
             strpos($redirectPage, 'http') === false
                 ? $this->generateUrl($redirectPage)
-                : http_build_url($redirectPage, ['query' => 'sgcloud_checkout=' . $isCheckout], HTTP_URL_JOIN_QUERY)
+                : http_build_url($redirectPage, ['query' => $query], HTTP_URL_JOIN_QUERY)
         );
     }
 }

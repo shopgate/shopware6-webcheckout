@@ -1,6 +1,7 @@
 # 1.4.0
 
 - Added support for guest checkout
+- Fixed issues with internal globals being already defined
 
 # 1.3.0
 
