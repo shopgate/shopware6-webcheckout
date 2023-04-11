@@ -12,9 +12,10 @@ export default class AbstractEvent {
     /**
      * @param {string} controllerName
      * @param {string} actionName
+     * @param {?SGWebcheckout.properties} properties
      * @returns {boolean}
      */
-    supports(controllerName, actionName) {
+    supports(controllerName, actionName, properties) {
         console.warn(`[${this.pluginName}] Method \'supports\' was not overridden by "` + this.constructor.name + '". Default return set to false.');
         return false;
     }

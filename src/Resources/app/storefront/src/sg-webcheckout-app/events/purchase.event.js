@@ -1,7 +1,7 @@
 import AbstractEvent from './abstract-event';
 
 export default class PurchaseEvent extends AbstractEvent {
-    supports(controllerName, actionName) {
+    supports(controllerName, actionName, properties) {
         return controllerName === 'checkout' && actionName === 'finishpage';
     }
 

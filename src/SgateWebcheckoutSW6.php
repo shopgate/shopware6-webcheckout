@@ -55,7 +55,8 @@ class SgateWebcheckoutSW6 extends Plugin
   .header-actions-col,
   .nav-main,
   .scroll-up-container,
-  .footer-main {
+  .footer-main,
+  .footer-minimal {
     display: none;
   }
 
@@ -95,9 +96,12 @@ class SgateWebcheckoutSW6 extends Plugin
 /**
  * Checkout / Finish pages
  */
+.is-ctl-register.is-act-checkoutregisterpage.is-sg-app,
 .is-ctl-checkout.is-act-finishpage.is-sg-app,
 .is-ctl-checkout.is-act-confirmpage.is-sg-app {
-  .header-minimal-back-to-shop {
+
+  .header-minimal-back-to-shop,
+  .register-login-collapse-toogle {
     display: none;
   }
 

@@ -4,9 +4,9 @@ import PurchaseEvent from './events/purchase.event';
 
 export default class SGWebcheckoutEventManager {
     /**
-     * @param {?string} controllerName
-     * @param {?string} actionName
-     * @param {?object} properties
+     * @param {string} controllerName
+     * @param {string} actionName
+     * @param {?SGWebcheckout.properties} properties
      * @param {'production'|'dev'|null} env
      */
     constructor(controllerName, actionName, properties, env) {
@@ -35,7 +35,7 @@ export default class SGWebcheckoutEventManager {
 
     executeEvents() {
         this.events.forEach(event => {
-            if (!event.supports(this.controllerName, this.actionName) || !event.active) {
+            if (!event.supports(this.controllerName, this.actionName, this.properties) || !event.active) {
                 return;
             }
             event.log('Executing event > ' + event.constructor.name);
