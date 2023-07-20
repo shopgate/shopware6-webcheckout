@@ -2,7 +2,6 @@
 
 namespace Shopgate\WebcheckoutSW6\Token;
 
-
 use ReallySimpleJWT\Encoders\EncodeHS256;
 use ReallySimpleJWT\Exception\EncodeException;
 

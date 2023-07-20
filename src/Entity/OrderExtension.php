@@ -9,7 +9,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
 class OrderExtension extends EntityExtension
 {
-    public const PROPERTY = 'shopgateWebcOrder';
+    public final const PROPERTY = 'shopgateWebcOrder';
 
     public function extendFields(FieldCollection $collection): void
     {

@@ -12,13 +12,8 @@ class WebCheckoutOrderSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    private EntityRepository $entityRepository;
-    private RequestStack $stack;
-
-    public function __construct(RequestStack $stack, EntityRepository $entityRepository)
+    public function __construct(private readonly RequestStack $stack, private readonly EntityRepository $entityRepository)
     {
-        $this->entityRepository = $entityRepository;
-        $this->stack = $stack;
     }
 
     public static function getSubscribedEvents(): array

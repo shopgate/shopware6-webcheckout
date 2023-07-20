@@ -8,20 +8,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SystemConfigSubscriber implements EventSubscriberInterface
 {
-    private SystemConfigService $configService;
-    private string $configKey;
 
-    public function __construct(SystemConfigService $configService, string $cssConfigKey)
+    public function __construct(private readonly SystemConfigService $configService, private readonly string $configKey)
     {
-        $this->configService = $configService;
-        $this->configKey = $cssConfigKey;
     }
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            ThemeCompilerConcatenatedStylesEvent::class => 'addCssToCompiler'
-        ];
+        return [ThemeCompilerConcatenatedStylesEvent::class => 'addCssToCompiler'];
     }
 
     public function addCssToCompiler(ThemeCompilerConcatenatedStylesEvent $event): void

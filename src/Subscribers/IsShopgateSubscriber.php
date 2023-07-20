@@ -12,9 +12,9 @@ class IsShopgateSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    public const IS_WEBCHECKOUT = 'IS_SHOPGATE_WEBCHECKOUT';
-    public const IS_API_CALL = 'IS_SHOPGATE_API_CALL';
-    public const SG_SESSION_KEY = 'sgWebView';
+    public final const IS_WEBCHECKOUT = 'IS_SHOPGATE_WEBCHECKOUT';
+    public final const IS_API_CALL = 'IS_SHOPGATE_API_CALL';
+    public final const SG_SESSION_KEY = 'sgWebView';
 
     public static function getSubscribedEvents(): array
     {

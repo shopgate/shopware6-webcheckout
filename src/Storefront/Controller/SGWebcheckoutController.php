@@ -21,21 +21,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class SGWebcheckoutController extends StorefrontController
 {
-    private GenericPageLoader $genericPageLoader;
-    private TokenManager $tokenManager;
-    private LoggerInterface $logger;
-    private CustomerManager $customerManager;
 
     public function __construct(
-        GenericPageLoader $genericPageLoader,
-        CustomerManager $customerManager,
-        LoggerInterface $logger,
-        TokenManager $tokenManager
+        private readonly GenericPageLoader $genericPageLoader,
+        private readonly CustomerManager   $customerManager,
+        private readonly LoggerInterface   $logger,
+        private readonly TokenManager $tokenManager
     ) {
-        $this->genericPageLoader = $genericPageLoader;
-        $this->tokenManager = $tokenManager;
-        $this->logger = $logger;
-        $this->customerManager = $customerManager;
     }
 
     #[Route(path: '/sgwebcheckout/register', name: 'frontend.sgwebcheckout.register', methods: ['GET'])]

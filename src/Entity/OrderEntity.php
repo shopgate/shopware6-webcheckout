@@ -15,18 +15,11 @@ class OrderEntity extends Entity
     public string $shopwareOrderId;
     public string $userAgent;
 
-    /**
-     * @return string
-     */
     public function getShopwareOrderId(): string
     {
         return $this->shopwareOrderId;
     }
 
-    /**
-     * @param string $shopwareOrderId
-     * @return self
-     */
     public function setShopwareOrderId(string $shopwareOrderId): self
     {
         $this->shopwareOrderId = $shopwareOrderId;
@@ -34,10 +27,6 @@ class OrderEntity extends Entity
         return $this;
     }
 
-    /**
-     * @param string $userAgent
-     * @return $this
-     */
     public function setUserAgent(string $userAgent): self
     {
         $this->userAgent = $userAgent;
@@ -45,9 +34,6 @@ class OrderEntity extends Entity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUserAgent(): string
     {
         return $this->userAgent;

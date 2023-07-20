@@ -9,13 +9,9 @@ use Shopgate\WebcheckoutSW6\Token\TokenBuilder;
 
 class TokenManager
 {
-    private string $secret;
-    private TokenBuilder $tokens;
 
-    public function __construct(TokenBuilder $tokens, string $secret)
+    public function __construct(private readonly TokenBuilder $tokens, private readonly string $secret)
     {
-        $this->secret = $secret;
-        $this->tokens = $tokens;
     }
 
     public function validateToken(string $token): bool

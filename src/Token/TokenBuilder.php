@@ -3,13 +3,10 @@
 namespace Shopgate\WebcheckoutSW6\Token;
 
 use ReallySimpleJWT\Build;
-use ReallySimpleJWT\Decode;
 use ReallySimpleJWT\Exception\BuildException;
 use ReallySimpleJWT\Exception\EncodeException;
-use ReallySimpleJWT\Exception\JwtException;
 use ReallySimpleJWT\Helper\Validator;
 use ReallySimpleJWT\Jwt;
-use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Tokens;
 
 class TokenBuilder extends Tokens

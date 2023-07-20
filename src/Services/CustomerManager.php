@@ -22,31 +22,17 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CustomerManager
 {
-    private CartRestorer $cartRestorer;
-    private EventDispatcherInterface $dispatcher;
-    private EntityRepository $customerRepository;
-    private SalesChannelRequestContextResolver $contextResolver;
-    private AbstractLogoutRoute $logoutRoute;
-    private SalesChannelContextPersister $contextPersist;
-    private Connection $connection;
 
     public function __construct(
-        CartRestorer                       $cartRestorer,
-        EventDispatcherInterface           $dispatcher,
-        EntityRepository                   $customerRepository,
-        SalesChannelContextPersister       $contextPersist,
-        SalesChannelRequestContextResolver $contextResolver,
-        AbstractLogoutRoute                $logoutRoute,
-        Connection                         $connection
+        private readonly CartRestorer                       $cartRestorer,
+        private readonly EventDispatcherInterface           $dispatcher,
+        private readonly EntityRepository                   $customerRepository,
+        private readonly SalesChannelContextPersister       $contextPersist,
+        private readonly SalesChannelRequestContextResolver $contextResolver,
+        private readonly AbstractLogoutRoute                $logoutRoute,
+        private readonly Connection                         $connection
     )
     {
-        $this->cartRestorer = $cartRestorer;
-        $this->dispatcher = $dispatcher;
-        $this->customerRepository = $customerRepository;
-        $this->contextPersist = $contextPersist;
-        $this->contextResolver = $contextResolver;
-        $this->logoutRoute = $logoutRoute;
-        $this->connection = $connection;
     }
 
     public function loginByContextToken(
