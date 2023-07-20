@@ -4,7 +4,7 @@ namespace Shopgate\WebcheckoutSW6\Subscribers;
 
 use Shopgate\WebcheckoutSW6\Entity\OrderEntity;
 use Shopware\Core\Checkout\Cart\Event\CheckoutOrderPlacedEvent;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -12,10 +12,10 @@ class WebCheckoutOrderSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    private EntityRepositoryInterface $entityRepository;
+    private EntityRepository $entityRepository;
     private RequestStack $stack;
 
-    public function __construct(RequestStack $stack, EntityRepositoryInterface $entityRepository)
+    public function __construct(RequestStack $stack, EntityRepository $entityRepository)
     {
         $this->entityRepository = $entityRepository;
         $this->stack = $stack;

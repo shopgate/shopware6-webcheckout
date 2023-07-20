@@ -3,6 +3,8 @@
 namespace Shopgate\WebcheckoutSW6\Services;
 
 use ReallySimpleJWT\Exception\BuildException;
+use ReallySimpleJWT\Exception\EncodeException;
+use ReallySimpleJWT\Exception\JwtException;
 use Shopgate\WebcheckoutSW6\Token\TokenBuilder;
 
 class TokenManager
@@ -18,25 +20,26 @@ class TokenManager
 
     public function validateToken(string $token): bool
     {
-        return $this->tokens->validateExpiration($token, $this->secret);
+        try {
+            $validation = $this->tokens->validateExpiration($token);
+        } catch (JwtException) {
+            return false;
+        }
+        return $validation;
     }
 
     public function getCustomerId(string $token): ?string
     {
-        $payload = $this->tokens->getPayload($token, $this->secret);
-
-        return $payload['user-id'] ?? null;
+        return $this->tokens->getPayload($token)['user-id'] ?? null;
     }
 
     public function getContextToken(string $token): ?string
     {
-        $payload = $this->tokens->getPayload($token, $this->secret);
-
-        return $payload['sw-context-token'] ?? null;
+        return $this->tokens->getPayload($token)['sw-context-token'] ?? null;
     }
 
     /**
-     * @throws BuildException
+     * @throws BuildException|EncodeException
      */
     public function createToken(string $swContextToken, string $domain, ?string $customerId): array
     {

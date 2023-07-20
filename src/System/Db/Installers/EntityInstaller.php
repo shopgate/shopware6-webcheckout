@@ -4,7 +4,8 @@ namespace Shopgate\WebcheckoutSW6\System\Db\Installers;
 
 use Shopgate\WebcheckoutSW6\System\Db\ClassCastInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\Entity;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -13,8 +14,7 @@ abstract class EntityInstaller
 {
     protected array $entityInstallList = [];
     protected string $entityName;
-    /** @var EntityRepositoryInterface */
-    protected $entityRepo;
+    protected ?EntityRepository $entityRepo;
 
     public function __construct(ContainerInterface $container)
     {
@@ -49,10 +49,7 @@ abstract class EntityInstaller
         }
     }
 
-    /**
-     * @return object|null
-     */
-    protected function findEntity(string $id, Context $context): ?object
+    protected function findEntity(string $id, Context $context): ?Entity
     {
         return $this->entityRepo->search(new Criteria([$id]), $context)->first();
     }

@@ -4,7 +4,7 @@ namespace Shopgate\WebcheckoutSW6\System\Db\Installers;
 
 use DateTime;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleCondition;
 use Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleGroup;
 use Shopware\Core\Defaults;
@@ -14,8 +14,7 @@ use Throwable;
 
 class RuleConditionInstaller
 {
-    /** @var ContainerInterface */
-    private $connection;
+    private ?Connection $connection;
 
     /**
      * @param ContainerInterface $container
@@ -35,7 +34,7 @@ class RuleConditionInstaller
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     private function installRuleCondition(): void
     {

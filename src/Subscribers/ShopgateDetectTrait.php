@@ -23,7 +23,7 @@ trait ShopgateDetectTrait
     private function isShopgate(Request $request): bool
     {
         $sgCookie = $this->handleDevelopmentCookie($request);
-        $sgAgent = strpos((string)$request->headers->get('User-Agent'), 'libshopgate') !== false;
+        $sgAgent = str_contains((string)$request->headers->get('User-Agent'), 'libshopgate');
         $hasSession = $request->hasSession();
         $sgSession = $hasSession && $request->getSession()->get(IsShopgateSubscriber::SG_SESSION_KEY, 0);
 

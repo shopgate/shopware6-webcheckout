@@ -3,31 +3,36 @@
 namespace Shopgate\WebcheckoutSW6\Token;
 
 use ReallySimpleJWT\Build;
-use ReallySimpleJWT\Encoders\EncodeHS256;
+use ReallySimpleJWT\Decode;
 use ReallySimpleJWT\Exception\BuildException;
+use ReallySimpleJWT\Exception\EncodeException;
+use ReallySimpleJWT\Exception\JwtException;
 use ReallySimpleJWT\Helper\Validator;
 use ReallySimpleJWT\Jwt;
+use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Tokens;
 
 class TokenBuilder extends Tokens
 {
-    public function builder(): Build
+    /**
+     * @throws EncodeException
+     */
+    public function builder(string $secret): Build
     {
         return new Build(
             'JWT',
             new Validator(),
-            new SecretValidator(),
-            new EncodeHS256()
+            new SecretValidator($secret)
         );
     }
 
     /**
      * @throws BuildException
+     * @throws EncodeException
      */
     public function createCustomPayload(string $secret, int $expiration, string $issuer, array $payload): Jwt
     {
-        $builder = $this->builder()
-            ->setSecret($secret)
+        $builder = $this->builder($secret)
             ->setExpiration($expiration)
             ->setIssuer($issuer)
             ->setIssuedAt(time());
