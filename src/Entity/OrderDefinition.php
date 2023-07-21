@@ -16,7 +16,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
 class OrderDefinition extends EntityDefinition
 {
-    public const ENTITY_NAME = 'shopgate_webc_order';
+    public final const ENTITY_NAME = 'shopgate_webc_order';
 
     public function getEntityName(): string
     {

@@ -14,7 +14,7 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 
 class SgateWebcheckoutSW6 extends Plugin
 {
-    public const IS_SHOPGATE_CHECK = 'shopgate-check';
+    public final const IS_SHOPGATE_CHECK = 'shopgate-check';
 
     public function install(InstallContext $installContext): void
     {

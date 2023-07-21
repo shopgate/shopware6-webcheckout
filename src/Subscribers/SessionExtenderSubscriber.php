@@ -4,7 +4,7 @@ namespace Shopgate\WebcheckoutSW6\Subscribers;
 
 use Shopgate\WebcheckoutSW6\Services\CustomerManager;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,13 +14,8 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    private CustomerManager $customerManager;
-    private EntityRepositoryInterface $entityRepository;
-
-    public function __construct(CustomerManager $customerManager, EntityRepositoryInterface $entityRepository)
+    public function __construct(private readonly CustomerManager $customerManager, private readonly EntityRepository $entityRepository)
     {
-        $this->customerManager = $customerManager;
-        $this->entityRepository = $entityRepository;
     }
 
     public static function getSubscribedEvents(): array

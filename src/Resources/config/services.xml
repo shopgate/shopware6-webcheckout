@@ -15,7 +15,7 @@
             <tag name="shopware.entity.extension"/>
         </service>
         <service id="Shopgate\WebcheckoutSW6\Subscribers\SystemConfigSubscriber">
-            <argument key="$cssConfigKey" type="string">%sg_webcheckout_config_css%</argument>
+            <argument key="$configKey" type="string">%sg_webcheckout_config_css%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="Shopgate\WebcheckoutSW6\Subscribers\IsShopgateSubscriber">

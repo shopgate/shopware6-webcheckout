@@ -3,7 +3,7 @@
   "description": "Shopgate Webcheckout for Shopware 6",
   "license": "proprietary",
   "type": "shopware-platform-plugin",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "keywords": [
     "mobile",
     "app"
@@ -15,8 +15,8 @@
     }
   ],
   "require": {
-    "shopware/core": "^6.4.4",
-    "rbdwllr/reallysimplejwt": "^4.0.3",
+    "shopware/core": "^6.5.2",
+    "rbdwllr/reallysimplejwt": "^5.0.0",
     "jakeasmith/http_build_url": "^1.0.1"
   },
   "extra": {

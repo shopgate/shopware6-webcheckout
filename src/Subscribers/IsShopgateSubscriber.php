@@ -12,9 +12,9 @@ class IsShopgateSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    public const IS_WEBCHECKOUT = 'IS_SHOPGATE_WEBCHECKOUT';
-    public const IS_API_CALL = 'IS_SHOPGATE_API_CALL';
-    public const SG_SESSION_KEY = 'sgWebView';
+    public final const IS_WEBCHECKOUT = 'IS_SHOPGATE_WEBCHECKOUT';
+    public final const IS_API_CALL = 'IS_SHOPGATE_API_CALL';
+    public final const SG_SESSION_KEY = 'sgWebView';
 
     public static function getSubscribedEvents(): array
     {
@@ -34,7 +34,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
         defined(self::IS_WEBCHECKOUT) || define(self::IS_WEBCHECKOUT, true);
     }
 
-    public function addPageData(HeaderPageletLoadedEvent $event)
+    public function addPageData(HeaderPageletLoadedEvent $event): void
     {
         if (!$this->isShopgate($event->getRequest())) {
             return;
@@ -44,7 +44,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
 
     public function checkShopgateApiCall(ControllerEvent $event): void
     {
-        $isWebcheckoutCall = strpos($event->getRequest()->getPathInfo(), 'api/sgwebcheckout') !== false;
+        $isWebcheckoutCall = str_contains($event->getRequest()->getPathInfo(), 'api/sgwebcheckout');
         if ($isWebcheckoutCall || $this->isShopgateApiCall($event->getRequest())) {
             defined(self::IS_API_CALL) || define(self::IS_API_CALL, true);
         }

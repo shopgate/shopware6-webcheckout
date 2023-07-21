@@ -8,52 +8,39 @@ use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Defaults;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\PlatformRequest;
+use Shopware\Core\System\SalesChannel\Context\CartRestorer;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister;
-use Shopware\Core\System\SalesChannel\Context\SalesChannelContextRestorer;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CustomerManager
 {
-    private SalesChannelContextRestorer $contextRestorer;
-    private EventDispatcherInterface $dispatcher;
-    private EntityRepositoryInterface $customerRepository;
-    private SalesChannelRequestContextResolver $contextResolver;
-    private AbstractLogoutRoute $logoutRoute;
-    private SalesChannelContextPersister $contextPersist;
-    private Connection $connection;
 
     public function __construct(
-        SalesChannelContextRestorer $contextRestorer,
-        EventDispatcherInterface $dispatcher,
-        EntityRepositoryInterface $customerRepository,
-        SalesChannelContextPersister $contextPersist,
-        SalesChannelRequestContextResolver $contextResolver,
-        AbstractLogoutRoute $logoutRoute,
-        Connection $connection
-    ) {
-        $this->contextRestorer = $contextRestorer;
-        $this->dispatcher = $dispatcher;
-        $this->customerRepository = $customerRepository;
-        $this->contextPersist = $contextPersist;
-        $this->contextResolver = $contextResolver;
-        $this->logoutRoute = $logoutRoute;
-        $this->connection = $connection;
+        private readonly CartRestorer                       $cartRestorer,
+        private readonly EventDispatcherInterface           $dispatcher,
+        private readonly EntityRepository                   $customerRepository,
+        private readonly SalesChannelContextPersister       $contextPersist,
+        private readonly SalesChannelRequestContextResolver $contextResolver,
+        private readonly AbstractLogoutRoute                $logoutRoute,
+        private readonly Connection                         $connection
+    )
+    {
     }
 
     public function loginByContextToken(
-        string $contextToken,
-        Request $request,
+        string              $contextToken,
+        Request             $request,
         SalesChannelContext $context
-    ): SalesChannelContext {
+    ): SalesChannelContext
+    {
         // sometimes the guest already has a frontend session started
         if ($context->getToken() === $contextToken) {
             return $context;
@@ -70,7 +57,7 @@ class CustomerManager
     public function loginCustomerById(string $customerId, SalesChannelContext $context): SalesChannelContext
     {
         $this->extendCustomerTokenLife($context->getToken(), $context->getSalesChannelId(), $customerId);
-        $newContext = $this->contextRestorer->restore($customerId, $context);
+        $newContext = $this->cartRestorer->restore($customerId, $context);
         $this->customerRepository->update([
             [
                 'id' => $customerId,

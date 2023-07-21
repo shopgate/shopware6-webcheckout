@@ -7,7 +7,7 @@ use Shopware\Core\Content\Rule\RuleEntity;
 
 class IsShopgateWebcheckoutRuleGroup extends RuleEntity implements ClassCastInterface
 {
-    public const UUID = '7d24818ee04546d797cb6fc1a604a777';
+    public final const UUID = '7d24818ee04546d797cb6fc1a604a777';
 
     protected $id = self::UUID;
     protected $name = 'Is Shopgate Webcheckout';
