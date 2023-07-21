@@ -1,3 +1,9 @@
+# 2.0.0
+
+- Added support for Shopware 6.5.2
+- Dropped support for Shopware 6.4
+- Updted dependencies for PHP8 compatibility
+
 # 1.4.0
 
 - Added support for guest checkout
