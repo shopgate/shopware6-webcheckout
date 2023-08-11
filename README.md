@@ -40,7 +40,7 @@ cd [shopware6 root folder]
 
 # this step is required only in case you do not already have this in the root composer.json specified
 composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
-composer require shopgate/webcheckout-shopware6:^0.1
+composer require shopgate/webcheckout-shopware6
 ```
 
 ### Enable & Activate
@@ -49,16 +49,16 @@ Install and activate the module via command line:
 
 ```shell
 cd [shopware6 root folder]
-php bin/console plugin:refresh
-php bin/console plugin:install --activate SgateWebcheckoutSW6
+bin/console plugin:refresh
+bin/console plugin:install --activate SgateWebcheckoutSW6
 ```
 
 You may install and activate via the Shopware administration panel instead, if you prefer.
 
 ### CSS Compilation
 
-After installation, and after every time you configure CSS in the `Admin > Extensions > Shopgate Webcheckout Config >
-Custom CSS` you will need to recompile your theme.
+After every time you configure CSS in the `Admin > Extensions > Shopgate Webcheckout Config >
+Custom CSS` you will need to recompile your theme (currently only via command line):
 
 ```shell
 bin/console theme:compile
