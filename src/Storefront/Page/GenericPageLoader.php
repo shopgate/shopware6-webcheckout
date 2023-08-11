@@ -10,8 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GenericPageLoader
 {
-    public function __construct(private readonly GenericPageLoaderInterface $genericPageLoader, private readonly EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private readonly GenericPageLoaderInterface $genericPageLoader,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function load(Request $request, SalesChannelContext $context): GenericPage

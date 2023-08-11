@@ -8,9 +8,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SystemConfigSubscriber implements EventSubscriberInterface
 {
-
-    public function __construct(private readonly SystemConfigService $configService, private readonly string $configKey)
-    {
+    public function __construct(
+        private readonly SystemConfigService $configService,
+        private readonly string $configKey
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -22,7 +23,7 @@ class SystemConfigSubscriber implements EventSubscriberInterface
     {
         $css = $this->configService->getString($this->configKey, $event->getSalesChannelId());
         if (!empty($css)) {
-            $event->setConcatenatedStyles($event->getConcatenatedStyles() . "\n$css\n");
+            $event->setConcatenatedStyles($event->getConcatenatedStyles() . "\n{$css}\n");
         }
     }
 }

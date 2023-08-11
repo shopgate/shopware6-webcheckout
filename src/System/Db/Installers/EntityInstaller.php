@@ -13,7 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class EntityInstaller
 {
     protected array $entityInstallList = [];
+
     protected string $entityName;
+
     protected ?EntityRepository $entityRepo;
 
     public function __construct(ContainerInterface $container)
@@ -42,7 +44,7 @@ abstract class EntityInstaller
     {
         $data = $entity->toArray();
         $existingEntity = $this->findEntity($entity->getId(), $context);
-        if (null !== $existingEntity) {
+        if ($existingEntity !== null) {
             $this->updateEntity($data, $context);
         } else {
             $this->installEntity($data, $context);

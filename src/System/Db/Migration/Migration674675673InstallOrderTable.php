@@ -8,7 +8,6 @@ use Shopware\Core\Framework\Migration\MigrationStep;
 
 class Migration674675673InstallOrderTable extends MigrationStep
 {
-
     public function getCreationTimestamp(): int
     {
         return 674675673;

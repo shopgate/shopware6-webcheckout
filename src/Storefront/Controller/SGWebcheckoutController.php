@@ -21,11 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class SGWebcheckoutController extends StorefrontController
 {
-
     public function __construct(
         private readonly GenericPageLoader $genericPageLoader,
-        private readonly CustomerManager   $customerManager,
-        private readonly LoggerInterface   $logger,
+        private readonly CustomerManager $customerManager,
+        private readonly LoggerInterface $logger,
         private readonly TokenManager $tokenManager
     ) {
     }

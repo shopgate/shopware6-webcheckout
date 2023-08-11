@@ -12,8 +12,10 @@ class IsShopgateWebcheckoutRuleCondition extends Rule
 {
     use ShopgateDetectTrait;
 
-    public final const UUID = 'b344814108424254b7c5147b2020f777';
+    final public const UUID = 'b344814108424254b7c5147b2020f777';
+
     public const RULE_NAME = 'is_shopgate_webcheckout';
+
     protected bool $isShopgateWebcheckout = false;
 
     public function getName(): string

@@ -7,5 +7,6 @@ use Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleGroup;
 class RuleInstaller extends EntityInstaller
 {
     protected array $entityInstallList = [IsShopgateWebcheckoutRuleGroup::class];
+
     protected string $entityName = 'rule';
 }

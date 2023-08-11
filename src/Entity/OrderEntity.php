@@ -13,6 +13,7 @@ class OrderEntity extends Entity
      * Keep public as assigner does not use methods, e.g. $this->$key = value
      */
     public string $shopwareOrderId;
+
     public string $userAgent;
 
     public function getShopwareOrderId(): string

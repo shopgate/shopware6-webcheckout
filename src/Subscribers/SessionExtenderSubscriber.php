@@ -15,8 +15,10 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    public function __construct(private readonly CustomerManager $customerManager, private readonly EntityRepository $entityRepository)
-    {
+    public function __construct(
+        private readonly CustomerManager $customerManager,
+        private readonly EntityRepository $entityRepository
+    ) {
     }
 
     public static function getSubscribedEvents(): array
