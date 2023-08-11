@@ -41,8 +41,13 @@ class OrderDefinition extends EntityDefinition
                     ->addFlags(new Required(), new ApiAware()),
                 (new ReferenceVersionField(SWOrderDefinition::class, 'sw_order_version_id'))->addFlags(new Required()),
                 (new StringField('user_agent', 'userAgent'))->addFlags(new Required(), new ApiAware()),
-                (new OneToOneAssociationField('order', 'sw_order_id', 'id', SWOrderDefinition::class,
-                    false))->addFlags(new ApiAware()),
+                (new OneToOneAssociationField(
+                    'order',
+                    'sw_order_id',
+                    'id',
+                    SWOrderDefinition::class,
+                    false
+                ))->addFlags(new ApiAware()),
             ] + $this->defaultFields());
     }
 }

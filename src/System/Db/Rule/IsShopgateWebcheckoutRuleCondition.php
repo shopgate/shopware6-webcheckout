@@ -2,16 +2,10 @@
 
 namespace Shopgate\WebcheckoutSW6\System\Db\Rule;
 
-use Shopgate\Shopware\Storefront\Controller\MainController;
 use Shopgate\WebcheckoutSW6\Subscribers\IsShopgateSubscriber;
-use Shopgate\WebcheckoutSW6\Subscribers\SessionExtenderSubscriber;
 use Shopgate\WebcheckoutSW6\Subscribers\ShopgateDetectTrait;
 use Shopware\Core\Framework\Rule\Rule;
 use Shopware\Core\Framework\Rule\RuleScope;
-use Shopware\Core\Framework\Struct\ArrayStruct;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 class IsShopgateWebcheckoutRuleCondition extends Rule

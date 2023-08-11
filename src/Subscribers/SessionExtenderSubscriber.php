@@ -7,6 +7,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
@@ -34,9 +35,11 @@ class SessionExtenderSubscriber implements EventSubscriberInterface
         }
         // necessary evil because this event happens before argument resolving
         $context = Context::createDefaultContext();
+        /** @var SalesChannelEntity|null $salesChannel */
         $salesChannel = $this->entityRepository->search(
-            (new Criteria())->addFilter(new EqualsFilter('accessKey',
-                $request->headers->get('sw-access-key'))), $context)->first();
+            (new Criteria())->addFilter(new EqualsFilter('accessKey', $request->headers->get('sw-access-key'))),
+            $context
+        )->first();
         if (!$salesChannel) {
             return;
         }
