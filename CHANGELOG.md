@@ -1,13 +1,14 @@
 # 2.0.1
 
+- Added dev logging to JS for easier debugging
 - Recompiled javascript
-- Adjusted readme for after install recompilation process
+- Changed readme for after install recompilation process
 
 # 2.0.0
 
 - Added support for Shopware 6.5.2
 - Removed support for Shopware 6.4
-- Updated dependencies for PHP8 compatibility
+- Changed dependencies for PHP8 compatibility
 
 # 1.4.0
 
