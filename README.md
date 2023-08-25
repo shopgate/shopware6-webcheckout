@@ -30,16 +30,15 @@ cd [plugin folder]
 composer remove shopware/core
 ```
 
-#### Composer symlink
+#### Composer symlink (development)
 
-Adjust the location of the previous step & place the plugin in the `static-plugins` folder. You can now link it to
+Place the plugin in the `custom/plugins` folder. You can now link it to
 composer by running this command in the root directory:
 
 ```shell
-cd [shopware6 root folder]
-
-# this step is required only in case you do not already have this in the root composer.json specified
-composer config repositories.sym '{"type": "path", "url": "custom/static-plugins/*", "options": {"symlink": true}}'
+cd custom/plugins
+git clone git@github.com:shopgate/shopware6-webcheckout.git
+cd ../..
 composer require shopgate/webcheckout-shopware6
 ```
 
@@ -54,6 +53,21 @@ bin/console plugin:install --activate SgateWebcheckoutSW6
 ```
 
 You may install and activate via the Shopware administration panel instead, if you prefer.
+
+### JS Compilation
+
+For Shopware 6.5+ after installing & enabling the plugin you will need to re-compile JS.
+If you have a GitHub installation, this should suffice: 
+
+```shell
+composer run build:js
+bin/console theme:compile
+```
+
+For regular installations via Symfony2 Flex, zip or shopware-installer.phar.php:
+```shell
+bin/build-js.sh
+```
 
 ### CSS Compilation
 
