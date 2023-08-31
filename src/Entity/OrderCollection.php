@@ -12,6 +12,8 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
  * @method OrderEntity|null get(string $key)
  * @method OrderEntity|null first()
  * @method OrderEntity|null last()
+ *
+ * @extends EntityCollection<OrderEntity>
  */
 class OrderCollection extends EntityCollection
 {

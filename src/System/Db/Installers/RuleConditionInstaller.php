@@ -16,9 +16,6 @@ class RuleConditionInstaller
 {
     private ?Connection $connection;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->connection = $container->get(Connection::class);

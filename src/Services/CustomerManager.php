@@ -22,25 +22,22 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CustomerManager
 {
-
     public function __construct(
-        private readonly CartRestorer                       $cartRestorer,
-        private readonly EventDispatcherInterface           $dispatcher,
-        private readonly EntityRepository                   $customerRepository,
-        private readonly SalesChannelContextPersister       $contextPersist,
+        private readonly CartRestorer $cartRestorer,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EntityRepository $customerRepository,
+        private readonly SalesChannelContextPersister $contextPersist,
         private readonly SalesChannelRequestContextResolver $contextResolver,
-        private readonly AbstractLogoutRoute                $logoutRoute,
-        private readonly Connection                         $connection
-    )
-    {
+        private readonly AbstractLogoutRoute $logoutRoute,
+        private readonly Connection $connection
+    ) {
     }
 
     public function loginByContextToken(
-        string              $contextToken,
-        Request             $request,
+        string $contextToken,
+        Request $request,
         SalesChannelContext $context
-    ): SalesChannelContext
-    {
+    ): SalesChannelContext {
         // sometimes the guest already has a frontend session started
         if ($context->getToken() === $contextToken) {
             return $context;

@@ -16,7 +16,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
 class OrderDefinition extends EntityDefinition
 {
-    public final const ENTITY_NAME = 'shopgate_webc_order';
+    final public const ENTITY_NAME = 'shopgate_webc_order';
 
     public function getEntityName(): string
     {
@@ -36,13 +36,18 @@ class OrderDefinition extends EntityDefinition
     protected function defineFields(): FieldCollection
     {
         return new FieldCollection([
-                (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required(), new ApiAware()),
-                (new FkField('sw_order_id', 'shopwareOrderId', SWOrderDefinition::class))
-                    ->addFlags(new Required(), new ApiAware()),
-                (new ReferenceVersionField(SWOrderDefinition::class, 'sw_order_version_id'))->addFlags(new Required()),
-                (new StringField('user_agent', 'userAgent'))->addFlags(new Required(), new ApiAware()),
-                (new OneToOneAssociationField('order', 'sw_order_id', 'id', SWOrderDefinition::class,
-                    false))->addFlags(new ApiAware()),
-            ] + $this->defaultFields());
+            (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required(), new ApiAware()),
+            (new FkField('sw_order_id', 'shopwareOrderId', SWOrderDefinition::class))
+                ->addFlags(new Required(), new ApiAware()),
+            (new ReferenceVersionField(SWOrderDefinition::class, 'sw_order_version_id'))->addFlags(new Required()),
+            (new StringField('user_agent', 'userAgent'))->addFlags(new Required(), new ApiAware()),
+            (new OneToOneAssociationField(
+                'order',
+                'sw_order_id',
+                'id',
+                SWOrderDefinition::class,
+                false
+            ))->addFlags(new ApiAware()),
+        ] + $this->defaultFields());
     }
 }

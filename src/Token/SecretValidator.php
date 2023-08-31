@@ -24,6 +24,6 @@ class SecretValidator extends EncodeHS256
      */
     private function validSecret(string $secret): bool
     {
-        return (bool)preg_match('/^.*(?=.{8,}+)(?=.*[A-Za-z]+).*$/', $secret);
+        return (bool) preg_match('/^.*(?=.{8,}+)(?=.*[A-Za-z]+).*$/', $secret);
     }
 }

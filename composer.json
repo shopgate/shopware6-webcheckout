@@ -1,48 +1,63 @@
 {
-  "name": "shopgate/webcheckout-shopware6",
-  "description": "Shopgate Webcheckout for Shopware 6",
-  "license": "proprietary",
-  "type": "shopware-platform-plugin",
-  "version": "2.0.0",
-  "keywords": [
-    "mobile",
-    "app"
-  ],
-  "authors": [
-    {
-      "name": "Apite GmbH",
-      "email": "mail@apite.io"
-    }
-  ],
-  "require": {
-    "shopware/core": "^6.5.2",
-    "rbdwllr/reallysimplejwt": "^5.0.0",
-    "jakeasmith/http_build_url": "^1.0.1"
-  },
-  "extra": {
-    "shopware-plugin-class": "Shopgate\\WebcheckoutSW6\\SgateWebcheckoutSW6",
-    "plugin-icon": "src/Resources/public/shopgate_logo.png",
-    "copyright": "by Apite",
-    "label": {
-      "de-DE": "Shopgate Webcheckout",
-      "en-GB": "Shopgate Webcheckout"
+    "name": "shopgate/webcheckout-shopware6",
+    "description": "Shopgate Webcheckout for Shopware 6",
+    "license": "proprietary",
+    "type": "shopware-platform-plugin",
+    "version": "2.0.1",
+    "keywords": [
+        "mobile",
+        "app"
+    ],
+    "authors": [
+        {
+            "name": "Apite GmbH",
+            "email": "mail@apite.io"
+        }
+    ],
+    "require": {
+        "shopware/core": "^6.5.2",
+        "rbdwllr/reallysimplejwt": "^5.0.0",
+        "jakeasmith/http_build_url": "^1.0.1"
     },
-    "description": {
-      "de-DE": "Shopgate Webcheckout Integration",
-      "en-GB": "Shopgate Webcheckout integration"
+    "extra": {
+        "shopware-plugin-class": "Shopgate\\WebcheckoutSW6\\SgateWebcheckoutSW6",
+        "plugin-icon": "src/Resources/public/shopgate_logo.png",
+        "copyright": "by Apite",
+        "label": {
+            "de-DE": "Shopgate Webcheckout",
+            "en-GB": "Shopgate Webcheckout"
+        },
+        "description": {
+            "de-DE": "Die Erweiterung unterstützt die Shopgate Webcheckout Lösung der aktuellsten App Generation. Sie implementiert den Austausch der Daten und Sessions zwischen der App und Shopware 6.",
+            "en-GB": "Shopgate Webcheckout integration for Shopware 6 is designed to support the newer App solution. This extensions helps the App maintain sessions & provide additional endpoints."
+        },
+        "manufacturerLink": {
+            "en-GB": "https://apite.io",
+            "de-DE": "https://apite.io"
+        },
+        "supportLink": {
+            "de-DE": "https://apite.io",
+            "en-GB": "https://apite.io"
+        }
     },
-    "manufacturerLink": {
-      "en-GB": "https://apite.io",
-      "de-DE": "https://apite.io"
+    "scripts": {
+        "init-dev-ops": [
+            "composer req symplify/easy-coding-standard phpstan/phpstan --dev --no-scripts --no-plugins -d ../../../"
+        ],
+        "phpstan-lint": "../../../vendor/bin/phpstan analyse",
+        "code-style-fix": "../../../vendor/bin/ecs --fix",
+        "code-style-lint": "../../../vendor/bin/ecs",
+        "lint": [
+            "@phpstan-lint",
+            "@code-style-lint"
+        ],
+        "fix": [
+            "@code-style-fix"
+        ]
     },
-    "supportLink": {
-      "de-DE": "https://apite.io",
-      "en-GB": "https://apite.io"
+    "autoload": {
+        "psr-4": {
+            "Shopgate\\WebcheckoutSW6\\": "src/"
+        }
     }
-  },
-  "autoload": {
-    "psr-4": {
-      "Shopgate\\WebcheckoutSW6\\": "src/"
-    }
-  }
 }

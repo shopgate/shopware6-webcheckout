@@ -7,6 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait ShopgateDetectTrait
 {
+    public function isShopgateApiCall(Request $request): bool
+    {
+        return $request->headers->has(SgateWebcheckoutSW6::IS_SHOPGATE_CHECK) &&
+            $request->headers->has('sw-context-token') &&
+            $request->headers->has('sw-access-key');
+    }
+
     /**
      * Helper logic for developers to enable "mobile" call
      * without needing the SG App. More in the README.md
@@ -17,23 +24,16 @@ trait ShopgateDetectTrait
         if ($sgCookie === '0' && $request->hasSession()) {
             $request->getSession()->remove(IsShopgateSubscriber::SG_SESSION_KEY);
         }
-        return (bool)$sgCookie;
+        return (bool) $sgCookie;
     }
 
     private function isShopgate(Request $request): bool
     {
         $sgCookie = $this->handleDevelopmentCookie($request);
-        $sgAgent = str_contains((string)$request->headers->get('User-Agent'), 'libshopgate');
+        $sgAgent = str_contains((string) $request->headers->get('User-Agent'), 'libshopgate');
         $hasSession = $request->hasSession();
         $sgSession = $hasSession && $request->getSession()->get(IsShopgateSubscriber::SG_SESSION_KEY, 0);
 
         return $sgAgent || $sgSession || $sgCookie;
-    }
-
-    public function isShopgateApiCall(Request $request): bool
-    {
-        return $request->headers->has(SgateWebcheckoutSW6::IS_SHOPGATE_CHECK) &&
-            $request->headers->has('sw-context-token') &&
-            $request->headers->has('sw-access-key');
     }
 }

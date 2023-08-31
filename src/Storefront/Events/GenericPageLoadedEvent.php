@@ -9,15 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GenericPageLoadedEvent extends PageLoadedEvent
 {
-
-    public function __construct(protected GenericPage $page, SalesChannelContext $salesChannelContext, Request $request)
-    {
+    public function __construct(
+        protected GenericPage $page,
+        SalesChannelContext $salesChannelContext,
+        Request $request
+    ) {
         parent::__construct($salesChannelContext, $request);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPage(): GenericPage
     {
         return $this->page;

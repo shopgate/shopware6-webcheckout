@@ -12,8 +12,10 @@ class WebCheckoutOrderSubscriber implements EventSubscriberInterface
 {
     use ShopgateDetectTrait;
 
-    public function __construct(private readonly RequestStack $stack, private readonly EntityRepository $entityRepository)
-    {
+    public function __construct(
+        private readonly RequestStack $stack,
+        private readonly EntityRepository $entityRepository
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -29,7 +31,7 @@ class WebCheckoutOrderSubscriber implements EventSubscriberInterface
         $this->entityRepository->create([
             (new OrderEntity())
                 ->setShopwareOrderId($event->getOrderId())
-                ->setUserAgent((string)$this->stack->getCurrentRequest()->headers->get('User-Agent', ''))
+                ->setUserAgent((string) $this->stack->getCurrentRequest()->headers->get('User-Agent', ''))
                 ->toArray()
         ], $event->getContext());
     }

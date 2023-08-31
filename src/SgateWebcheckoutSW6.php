@@ -2,11 +2,11 @@
 
 namespace Shopgate\WebcheckoutSW6;
 
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
-use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
-use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -14,7 +14,7 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 
 class SgateWebcheckoutSW6 extends Plugin
 {
-    public final const IS_SHOPGATE_CHECK = 'shopgate-check';
+    final public const IS_SHOPGATE_CHECK = 'shopgate-check';
 
     public function install(InstallContext $installContext): void
     {
@@ -38,7 +38,7 @@ class SgateWebcheckoutSW6 extends Plugin
 
     private function getDefaultCss(): string
     {
-        return "
+        return '
 /**
  * Global
  */
@@ -113,6 +113,6 @@ class SgateWebcheckoutSW6 extends Plugin
     margin-bottom: 3rem;
   }
 }
-";
+';
     }
 }

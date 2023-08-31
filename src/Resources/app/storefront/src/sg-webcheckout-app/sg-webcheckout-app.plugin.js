@@ -122,9 +122,7 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
              * @param {object[]} appCommands
              */
             sendAppCommands: function (appCommands) {
-                if (devMode) {
-                    console.log(JSON.stringify(appCommands));
-                }
+                this.mockDev(appCommands)
                 const jsBridgeVersion = '12.0';
                 if ('dispatchCommandsForVersion' in window.SGJavascriptBridge) {
                     window.SGJavascriptBridge.dispatchCommandsForVersion(appCommands, jsBridgeVersion);
@@ -198,6 +196,17 @@ export default class SgWebcheckoutAppPlugin extends Plugin {
                 };
 
                 this.sendAppCommand(appCommand);
+            },
+
+            mockDev: function (appCommands) {
+                const dispatchCommandsForVersion = (commands) => console.log(JSON.stringify(commands));
+                if (devMode) {
+                    if (!window.SGJavascriptBridge) {
+                        window.SGJavascriptBridge = { dispatchCommandsForVersion }
+                    } else {
+                        dispatchCommandsForVersion(appCommands);
+                    }
+                }
             }
         };
 
