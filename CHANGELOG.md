@@ -1,3 +1,7 @@
+# 2.0.2
+
+- Fixed checkout order conversion data feed 
+
 # 2.0.1
 
 - Added dev logging to JS for easier debugging
