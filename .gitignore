@@ -1,4 +1,5 @@
 .idea
 vendor
+node_modules
 composer.lock
 src/System/Db/Migration/Migration1661693083TokenTestSamples.php

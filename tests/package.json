@@ -10,8 +10,8 @@
   "author": "Konstantin Kiritsenko",
   "license": "ISC",
   "dependencies": {
-    "newman": "latest",
-    "newman-reporter-htmlextra": "latest",
-    "newman-reporter-junitfull": "latest"
+    "newman": "^5.3",
+    "newman-reporter-htmlextra": "~1.22.11",
+    "newman-reporter-junitfull": "~1.1.1"
   }
 }
