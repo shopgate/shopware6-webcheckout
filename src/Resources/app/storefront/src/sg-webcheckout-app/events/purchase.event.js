@@ -17,7 +17,7 @@ export default class PurchaseEvent extends AbstractEvent {
             [
                 {
                     'c': 'broadcastEvent',
-                    'p': {'event': 'checkoutSuccess', parameters}
+                    'p': {'event': 'checkoutSuccess', parameters: [parameters]}
                 },
                 {
                     'c': 'setNavigationBarParams',
