@@ -1,3 +1,7 @@
+# 1.4.1
+
+- Fixed checkout order conversion data feed
+
 # 1.4.0
 
 - Added support for guest checkout
