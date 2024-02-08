@@ -1,3 +1,7 @@
+# 2.1.0
+
+- added CSS body tag that differentiates between R.Native (`.is-sg-native`) & React App (`.is-sg-react`) 
+
 # 2.0.2
 
 - Fixed checkout order conversion data feed 

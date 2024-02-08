@@ -5614,6 +5614,245 @@
           "description": "Any tests related to Is Shopgate WebC check"
         }
       ]
+    },
+    {
+      "name": "SG-207",
+      "item": [
+        {
+          "name": "Old app - Apple",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Load the HTML response to $\r",
+                  "const $ = cheerio.load(pm.response.text());\r",
+                  "\r",
+                  "pm.test(\"Check we redirected to register page\", function () {\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-react');\r",
+                  "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (Shopgate Standalone 10.75.0 Codebase:10.75.0 NOAPPLEPAY)",
+                "type": "text",
+                "description": "Apple old WebC version"
+              }
+            ],
+            "url": {
+              "raw": "{{sw_endpoint_frontend}}/account/login",
+              "host": [
+                "{{sw_endpoint_frontend}}"
+              ],
+              "path": [
+                "account",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Old app - Android",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Load the HTML response to $\r",
+                  "const $ = cheerio.load(pm.response.text());\r",
+                  "\r",
+                  "pm.test(\"Check we redirected to register page\", function () {\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-react');\r",
+                  "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "PostmanRuntime Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/120.0.6099.230 Mobile Safari/537.36 libshopgate/25.0 (Shopgate 5.43.0 Codebase:5.43.0) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Bowling Shop Berlin 24 5.58.0 Codebase:5.58.0)",
+                "type": "text",
+                "description": "Android old WebC version"
+              }
+            ],
+            "url": {
+              "raw": "{{sw_endpoint_frontend}}/account/login",
+              "host": [
+                "{{sw_endpoint_frontend}}"
+              ],
+              "path": [
+                "account",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Native App",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Load the HTML response to $\r",
+                  "const $ = cheerio.load(pm.response.text());\r",
+                  "\r",
+                  "pm.test(\"Check we redirected to register page\", function () {\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-native')\r",
+                  "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                "type": "text",
+                "description": "New WebC version"
+              }
+            ],
+            "url": {
+              "raw": "{{sw_endpoint_frontend}}/account/login",
+              "host": [
+                "{{sw_endpoint_frontend}}"
+              ],
+              "path": [
+                "account",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No app",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Load the HTML response to $\r",
+                  "const $ = cheerio.load(pm.response.text());\r",
+                  "\r",
+                  "pm.test(\"Check we redirected to register page\", function () {\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app')\r",
+                  "    pm.expect(bodyClass).to.be.lengthOf(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{sw_endpoint_frontend}}/account/login",
+              "host": [
+                "{{sw_endpoint_frontend}}"
+              ],
+              "path": [
+                "account",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Newer app does not need header padding-top setting. We will need to remove it when the Shopgate `Codebase` in the User-Agent is more than 11"
     }
   ],
   "auth": {
