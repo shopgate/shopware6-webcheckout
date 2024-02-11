@@ -1,12 +1,12 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
-{% set sgAppType = "is-sg-react" %}
+{% set sgAppVersion = "is-sg-codebase-v1" %}
 
-{% if page.header.extensions.sg_webcheckout_data.isNative %}
-    {% set sgAppType = "is-sg-native" %}
+{% if page.header.extensions.sg_webcheckout_data.isCodebaseV2 %}
+    {% set sgAppVersion = "is-sg-codebase-v2" %}
 {% endif %}
 
-{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppType }}{% endif %}{% endblock %}
+{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppVersion }}{% endif %}{% endblock %}
 
 {% block base_body_script %}
     {{ parent() }}

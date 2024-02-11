@@ -41,7 +41,7 @@ class IsShopgateSubscriber implements EventSubscriberInterface
         if (!$this->isShopgate($event->getRequest())) {
             return;
         }
-        $data = ['isNative' => $this->isShopgateNative($event->getRequest())];
+        $data = ['isCodebaseV2' => $this->isNativeBase($event->getRequest())];
         $event->getPagelet()->addExtension('sg_webcheckout_data', new ArrayStruct($data));
     }
 

@@ -74,9 +74,9 @@ class SgateWebcheckoutSW6 extends Plugin
 }
 
 /**
- * React App only
+ * Java/Swift based App specifics
  */
-.is-sg-react {
+.is-sg-codebase-v1 {
   padding-top: 4em;
 }
 

@@ -1,6 +1,6 @@
 # 2.1.0
 
-- added CSS body tag that differentiates between R.Native (`.is-sg-native`) & React App (`.is-sg-react`) 
+- added CSS body tag that differentiates between R.Native (`.is-sg-codebase-v2`) & old Swift/Java based App (`.is-sg-codebase-v1`) 
 
 # 2.0.2
 

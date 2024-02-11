@@ -44,7 +44,7 @@ trait ShopgateDetectTrait
      * @param Request $request
      * @return bool
      */
-    private function isShopgateNative(Request $request): bool {
+    private function isNativeBase(Request $request): bool {
         $regex = "/libshopgate.*?Codebase:(\d+\.\d+(\.\d+)?)/";
         preg_match($regex, (string) $request->headers->get('User-Agent'), $matches);
 

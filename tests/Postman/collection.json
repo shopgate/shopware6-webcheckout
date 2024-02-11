@@ -5616,7 +5616,7 @@
       ]
     },
     {
-      "name": "SG-207",
+      "name": "SG-207 React Native Base",
       "item": [
         {
           "name": "Old app - Apple",
@@ -5629,7 +5629,7 @@
                   "const $ = cheerio.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
-                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-react');\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v1');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
@@ -5689,7 +5689,7 @@
                   "const $ = cheerio.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
-                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-react');\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v1');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
@@ -5749,7 +5749,7 @@
                   "const $ = cheerio.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
-                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-native')\r",
+                  "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v2');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
