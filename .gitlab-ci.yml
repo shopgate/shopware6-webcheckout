@@ -96,6 +96,8 @@ build zip:
   image:
     name: ghcr.io/friendsofshopware/platform-plugin-dev:v6.4.4
     entrypoint: [ "" ]
+  tags:
+    - build-amd64
   services: [ ]
   before_script: [ ]
   rules:
@@ -104,8 +106,8 @@ build zip:
     - ln -s "$(pwd)" "/plugins/${PLUGIN_NAME}"
     - cd /plugins/${PLUGIN_NAME}
     - plugin-uploader ext:zip --strategy=plain -- "$PWD"
-    - mv ${PLUGIN_NAME}.zip $PROJECT_ROOT/
-    - cd $PROJECT_ROOT
+    - mv ${PLUGIN_NAME}.zip $CI_PROJECT_DIR/
+    - cd $CI_PROJECT_DIR
     - zip -d $(realpath "$PLUGIN_NAME.zip") "$PLUGIN_NAME/composer.lock"
     - '[[ -r $PLUGIN_NAME.zip ]] || (echo "failed to create $PLUGIN_NAME.zip. Please run ./bin/init $PLUGIN_NAME" && exit 1)'
   artifacts:
