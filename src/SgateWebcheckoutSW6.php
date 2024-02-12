@@ -2,11 +2,11 @@
 
 namespace Shopgate\WebcheckoutSW6;
 
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
+use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
-use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleConditionInstaller;
-use Shopgate\WebcheckoutSW6\System\Db\Installers\RuleInstaller;
 
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -38,13 +38,11 @@ class SgateWebcheckoutSW6 extends Plugin
 
     private function getDefaultCss(): string
     {
-        return "
+        return '
 /**
  * Global
  */
 .is-sg-app {
-
-  padding-top: 4em;
 
   .header-logo-main-link {
     pointer-events: none;
@@ -73,6 +71,13 @@ class SgateWebcheckoutSW6 extends Plugin
     top: 4em;
     padding-bottom: 4em;
   }
+}
+
+/**
+ * Java/Swift based App specifics
+ */
+.is-sg-codebase-v1 {
+  padding-top: 4em;
 }
 
 /**
@@ -113,6 +118,6 @@ class SgateWebcheckoutSW6 extends Plugin
     margin-bottom: 3rem;
   }
 }
-";
+';
     }
 }
