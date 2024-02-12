@@ -36,4 +36,18 @@ trait ShopgateDetectTrait
 
         return $sgAgent || $sgSession || $sgCookie;
     }
+
+    /**
+     * Native SG App should have a Codebase variable with
+     * a version higher than 11
+     *
+     * @param Request $request
+     * @return bool
+     */
+    private function isNativeBase(Request $request): bool {
+        $regex = "/libshopgate.*?Codebase:(\d+\.\d+(\.\d+)?)/";
+        preg_match($regex, (string) $request->headers->get('User-Agent'), $matches);
+
+        return version_compare($matches[1] ?? '0.0.0', '11.0.0', '>=');
+    }
 }

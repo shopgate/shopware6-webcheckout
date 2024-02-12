@@ -153,6 +153,10 @@ body.is-ctl-register.is-act-accountregisterpage.is-sg-app {
 }
 ```
 
+#### Special:
+* `.is-sg-codebase-v1` - references the older Swift/Java App base, we know it by seeing Codebase:<11 in the Agent Header
+* `.is-sg-codebase-v2` - references the newer React Native App base, we know it by seeing Codebase: 11+ in the Agent Header (e.g. `libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)`)
+
 ### Session extending
 
 If you are creating a custom extension. A header `shopgate-check: 1` needs to be provided with the regular SW6

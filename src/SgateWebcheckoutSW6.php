@@ -44,8 +44,6 @@ class SgateWebcheckoutSW6 extends Plugin
  */
 .is-sg-app {
 
-  padding-top: 4em;
-
   .header-logo-main-link {
     pointer-events: none;
     cursor: default;
@@ -73,6 +71,13 @@ class SgateWebcheckoutSW6 extends Plugin
     top: 4em;
     padding-bottom: 4em;
   }
+}
+
+/**
+ * Java/Swift based App specifics
+ */
+.is-sg-codebase-v1 {
+  padding-top: 4em;
 }
 
 /**

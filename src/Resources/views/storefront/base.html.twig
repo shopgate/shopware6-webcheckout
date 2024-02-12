@@ -1,6 +1,12 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
-{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app{% endif %}{% endblock %}
+{% set sgAppVersion = "is-sg-codebase-v1" %}
+
+{% if page.header.extensions.sg_webcheckout_data.isCodebaseV2 %}
+    {% set sgAppVersion = "is-sg-codebase-v2" %}
+{% endif %}
+
+{% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppVersion }}{% endif %}{% endblock %}
 
 {% block base_body_script %}
     {{ parent() }}
