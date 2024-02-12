@@ -1,3 +1,7 @@
+# 1.5.0
+
+- added CSS body tag that differentiates between R.Native (`.is-sg-codebase-v2`) & old Swift/Java based App (`.is-sg-codebase-v1`)
+
 # 1.4.1
 
 - Fixed checkout order conversion data feed
