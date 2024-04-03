@@ -4,4 +4,5 @@ composer.lock
 src/System/Db/Migration/Migration1661693083TokenTestSamples.php
 node_modules
 package-lock.json
+pnpm-lock.yaml
 var
