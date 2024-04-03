@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "641dc6da-887a-4794-abfd-1af2729487c1",
-    "name": "SW6 SG Webcheckout",
+    "name": "SW6 SG Webcheckout - v2",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "5289226"
   },
@@ -796,12 +796,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -1308,12 +1308,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -1462,12 +1462,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -2072,12 +2072,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -2618,12 +2618,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -4152,12 +4152,12 @@
                       "script": {
                         "exec": [
                           "pm.test(\"Save context token\", function () {\r",
-                          "    var jsonData = pm.response.json();\r",
-                          "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                          "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                          "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                          "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                           "});"
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     }
                   ],
@@ -4648,12 +4648,12 @@
                   "});\r",
                   "\r",
                   "pm.test(\"get customer context token\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                  "    pm.environment.set(\"gen_customer_t2_contextToken\", jsonData.contextToken);\r",
+                  "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                  "    pm.environment.set(\"gen_customer_t2_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -5241,12 +5241,12 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Save context token\", function () {\r",
-                      "    var jsonData = pm.response.json();\r",
-                      "    pm.expect(jsonData.contextToken).to.be.a('string');\r",
-                      "    pm.environment.set(\"gen_contextToken\", jsonData.contextToken);\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
