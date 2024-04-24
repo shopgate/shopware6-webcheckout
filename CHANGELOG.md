@@ -1,3 +1,7 @@
+# 2.2.1
+
+- fixes for admin JS & vue3
+
 # 2.2.0
 
 - added support to Shopware 6.6.0.1
