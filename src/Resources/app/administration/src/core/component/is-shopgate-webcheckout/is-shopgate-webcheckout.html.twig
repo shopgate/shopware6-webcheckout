@@ -4,7 +4,8 @@
                       id="is-shopgate-webcheckout"
                       size="medium"
                       :options="selectValues"
-                      v-model="isShopgateWebcheckout"
-                      class="field--main">
+                      v-model:value="isShopgateWebcheckout"
+                      class="field--main"
+                      :disabled="disabled">
     </sw-single-select>
 {% endblock %}
