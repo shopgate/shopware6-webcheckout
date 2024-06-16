@@ -69,17 +69,15 @@ class CustomerManager
     }
 
     /**
-     * @return Exception[]|ConstraintViolationException[]
+     * @return string[]|ConstraintViolationException[]
      */
     public function logoutCustomer(SalesChannelContext $context, RequestDataBag $dataBag): array
     {
         try {
-            $this->logoutRoute->logout($context, $dataBag);
+            return ['token' => $this->logoutRoute->logout($context, $dataBag)->getToken()];
         } catch (ConstraintViolationException $formViolations) {
             return ['formViolations' => $formViolations];
         }
-
-        return [];
     }
 
     /**

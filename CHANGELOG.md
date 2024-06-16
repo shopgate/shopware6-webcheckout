@@ -1,3 +1,8 @@
+# 2.3.0
+
+- fixed inApp session drops after visiting checkout/profile pages for SW 6.5.8.9+, 6.6.1.1+
+- fixed issue with double JS load on storefront
+
 # 2.2.1
 
 - fixes for admin JS & vue3

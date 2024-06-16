@@ -498,26 +498,26 @@
             "method": "GET",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "shopgate-check",
                 "value": "1",
-                "type": "text",
-                "description": "required to extend expired sessions"
+                "description": "required to extend expired sessions",
+                "type": "text"
               },
               {
                 "key": "sw-context-token",
                 "value": "{{migration_user_contextToken}}",
-                "type": "text",
-                "description": "migration created token that expired"
+                "description": "migration created token that expired",
+                "type": "text"
               }
             ],
             "url": {
@@ -555,26 +555,26 @@
             "method": "GET",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "shopgate-check",
                 "value": "1",
-                "type": "text",
-                "description": "required to extend expired sessions"
+                "description": "required to extend expired sessions",
+                "type": "text"
               },
               {
                 "key": "sw-context-token",
                 "value": "{{migration_guest_contextToken}}",
-                "type": "text",
-                "description": "migration created token that expired"
+                "description": "migration created token that expired",
+                "type": "text"
               }
             ],
             "url": {
@@ -675,20 +675,20 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -743,14 +743,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -760,8 +760,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -829,14 +829,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -846,8 +846,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -919,14 +919,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -936,8 +936,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -960,14 +960,14 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -1069,7 +1069,9 @@
                   "script": {
                     "exec": [
                       "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
+                      "\r",
                       "pm.test(\"Check cart page\", function () {\r",
                       "    const totals = $('.hidden-line-items-information')\r",
                       "    const lineItem = $('.hidden-line-item')\r",
@@ -1084,7 +1086,8 @@
                       "});\r",
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -1093,7 +1096,8 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -1341,14 +1345,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -1415,14 +1419,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -1495,14 +1499,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -1579,14 +1583,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -1614,19 +1618,19 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "Added as a part of security scheme: apikey",
                         "key": "sw-access-key",
-                        "value": "{{apiKey}}"
+                        "value": "{{apiKey}}",
+                        "description": "Added as a part of security scheme: apikey"
                       },
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       }
                     ],
                     "url": {
@@ -1657,14 +1661,14 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -1766,7 +1770,9 @@
                   "script": {
                     "exec": [
                       "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
+                      "\r",
                       "pm.test(\"Check cart page\", function () {\r",
                       "    const totals = $('.hidden-line-items-information')\r",
                       "    const lineItem = $('.hidden-line-item')\r",
@@ -1780,7 +1786,8 @@
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -1789,7 +1796,8 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -1989,14 +1997,14 @@
                 "method": "DELETE",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2062,8 +2070,53 @@
           "description": "Test merge scenario:\n\n*   customer 3 items\n*   logout\n*   guest 1 item\n*   login\n*   customer 3 items + 1 item"
         },
         {
-          "name": "Customer token retention",
+          "name": "Customer token swap",
           "item": [
+            {
+              "name": "unset front session",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                      "const jar = pm.cookies.jar();\r",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});\r",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
+                      "    if (error) {\r",
+                      "        console.log(error.message)\r",
+                      "    }\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{sw_endpoint_frontend}}",
+                  "host": [
+                    "{{sw_endpoint_frontend}}"
+                  ]
+                }
+              },
+              "response": []
+            },
             {
               "name": "Log in a customer",
               "event": [
@@ -2105,14 +2158,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2189,14 +2242,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2226,14 +2279,27 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
                       "pm.test(\"Check we are in cart confirm page\", function () {\r",
                       "    const bodyClass = $('.is-ctl-checkout.is-act-cartpage')\r",
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
-                      "});"
+                      "});\r",
+                      "\r",
+                      "// token sync calls the pipeline that saves the new context token to App storage\r",
+                      "pm.test(\"Check that we got a token sync payload\", function () {\r",
+                      "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
+                      "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
+                      "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
+                      "   \r",
+                      "    pm.expect(attribs).to.not.be.undefined;\r",
+                      "    // token was not changed on first attempt, we do not need to sync token\r",
+                      "    pm.expect(attribs.properties.syncToken).to.be.undefined;\r",
+                      "});\r",
+                      ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -2242,13 +2308,20 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Cookie",
+                    "value": "sgWebView=1;",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
                   "host": [
@@ -2269,6 +2342,74 @@
                     }
                   ]
                 }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch the current context",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Customer token did not change\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{gen_accessKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "sw-access-key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
+                  },
+                  {
+                    "key": "sw-context-token",
+                    "value": "{{gen_contextToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{sw_store_api}}/context",
+                  "host": [
+                    "{{sw_store_api}}"
+                  ],
+                  "path": [
+                    "context"
+                  ]
+                },
+                "description": "Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more."
               },
               "response": []
             },
@@ -2318,14 +2459,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2349,19 +2490,34 @@
               "response": []
             },
             {
-              "name": "Frontend login",
+              "name": "Frontend login (new token)",
               "event": [
                 {
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
                       "pm.test(\"Check we are in cart confirm page\", function () {\r",
                       "    const bodyClass = $('.is-ctl-accountprofile.is-act-index')\r",
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
-                      "});"
+                      "});\r",
+                      "\r",
+                      "// token sync calls the pipeline that saves the new context token to App storage\r",
+                      "pm.test(\"Check that we got a token sync payload\", function () {\r",
+                      "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
+                      "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
+                      "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
+                      "    pm.expect(attribs).to.not.be.undefined;\r",
+                      "    pm.expect(attribs.properties.syncToken).to.be.true;\r",
+                      "    pm.expect(attribs.properties.token).to.be.a('string').to.not.eql(pm.environment.get('gen_contextToken'));\r",
+                      "    pm.expect(attribs.properties.guest).to.be.false;\r",
+                      "    pm.environment.set('gen_contextToken', attribs.properties.token);\r",
+                      "});\r",
+                      ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -2370,13 +2526,20 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Cookie",
+                    "value": "sgWebView=1;",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.account.home.page",
                   "host": [
@@ -2396,7 +2559,8 @@
                       "value": "frontend.account.home.page"
                     }
                   ]
-                }
+                },
+                "description": "The customer is logged out here from the saved session & thus gets a new context token"
               },
               "response": []
             },
@@ -2440,14 +2604,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2469,7 +2633,7 @@
               "response": []
             }
           ],
-          "description": "Checks that the customer token gets retained when trying to log them in. This is the case when they are already logged into the session. Attempting to log them back in would result in the context token being changed. Which creates a contextToken de-sync with the App."
+          "description": "Checks that the customer token gets retained when trying to log them in. This is the case when they are already logged into the session. Attempting to log them back in would result in the context token being changed. Which creates a contextToken de-sync with the App.\n\nAs of 6.5.8.9 & 6.6.1.1 the customer token changes in logout & log-in events. So now we are attempting to call the pipeline to sync the token with the app when context-token changes."
         },
         {
           "name": "Double login",
@@ -2511,14 +2675,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2581,20 +2745,20 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -2651,14 +2815,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2668,8 +2832,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -2796,14 +2960,14 @@
                 "method": "DELETE",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2864,14 +3028,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2881,8 +3045,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -2955,14 +3119,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -2972,8 +3136,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -2998,8 +3162,9 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
+                      "\r",
                       "pm.test(\"Check cart page\", function () {\r",
                       "    const totals = $('.hidden-line-items-information')\r",
                       "    const lineItem = $('.hidden-line-item')\r",
@@ -3014,7 +3179,8 @@
                       "});\r",
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -3023,7 +3189,8 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -3135,14 +3302,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -3152,8 +3319,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -3179,7 +3346,9 @@
                   "script": {
                     "exec": [
                       "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
+                      "\r",
                       "pm.test(\"Check cart page\", function () {\r",
                       "    const totals = $('.hidden-line-items-information')\r",
                       "    const lineItem = $('.hidden-line-item')\r",
@@ -3194,7 +3363,8 @@
                       "});\r",
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -3203,7 +3373,8 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -3268,14 +3439,14 @@
                 "method": "DELETE",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -3382,14 +3553,14 @@
             "method": "POST",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "sw-context-token",
@@ -3452,14 +3623,14 @@
             "method": "GET",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               }
             ],
             "url": {
@@ -3520,14 +3691,14 @@
             "method": "POST",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "sw-context-token",
@@ -3605,14 +3776,14 @@
             "method": "GET",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "sw-context-token",
@@ -3643,7 +3814,9 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
+                  "\r",
                   "pm.test(\"Check cart page\", function () {\r",
                   "    const totals = $('.hidden-line-items-information')\r",
                   "    const lineItem = $('.hidden-line-item')\r",
@@ -3657,7 +3830,8 @@
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -3667,7 +3841,8 @@
                   "\r",
                   ""
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -3785,14 +3960,14 @@
                     "method": "POST",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -3855,14 +4030,14 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       }
                     ],
                     "url": {
@@ -3923,14 +4098,14 @@
                     "method": "POST",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -4008,14 +4183,14 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -4046,14 +4221,16 @@
                       "script": {
                         "exec": [
                           "// Load the HTML response to $\r",
-                          "const $ = cheerio.load(pm.response.text());\r",
+                          "const pkg = require('cheerio')\r",
+                          "const $ = pkg.load(pm.response.text());\r",
                           "\r",
                           "pm.test(\"Check we redirected to register cart page\", function () {\r",
                           "    const bodyClass = $('.is-ctl-register.is-act-checkoutregisterpage')\r",
                           "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                           "});"
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     },
                     {
@@ -4065,7 +4242,8 @@
                           "console.log(encodedUrl)\r",
                           "pm.variables.set('redirect', encodedUrl);"
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     }
                   ],
@@ -4185,14 +4363,14 @@
                     "method": "POST",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -4269,14 +4447,14 @@
                     "method": "GET",
                     "header": [
                       {
-                        "description": "(Required) Content type of the request",
                         "key": "Content-Type",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Content type of the request"
                       },
                       {
-                        "description": "(Required) Accepted response content types",
                         "key": "Accept",
-                        "value": "application/json"
+                        "value": "application/json",
+                        "description": "(Required) Accepted response content types"
                       },
                       {
                         "key": "sw-context-token",
@@ -4307,14 +4485,16 @@
                       "script": {
                         "exec": [
                           "// Load the HTML response to $\r",
-                          "const $ = cheerio.load(pm.response.text());\r",
+                          "const pkg = require('cheerio')\r",
+                          "const $ = pkg.load(pm.response.text());\r",
                           "\r",
                           "pm.test(\"Check we redirected to regular registration page as we are logged out\", function () {\r",
                           "    const bodyClass = $('.is-ctl-auth.is-act-loginpage');\r",
                           "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                           "});"
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     },
                     {
@@ -4325,7 +4505,8 @@
                           "const encodedUrl = encodeURIComponent(endpoint + '/sgwebcheckout/register');\r",
                           "pm.variables.set('redirect', encodedUrl);"
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     }
                   ],
@@ -4446,14 +4627,14 @@
             "method": "POST",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "sw-context-token",
@@ -4516,14 +4697,14 @@
             "method": "GET",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               }
             ],
             "url": {
@@ -4547,7 +4728,9 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
+                  "\r",
                   "pm.test(\"Check we are on spinner page when token is bad\", function () {\r",
                   "    const bodyClass = $('.is-ctl-sgwebcheckout.is-act-login');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
@@ -4555,7 +4738,8 @@
                   "    pm.expect(spinner).to.be.lengthOf(1);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -4565,7 +4749,8 @@
                   "\r",
                   ""
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -4732,14 +4917,14 @@
             "method": "POST",
             "header": [
               {
-                "description": "(Required) Content type of the request",
                 "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Content type of the request"
               },
               {
-                "description": "(Required) Accepted response content types",
                 "key": "Accept",
-                "value": "application/json"
+                "value": "application/json",
+                "description": "(Required) Accepted response content types"
               },
               {
                 "key": "sw-context-token",
@@ -5068,20 +5253,20 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -5122,14 +5307,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -5188,14 +5373,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -5205,8 +5390,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "notifies that this is SG call"
+                    "description": "notifies that this is SG call",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -5254,14 +5439,14 @@
                 "method": "POST",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -5271,8 +5456,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "body": {
@@ -5324,14 +5509,14 @@
                 "method": "GET",
                 "header": [
                   {
-                    "description": "(Required) Content type of the request",
                     "key": "Content-Type",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
                   },
                   {
-                    "description": "(Required) Accepted response content types",
                     "key": "Accept",
-                    "value": "application/json"
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
                   },
                   {
                     "key": "sw-context-token",
@@ -5341,8 +5526,8 @@
                   {
                     "key": "shopgate-check",
                     "value": "1",
-                    "type": "text",
-                    "description": "required to extend expired sessions"
+                    "description": "required to extend expired sessions",
+                    "type": "text"
                   }
                 ],
                 "url": {
@@ -5368,7 +5553,8 @@
                   "script": {
                     "exec": [
                       "// Load the HTML response to $\r",
-                      "const $ = cheerio.load(pm.response.text());\r",
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
                       "\r",
                       "pm.test(\"Check we are in cart confirm page\", function () {\r",
                       "    const bodyClass = $('.is-ctl-checkout.is-act-confirmpage');\r",
@@ -5384,7 +5570,8 @@
                       "});\r",
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 },
                 {
@@ -5393,7 +5580,8 @@
                     "exec": [
                       ""
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -5661,8 +5849,8 @@
               {
                 "key": "User-Agent",
                 "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (Shopgate Standalone 10.75.0 Codebase:10.75.0 NOAPPLEPAY)",
-                "type": "text",
-                "description": "Apple old WebC version"
+                "description": "Apple old WebC version",
+                "type": "text"
               }
             ],
             "url": {
@@ -5721,8 +5909,8 @@
               {
                 "key": "User-Agent",
                 "value": "PostmanRuntime Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/120.0.6099.230 Mobile Safari/537.36 libshopgate/25.0 (Shopgate 5.43.0 Codebase:5.43.0) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Bowling Shop Berlin 24 5.58.0 Codebase:5.58.0)",
-                "type": "text",
-                "description": "Android old WebC version"
+                "description": "Android old WebC version",
+                "type": "text"
               }
             ],
             "url": {
@@ -5781,8 +5969,8 @@
               {
                 "key": "User-Agent",
                 "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
-                "type": "text",
-                "description": "New WebC version"
+                "description": "New WebC version",
+                "type": "text"
               }
             ],
             "url": {
