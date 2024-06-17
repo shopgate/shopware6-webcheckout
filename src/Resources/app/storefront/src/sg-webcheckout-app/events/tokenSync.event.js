@@ -30,9 +30,7 @@ export default class TokenSyncEvent extends LoginEvent {
             {
                 'contextToken': parameters.token
             },
-            function () {
-                this.log('Context Token sync pipeline was triggered successfully');
-            },
+            function () {},
             []
         );
     }

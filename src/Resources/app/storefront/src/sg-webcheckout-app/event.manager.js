@@ -40,7 +40,7 @@ export default class SGWebcheckoutEventManager {
             if (!event.supports(this.controllerName, this.actionName, this.properties) || !event.active) {
                 return;
             }
-            event.log('Executing event > ' + event.constructor.name);
+            event.log('Executing event > ' + event.constructor.name); // works on non-minified
             event.execute(this.properties);
         });
     }
