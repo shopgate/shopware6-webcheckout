@@ -100,7 +100,6 @@ class SGWebcheckoutController extends StorefrontController
         // case where a customer is logged in through a session cookie (inApp browser)
         // we log them out in case this is an attempt to register
         if ($context->getCustomer()) {
-            // log out just in case a customer is registering a second time
             $currentToken = $this->customerManager->logoutCustomer($context, $dataBag)['token'] ?? $currentToken;
         }
 
