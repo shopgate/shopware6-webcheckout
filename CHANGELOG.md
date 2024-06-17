@@ -2,6 +2,7 @@
 
 - fixed inApp session drops after visiting checkout/profile pages for SW 6.5.8.9+, 6.6.1.1+
 - fixed issue with double JS load on storefront
+- removed compiled frontend JS file due to lack of compatibility between 6.5 & 6.6
 
 # 2.2.1
 
