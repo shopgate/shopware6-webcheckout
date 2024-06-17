@@ -84,6 +84,53 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "SW: get SW version",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"get SW version\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.version).to.be.a('string');\r",
+                      "    pm.environment.set(\"gen_shopware_version\", jsonData.version);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{gen_access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{sw_endpoint_api}}/_info/config",
+                  "host": [
+                    "{{sw_endpoint_api}}"
+                  ],
+                  "path": [
+                    "_info",
+                    "config"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -2503,16 +2550,27 @@
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                       "});\r",
                       "\r",
+                      "// token will change only in newer versions\r",
+                      "const swVersion = pm.environment.get('gen_shopware_version');\r",
+                      "const isSixFive = Utility.version.isGTE(swVersion, '6.5.8.9');\r",
+                      "const isNotSixSix = Utility.version.isLT(swVersion, '6.6.0.0');\r",
+                      "const isSixSixOne = Utility.version.isGT(swVersion, '6.6.1.1');\r",
+                      "const isNeededVersion = (isSixFive && isNotSixSix) || isSixSixOne;\r",
+                      "\r",
                       "// token sync calls the pipeline that saves the new context token to App storage\r",
                       "pm.test(\"Check that we got a token sync payload\", function () {\r",
                       "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
                       "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
                       "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
                       "    pm.expect(attribs).to.not.be.undefined;\r",
-                      "    pm.expect(attribs.properties.syncToken).to.be.true;\r",
-                      "    pm.expect(attribs.properties.token).to.be.a('string').to.not.eql(pm.environment.get('gen_contextToken'));\r",
-                      "    pm.expect(attribs.properties.guest).to.be.false;\r",
-                      "    pm.environment.set('gen_contextToken', attribs.properties.token);\r",
+                      "    if (isNeededVersion) {\r",
+                      "        pm.expect(attribs.properties.syncToken).to.be.true;\r",
+                      "        pm.expect(attribs.properties.token).to.be.a('string').to.not.eql(pm.environment.get('gen_contextToken'));\r",
+                      "        pm.expect(attribs.properties.guest).to.be.false;\r",
+                      "        pm.environment.set('gen_contextToken', attribs.properties.token);\r",
+                      "    } else {\r",
+                      "        console.log('Skipping version change check, because SW is version: ' + swVersion);\r",
+                      "    }\r",
                       "});\r",
                       ""
                     ],
@@ -5814,14 +5872,16 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
                   "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v1');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -5836,7 +5896,8 @@
                   "    }\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -5874,14 +5935,16 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
                   "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v1');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -5896,7 +5959,8 @@
                   "    }\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -5934,14 +5998,16 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
                   "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app.is-sg-codebase-v2');\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -5956,7 +6022,8 @@
                   "    }\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -5994,14 +6061,16 @@
               "script": {
                 "exec": [
                   "// Load the HTML response to $\r",
-                  "const $ = cheerio.load(pm.response.text());\r",
+                  "const pkg = require('cheerio')\r",
+                  "const $ = pkg.load(pm.response.text());\r",
                   "\r",
                   "pm.test(\"Check we redirected to register page\", function () {\r",
                   "    const bodyClass = $('.is-ctl-auth.is-act-loginpage.is-sg-app')\r",
                   "    pm.expect(bodyClass).to.be.lengthOf(0);\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             },
             {
@@ -6016,7 +6085,8 @@
                   "    }\r",
                   "});"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -6129,7 +6199,20 @@
           "Utility.getByItemNumber = (list, value) => getItemByKey(list, 'item_number', value);",
           "function getItemByKey(list, key, value, strict = true) {",
           "    return list.find(item => strict ? item[key] === value : item[key].includes(value));",
-          "};"
+          "};",
+          "",
+          "",
+          "// Version functionality",
+          "// NB! does not handle ‘1.0.0-alpha’ < ‘1.0.0’ cases",
+          "Utility.version = {};",
+          "const padVersion = (version) => {",
+          "    version = version.split('-')[0];  // Strip parts after dash",
+          "    return version.split('.').map(part => part.padStart(10, '0')).join('.');",
+          "}",
+          "const versionCompare = (a, b) => padVersion(a).localeCompare(padVersion(b), undefined, { numeric: true, sensitivity: 'base' });",
+          "Utility.version.isLT = (a, b) => versionCompare(a, b) < 0;",
+          "Utility.version.isGT = (a, b) => versionCompare(a, b) > 0;",
+          "Utility.version.isGTE = (a, b) => versionCompare(a, b) >= 0;"
         ]
       }
     },

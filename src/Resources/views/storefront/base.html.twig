@@ -18,7 +18,6 @@
 {% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppVersion }}{% endif %}{% endblock %}
 
 {% block base_body_script %}
-    {{ dump() }}
     {{ parent() }}
 
     {% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
@@ -28,8 +27,7 @@
         isSgWebView: app.request.cookies.get('sgWebView') === '1',
         properties: {
             referer: app.request.headers.get('referer', '')|sw_sanitize,
-            ...tokenSyncProps
-        }
+        }|replace_recursive(tokenSyncProps)
     }) %}
 
     {% block sgwebcheckout_plugin_init %}
