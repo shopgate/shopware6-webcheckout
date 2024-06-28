@@ -2,11 +2,11 @@ import AbstractEvent from './abstract-event';
 
 export default class LoginEvent extends AbstractEvent {
     supports(controllerName, actionName, properties) {
-        const isRegistrationPage = controllerName === 'sgwebcheckout' && actionName === 'registered';
+        const isPostRegisterPage = controllerName === 'sgwebcheckout' && actionName === 'registered';
         const isCheckoutPage = controllerName === 'checkout' && actionName === 'confirmpage';
 
         // login user after registration
-        return isRegistrationPage || (!properties.guest && isCheckoutPage && properties.referer.includes('checkout/register'));
+        return isPostRegisterPage || (!properties.guest && isCheckoutPage && properties.referer.includes('checkout/register'));
     }
 
     /**

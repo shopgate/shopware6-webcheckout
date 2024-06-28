@@ -2,7 +2,7 @@
 
 namespace Shopgate\WebcheckoutSW6\Storefront\Controller;
 
-use Monolog\Logger;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use ReallySimpleJWT\Exception\BuildException;
 use ReallySimpleJWT\Exception\EncodeException;
@@ -53,9 +53,14 @@ class SGWebcheckoutController extends StorefrontController
 
             return $this->redirectToRoute($registerRoute, $parameters);
         }
-        $violations = $this->customerManager->logoutCustomer($context, $dataBag);
 
-        return $this->redirectToRoute('frontend.account.login.page', array_merge($parameters, $violations));
+        $violations = $this->customerManager->logoutCustomer($context, $dataBag);
+        $export = array_merge(
+            $parameters,
+            isset($violations['formViolations']) ? ['formViolations' => $violations['formViolations']]: []
+        );
+
+        return $this->redirectToRoute('frontend.account.login.page', $export);
     }
 
     #[Route(path: '/sgwebcheckout/registered', name: 'frontend.sgwebcheckout.registered', methods: ['GET'])]
@@ -85,30 +90,36 @@ class SGWebcheckoutController extends StorefrontController
     {
         $token = $request->query->get('token', '');
         if (!$this->tokenManager->validateToken($token)) {
-            $this->log(Logger::WARNING, $request, 'Token expired or invalid');
+            $this->log(Level::Warning, $request, 'Token expired or invalid');
             $page = $this->genericPageLoader->load($request, $context);
             return $this->renderStorefront('@SgateWebcheckoutSW6/sgwebcheckout/page/spinner.html.twig', [
                 'page' => $page
             ]);
         }
+        $currentToken = $this->tokenManager->getContextToken($token);
+        // case where a customer is logged in through a session cookie (inApp browser)
+        // we log them out in case this is an attempt to register
         if ($context->getCustomer()) {
-            // if we don't log out, then context token can change. Which de-sync's /w App context token.
-            $this->customerManager->logoutCustomer($context, $dataBag);
+            $currentToken = $this->customerManager->logoutCustomer($context, $dataBag)['token'] ?? $currentToken;
         }
 
+        // load customerId from encrypted token
         $customerId = $this->tokenManager->getCustomerId($token);
         if ($customerId) {
-            $this->customerManager->loginCustomerById($customerId, $context);
+            $context = $this->customerManager->loginCustomerById($customerId, $context);
+            $context->getToken() !== $currentToken && $dataBag->set('sgTokenNeedsSync', 1);
         } else {
-            $this->log(Logger::INFO, $request, 'Signing in as guest token');
-            $contextToken = $this->tokenManager->getContextToken($token);
-            $this->customerManager->loginByContextToken($contextToken, $request, $context);
+            $this->log(Level::Info, $request, 'Signing in as guest token');
+            $this->customerManager->loginByContextToken($currentToken, $request, $context);
         }
 
-        return $this->getRedirect($request);
+        return $this->getRedirect($request, $dataBag->all());
     }
 
-    #[Route(path: '/store-api/sgwebcheckout/login/token', name: 'store-api.sgwebcheckout.login.token', defaults: ['_routeScope' => ['store-api'], '_contextTokenRequired' => true], methods: [
+    #[Route(path: '/store-api/sgwebcheckout/login/token', name: 'store-api.sgwebcheckout.login.token', defaults: [
+        '_routeScope' => ['store-api'],
+        '_contextTokenRequired' => true
+    ], methods: [
         'GET',
         'POST'
     ])]
@@ -121,30 +132,29 @@ class SGWebcheckoutController extends StorefrontController
     public function loginToken(Request $request, SalesChannelContext $context): JsonResponse
     {
         $customerId = $context->getCustomer()?->getId();
-        $this->log(Logger::DEBUG, $request, 'Token for customerId: ' . $customerId);
+        $this->log(Level::Info, $request, 'Token for customerId: ' . $customerId);
         return new JsonResponse(
             $this->tokenManager->createToken($context->getToken(), $request->getHost(), $customerId)
         );
     }
 
-    private function log(int $code, Request $request, string $message): void
+    private function log(Level $code, Request $request, string $message): void
     {
-        $this->logger->log($code, $request->attributes->get('_route'), ['additionalData' => $message]);
+        $this->logger->log($code->value, $request->attributes->get('_route'), ['additionalData' => $message]);
     }
 
     /**
      * Handles redirect with fallback
      */
-    private function getRedirect(Request $request): RedirectResponse
+    private function getRedirect(Request $request, array $parameters = []): RedirectResponse
     {
         $redirectPage = $request->query->get('redirectTo', 'frontend.checkout.confirm.page');
         $isCheckout = $request->get('sgcloud_checkout', '0');
-        $query = http_build_query(['sgcloud_checkout' => $isCheckout]);
+        $params = array_merge(['sgcloud_checkout' => $isCheckout], $parameters);
+        $query = http_build_query($params);
 
-        return $this->redirect(
-            !str_contains($redirectPage, 'http')
-                ? $this->generateUrl($redirectPage)
-                : http_build_url($redirectPage, ['query' => $query], HTTP_URL_JOIN_QUERY)
-        );
+        return !str_contains($redirectPage, 'http')
+            ? $this->redirectToRoute($redirectPage, $params)
+            : $this->redirect(http_build_url($redirectPage, ['query' => $query], HTTP_URL_JOIN_QUERY));
     }
 }
