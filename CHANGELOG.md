@@ -1,3 +1,8 @@
+# 2.2.3
+
+- added compiled frontend JS file
+- removed compatibility with 6.6.0.0+
+
 # 2.2.2
 
 - fixed inApp session drops after visiting checkout/profile pages for SW 6.5.8.9+, 6.6.1.1+
