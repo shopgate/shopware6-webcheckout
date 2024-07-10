@@ -1,3 +1,9 @@
+# 3.0.0
+
+ - added pre-compiled JS file
+ - optimized JS storefront imports
+ - removed support for version Shopware 6.5
+
 # 2.2.2
 
 - fixed inApp session drops after visiting checkout/profile pages for SW 6.5.8.9+, 6.6.1.1+
