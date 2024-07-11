@@ -7,4 +7,3 @@ package-lock.json
 pnpm-lock.yaml
 var
 *.map
-**/sgate-webcheckout-s-w6.js

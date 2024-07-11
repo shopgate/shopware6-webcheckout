@@ -1,7 +1,6 @@
-import Plugin from 'src/plugin-system/plugin.class';
 import SGWebcheckoutEventManager from './event.manager';
 
-export default class SgWebcheckoutAppPlugin extends Plugin {
+export default class SgWebcheckoutAppPlugin extends window.PluginBaseClass {
     /**
      * @type SGWebcheckout.options
      */
