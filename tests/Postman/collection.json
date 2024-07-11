@@ -2120,51 +2120,6 @@
           "name": "Customer token swap",
           "item": [
             {
-              "name": "unset front session",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
-                      "const jar = pm.cookies.jar();\r",
-                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});\r",
-                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{sw_endpoint_frontend}}",
-                  "host": [
-                    "{{sw_endpoint_frontend}}"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
               "name": "Log in a customer",
               "event": [
                 {
@@ -2353,7 +2308,18 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist",
+                      "const jar = pm.cookies.jar();",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -2364,9 +2330,15 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "Cookie",
-                    "value": "sgWebView=1;",
+                    "key": "User-Agent",
+                    "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
                     "type": "text"
+                  },
+                  {
+                    "key": "Cookie",
+                    "value": "sgWebView=1",
+                    "type": "text",
+                    "disabled": true
                   }
                 ],
                 "url": {
@@ -2554,7 +2526,245 @@
                       "const swVersion = pm.environment.get('gen_shopware_version');\r",
                       "const isSixFive = Utility.version.isGTE(swVersion, '6.5.8.9');\r",
                       "const isNotSixSix = Utility.version.isLT(swVersion, '6.6.0.0');\r",
-                      "const isSixSixOne = Utility.version.isGT(swVersion, '6.6.1.1');\r",
+                      "const isSixSixOne = Utility.version.isGTE(swVersion, '6.6.1.1');\r",
+                      "const isLogoutFixVersion = (isSixFive && isNotSixSix) || isSixSixOne;\r",
+                      "\r",
+                      "// token sync calls the pipeline that saves the new context token to App storage\r",
+                      "pm.test(\"Check that we got a token sync payload\", function () {\r",
+                      "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
+                      "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
+                      "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
+                      "    pm.expect(attribs).to.not.be.undefined;\r",
+                      "    pm.expect(attribs.properties.token).to.be.a('string');\r",
+                      "    pm.expect(attribs.properties.guest).to.be.false;\r",
+                      "    if (isLogoutFixVersion) {\r",
+                      "        pm.expect(attribs.properties.syncToken).to.be.true;\r",
+                      "        pm.expect(attribs.properties.token).to.not.eql(pm.environment.get('gen_contextToken'));\r",
+                      "        pm.environment.set('gen_contextToken', attribs.properties.token);\r",
+                      "    } else {\r",
+                      "        console.log('Skipping version change check, because SW is version: ' + swVersion);\r",
+                      "        pm.expect(attribs.properties.token).to.eql(pm.environment.get('gen_contextToken'));\r",
+                      "    }\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "// we do not erase cookies as we want to logout (receive new token)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Cookie",
+                    "value": "sgWebView=1",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.account.home.page",
+                  "host": [
+                    "{{sw_endpoint_frontend}}"
+                  ],
+                  "path": [
+                    "sgwebcheckout",
+                    "login"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "{{gen_login_token}}"
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "frontend.account.home.page"
+                    }
+                  ]
+                },
+                "description": "The customer is logged out here from the saved session & thus gets a new context token"
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch the current context",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Customer token did not change\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{gen_accessKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "sw-access-key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
+                  },
+                  {
+                    "key": "sw-context-token",
+                    "value": "{{gen_contextToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{sw_store_api}}/context",
+                  "host": [
+                    "{{sw_store_api}}"
+                  ],
+                  "path": [
+                    "context"
+                  ]
+                },
+                "description": "Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more."
+              },
+              "response": []
+            },
+            {
+              "name": "get sg login token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Has token\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.token).to.be.a('string')\r",
+                      "    pm.environment.set(\"gen_login_token\", jsonData.token);\r",
+                      "    pm.expect(jsonData.expiration).to.be.a('number');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{gen_accessKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "sw-access-key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
+                  },
+                  {
+                    "key": "sw-context-token",
+                    "value": "{{gen_contextToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{sw_store_api}}/sgwebcheckout/login/token",
+                  "host": [
+                    "{{sw_store_api}}"
+                  ],
+                  "path": [
+                    "sgwebcheckout",
+                    "login",
+                    "token"
+                  ]
+                },
+                "description": "Fetches a list of compressed sitemap files, which are often used by search engines."
+              },
+              "response": []
+            },
+            {
+              "name": "FE address",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const pkg = require('cheerio')\r",
+                      "const $ = pkg.load(pm.response.text());\r",
+                      "pm.test(\"Check we are on the right page\", function () {\r",
+                      "    const bodyClass = $('.is-ctl-address.is-act-accountaddressoverview')\r",
+                      "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+                      "});\r",
+                      "\r",
+                      "// token will change on logout only in patched versions\r",
+                      "const swVersion = pm.environment.get('gen_shopware_version');\r",
+                      "const isSixFive = Utility.version.isGTE(swVersion, '6.5.8.9');\r",
+                      "const isNotSixSix = Utility.version.isLT(swVersion, '6.6.0.0');\r",
+                      "const isSixSixOne = Utility.version.isGTE(swVersion, '6.6.1.1');\r",
                       "const isLogoutFixVersion = (isSixFive && isNotSixSix) || isSixSixOne;\r",
                       "\r",
                       "// token sync calls the pipeline that saves the new context token to App storage\r",
@@ -2584,7 +2794,7 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "// we do not erase cookies as we want to logout (receive new token)"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -2601,7 +2811,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.account.home.page",
+                  "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo={{sw_endpoint_frontend}}/account/address",
                   "host": [
                     "{{sw_endpoint_frontend}}"
                   ],
@@ -2616,7 +2826,12 @@
                     },
                     {
                       "key": "redirectTo",
-                      "value": "frontend.account.home.page"
+                      "value": "frontend.account.address.page",
+                      "disabled": true
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "{{sw_endpoint_frontend}}/account/address"
                     }
                   ]
                 },
@@ -2625,7 +2840,7 @@
               "response": []
             },
             {
-              "name": "Fetch the current context",
+              "name": "Fetch the current context Copy",
               "event": [
                 {
                   "listen": "test",
@@ -3058,9 +3273,15 @@
                     "exec": [
                       "pm.test(\"Status code is 200\", function () {",
                       "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Check line items\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.lineItems).to.be.a('array').lengthOf(1)",
                       "});"
                     ],
-                    "type": "text/javascript"
+                    "type": "text/javascript",
+                    "packages": {}
                   }
                 }
               ],
@@ -3247,7 +3468,18 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist",
+                      "const jar = pm.cookies.jar();",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -3256,7 +3488,13 @@
               ],
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                   "host": [
@@ -3440,7 +3678,13 @@
               ],
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}",
                   "host": [
@@ -3525,46 +3769,6 @@
                   ]
                 },
                 "description": "This route deletes the cart of the customer."
-              },
-              "response": []
-            },
-            {
-              "name": "unset front session",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
-                      "const jar = pm.cookies.jar();\r",
-                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{sw_endpoint_frontend}}",
-                  "host": [
-                    "{{sw_endpoint_frontend}}"
-                  ]
-                }
               },
               "response": []
             }
@@ -3898,8 +4102,18 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
-                  "\r",
-                  ""
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});\r",
+                  "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -3908,7 +4122,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token={{gen_login_token}}&redirectTo=frontend.checkout.cart.page",
               "host": [
@@ -3927,46 +4147,6 @@
                   "key": "redirectTo",
                   "value": "frontend.checkout.cart.page"
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "unset front session",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
-                  "const jar = pm.cookies.jar();\r",
-                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
-                  "    if (error) {\r",
-                  "        console.log(error.message)\r",
-                  "    }\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{sw_endpoint_frontend}}",
-              "host": [
-                "{{sw_endpoint_frontend}}"
               ]
             }
           },
@@ -4309,7 +4489,13 @@
                   ],
                   "request": {
                     "method": "GET",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "User-Agent",
+                        "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                        "type": "text"
+                      }
+                    ],
                     "url": {
                       "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?redirectTo={{redirect}}&sgcloud_checkout=1&token={{gen_login_token}}",
                       "host": [
@@ -4806,8 +4992,18 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
-                  "\r",
-                  ""
+                  "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+                  "const jar = pm.cookies.jar();\r",
+                  "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});\r",
+                  "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
+                  "    if (error) {\r",
+                  "        console.log(error.message)\r",
+                  "    }\r",
+                  "});"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -4816,7 +5012,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?token=111",
               "host": [
@@ -5248,51 +5450,6 @@
           "name": "Is Shopgate rule",
           "item": [
             {
-              "name": "unset front session",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
-                      "const jar = pm.cookies.jar();\r",
-                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});\r",
-                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{sw_endpoint_frontend}}",
-                  "host": [
-                    "{{sw_endpoint_frontend}}"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
               "name": "SWS: Fetch the current context",
               "event": [
                 {
@@ -5638,7 +5795,18 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist",
+                      "const jar = pm.cookies.jar();",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -5812,51 +5980,6 @@
                   "body": "<!DOCTYPE html>\n<html lang=\"en-GB\"\n      itemscope=\"itemscope\"\n      itemtype=\"https://schema.org/WebPage\">\n    <head>\n    </head>\n    <body class=\"is-ctl-checkout is-act-confirmpage\">\n        <header class=\"header-minimal\">\n        </header>\n        <main class=\"content-main\">\n            <div class=\"container\">\n                <div class=\"container-main\">\n                    <div class=\"checkout\">\n                        <div class=\"checkout-container\">\n                            <div class=\"checkout-main\">\n                                 <h1 class=\"confirm-main-header\">Complete order </h1>\n                                <div class=\"d-none hidden-line-items-information\"\n         data-currency=\"EUR\"\n         data-shipping=\"5.5\"\n         data-value=\"1493.35\"\n         data-tax=\"238.44\"\n    >\n                                    <span class=\"hidden-line-item\"\n                      data-id=\"5c5ad48ee35a441d8057ae7433f840a2\"\n                      data-name=\"Main product\"\n                      data-quantity=\"3\"\n                      data-price=\"495.95\">\n                </span>\n                                </div>\n                            </div>\n                            <div class=\"checkout-aside \">\n                                <div class=\"checkout-aside-container\">\n                                    <div class=\"checkout-aside-summary\">\n                                        <h2 class=\"checkout-aside-summary-header\">\n                                                    Summary\n                                                </h2>\n                                        <div class=\"checkout-aside-summary-list-container\">\n                                            <div class=\"checkout-aside-summary-container\">\n                                                <dl class=\"row checkout-aside-summary-list no-gutters \">\n                                                    <dt class=\"col-7 checkout-aside-summary-label\">\n            Total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value\">\n            €1,487.85*\n        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label\">\n                    Shipping costs\n                </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value\">\n                    €5.50*\n                </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label checkout-aside-summary-total\">\n            Grand total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value checkout-aside-summary-total\">\n            €1,493.35*        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label summary-net\">\n            Net total\n        </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value summary-net\">\n            €1,254.91\n        </dd>\n                                                    <dt class=\"col-7 checkout-aside-summary-label summary-tax\">\n                    plus 19% VAT\n                </dt>\n                                                    <dd class=\"col-5 checkout-aside-summary-value summary-tax\">\n                    €238.44\n                </dd>\n                                                </dl>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"checkout-aside-action\">\n                                        <form id=\"confirmOrderForm\"\n              action=\"/checkout/order\"\n              data-form-csrf-handler=\"true\"\n              data-form-preserver=\"true\"\n              data-form-submit-loader=\"true\"\n              method=\"post\">\n                                            <input type=\"hidden\" name=\"_csrf_token\" value=\"965.YpHY3rFSoHnWYiHlt25UP_e-MkKxcTyePWxI-LC3Nfk.Mua9jsIx0DuOOn6J1RcfRbLpAXaEElrGECAPgtHQVsEE54nm4SjCTrhbEQ\">\n                                            <button id=\"confirmFormSubmit\"\n                        class=\"btn btn-primary btn-block btn-lg\"\n                        form=\"confirmOrderForm\"\n                                            type=\"submit\">\n                    Submit order\n                </button>\n                                        </form>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </main>\n        <footer class=\"footer-minimal\">\n        </footer>\n</body>\n</html>"
                 }
               ]
-            },
-            {
-              "name": "unset front session",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
-                      "const jar = pm.cookies.jar();\r",
-                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});\r",
-                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {\r",
-                      "    if (error) {\r",
-                      "        console.log(error.message)\r",
-                      "    }\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{sw_endpoint_frontend}}",
-                  "host": [
-                    "{{sw_endpoint_frontend}}"
-                  ]
-                }
-              },
-              "response": []
             }
           ],
           "description": "Any tests related to Is Shopgate WebC check"
