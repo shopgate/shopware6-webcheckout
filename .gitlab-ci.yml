@@ -70,7 +70,7 @@ newman:
     matrix:
       - PLATFORM_BRANCH:
           - 6.6.0.0
-          - 6.6.4.0
+          - 6.6.5.1
       - PHP_VERSION:
           - '8.3'
   except:
