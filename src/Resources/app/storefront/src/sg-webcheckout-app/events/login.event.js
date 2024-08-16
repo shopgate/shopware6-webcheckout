@@ -19,6 +19,7 @@ export default class LoginEvent extends AbstractEvent {
     execute(parameters) {
         if (!parameters) {
             this.log('Login success, but no context token is passed from twig template');
+            return
         }
         window.SGAppConnector.sendPipelineRequest(
             'shopgate.user.loginUser.v1',

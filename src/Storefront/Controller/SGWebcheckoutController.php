@@ -57,7 +57,7 @@ class SGWebcheckoutController extends StorefrontController
         $violations = $this->customerManager->logoutCustomer($context, $dataBag);
         $export = array_merge(
             $parameters,
-            isset($violations['formViolations']) ? ['formViolations' => $violations['formViolations']]: []
+            isset($violations['formViolations']) ? ['formViolations' => $violations['formViolations']] : []
         );
 
         return $this->redirectToRoute('frontend.account.login.page', $export);

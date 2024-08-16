@@ -27,8 +27,12 @@ trait ShopgateDetectTrait
         return (bool) $sgCookie;
     }
 
-    private function isShopgate(Request $request): bool
+    private function isShopgate(?Request $request): bool
     {
+        if ($request === null) {
+            return false;
+        }
+
         $sgCookie = $this->handleDevelopmentCookie($request);
         $sgAgent = str_contains((string) $request->headers->get('User-Agent'), 'libshopgate');
         $hasSession = $request->hasSession();
@@ -40,11 +44,9 @@ trait ShopgateDetectTrait
     /**
      * Native SG App should have a Codebase variable with
      * a version higher than 11
-     *
-     * @param Request $request
-     * @return bool
      */
-    private function isNativeBase(Request $request): bool {
+    private function isNativeBase(Request $request): bool
+    {
         $regex = "/libshopgate.*?Codebase:(\d+\.\d+(\.\d+)?)/";
         preg_match($regex, (string) $request->headers->get('User-Agent'), $matches);
 
