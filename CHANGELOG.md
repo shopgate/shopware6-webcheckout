@@ -1,3 +1,7 @@
+# 2.2.4
+
+- fixed issue with observer assuming request is not null
+
 # 2.2.3
 
 - added compiled frontend JS file
