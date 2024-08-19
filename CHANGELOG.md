@@ -1,3 +1,7 @@
+# 3.0.1
+
+- fixed issue with observer assuming request is not null
+
 # 3.0.0
 
  - added pre-compiled JS file

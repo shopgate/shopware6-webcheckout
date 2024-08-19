@@ -4,7 +4,6 @@ namespace Shopgate\WebcheckoutSW6\Services;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
-use Exception;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Defaults;
