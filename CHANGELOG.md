@@ -1,3 +1,7 @@
+# 3.1.0
+
+- added event subscriber that closes inApp when product buy button is clicked
+
 # 3.0.1
 
 - fixed issue with observer assuming request is not null
