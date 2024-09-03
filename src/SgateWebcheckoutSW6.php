@@ -95,6 +95,7 @@ class SgateWebcheckoutSW6 extends Plugin
  */
  .is-ctl-product.is-act-index.is-sg-app {
   .cms-breadcrumb.container,
+  .cms-element-product-slider,
   .product-detail-review-teaser {
     display: none;
   }
