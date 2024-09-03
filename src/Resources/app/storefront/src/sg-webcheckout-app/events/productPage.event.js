@@ -23,9 +23,10 @@ export default class ProductPageEvent extends AbstractEvent {
                 'c': 'broadcastEvent',
                 'p': {
                     'event': 'closeInAppBrowser',
-                    'parameters': [{'redirectTo': '/'}]
+                    'parameters': [{'redirectTo': '/cart'}]
                 }
             }
         );
+        BackdropUtil.remove();
     }
 }
