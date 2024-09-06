@@ -2,6 +2,7 @@ import CloseBrowserEvent from './events/closeBrowser.event';
 import LoginEvent from './events/login.event';
 import PurchaseEvent from './events/purchase.event';
 import TokenSyncEvent from './events/tokenSync.event';
+import ProductPageEvent from './events/productPage.event';
 
 export default class SGWebcheckoutEventManager {
     /**
@@ -26,6 +27,7 @@ export default class SGWebcheckoutEventManager {
         this.registerEvent(LoginEvent);
         this.registerEvent(PurchaseEvent);
         this.registerEvent(TokenSyncEvent);
+        this.registerEvent(ProductPageEvent);
     }
 
     /**

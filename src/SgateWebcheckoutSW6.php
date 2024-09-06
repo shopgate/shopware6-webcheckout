@@ -91,6 +91,23 @@ class SgateWebcheckoutSW6 extends Plugin
 }
 
 /**
+ * Product pages
+ */
+ .is-ctl-product.is-act-index.is-sg-app {
+  .cms-breadcrumb.container,
+  .cms-element-product-slider,
+  .product-detail-review-teaser {
+    display: none;
+  }
+
+  .product-detail-description-text a,
+  a.product-detail-manufacturer-link {
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+/**
  * Login page
  */
 .is-ctl-auth.is-act-loginpage.is-sg-app .col-lg-4,
