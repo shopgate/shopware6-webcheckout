@@ -1,3 +1,9 @@
+# 3.2.0
+
+- added a guest context when logging in to prevent token changes
+- removed logout functionality to prevent token changes
+- removed v2.2.2 re-sync with App if token changed (unneeded complication)
+
 # 3.1.0
 
 - added event subscriber that closes inApp when product buy button is clicked
