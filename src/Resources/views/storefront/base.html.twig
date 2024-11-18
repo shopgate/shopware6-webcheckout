@@ -6,15 +6,6 @@
     {% set sgAppVersion = "is-sg-codebase-v2" %}
 {% endif %}
 
-{% set tokenSyncProps = {} %}
-{% if page.header.extensions.sg_webcheckout_data.tokenNeedsSync %}
-    {% set tokenSyncProps = {
-        syncToken: true,
-        token: context.token,
-        guest: (context.customer and context.customer.guest)
-    } %}
-{% endif %}
-
 {% block base_body_classes %}{{ parent() }}{% if page.header.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppVersion }}{% endif %}{% endblock %}
 
 {% block base_body_script %}
@@ -27,7 +18,7 @@
         isSgWebView: app.request.cookies.get('sgWebView') === '1',
         properties: {
             referer: app.request.headers.get('referer', '')|sw_sanitize,
-        }|replace_recursive(tokenSyncProps)
+        }
     }) %}
 
     {% block sgwebcheckout_plugin_init %}

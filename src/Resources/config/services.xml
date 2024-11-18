@@ -45,6 +45,7 @@
         <service id="Shopgate\WebcheckoutSW6\Services\CustomerManager">
             <argument key="$logoutRoute" type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
             <argument key="$customerRepository" type="service" id="customer.repository"/>
+            <argument key="$contextFactory" type="service" id="Shopware\Core\System\SalesChannel\Context\CachedSalesChannelContextFactory"/>
         </service>
         <service id="Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleCondition">
             <tag name="shopware.rule.definition"/>
