@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "641dc6da-887a-4794-abfd-1af2729487c1",
+    "_postman_id": "3135975b-74a4-4cfe-af90-4074dd4d214c",
     "name": "SW6 SG Webcheckout - v2",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "5289226"
@@ -2117,7 +2117,7 @@
           "description": "Test merge scenario:\n\n*   customer 3 items\n*   logout\n*   guest 1 item\n*   login\n*   customer 3 items + 1 item"
         },
         {
-          "name": "Customer token swap",
+          "name": "Customer token (no change)",
           "item": [
             {
               "name": "Log in a customer",
@@ -2172,7 +2172,8 @@
                   {
                     "key": "sw-context-token",
                     "value": "{{gen_contextToken}}",
-                    "type": "text"
+                    "type": "text",
+                    "disabled": true
                   }
                 ],
                 "body": {
@@ -2295,8 +2296,6 @@
                       "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
                       "   \r",
                       "    pm.expect(attribs).to.not.be.undefined;\r",
-                      "    // token was not changed on first attempt, we do not need to sync token\r",
-                      "    pm.expect(attribs.properties.syncToken).to.be.undefined;\r",
                       "});\r",
                       ""
                     ],
@@ -2374,8 +2373,18 @@
                       "pm.test(\"Customer token did not change\", function () {\r",
                       "    var jsonData = pm.response.json();\r",
                       "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "    const oldToken = pm.environment.get('gen_contextToken');\r",
+                      "    pm.expect(jsonData.token).to.eq(oldToken);\r",
                       "});"
                     ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "packages": {},
                     "type": "text/javascript"
                   }
                 }
@@ -2509,7 +2518,7 @@
               "response": []
             },
             {
-              "name": "Frontend login (new token)",
+              "name": "Frontend login",
               "event": [
                 {
                   "listen": "test",
@@ -2522,31 +2531,14 @@
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                       "});\r",
                       "\r",
-                      "// token will change on logout only in patched versions\r",
-                      "const swVersion = pm.environment.get('gen_shopware_version');\r",
-                      "const isSixFive = Utility.version.isGTE(swVersion, '6.5.8.9');\r",
-                      "const isNotSixSix = Utility.version.isLT(swVersion, '6.6.0.0');\r",
-                      "const isSixSixOne = Utility.version.isGTE(swVersion, '6.6.1.1');\r",
-                      "const isLogoutFixVersion = (isSixFive && isNotSixSix) || isSixSixOne;\r",
-                      "\r",
                       "// token sync calls the pipeline that saves the new context token to App storage\r",
                       "pm.test(\"Check that we got a token sync payload\", function () {\r",
                       "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
                       "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
                       "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
+                      "   \r",
                       "    pm.expect(attribs).to.not.be.undefined;\r",
-                      "    pm.expect(attribs.properties.token).to.be.a('string');\r",
-                      "    pm.expect(attribs.properties.guest).to.be.false;\r",
-                      "    if (isLogoutFixVersion) {\r",
-                      "        pm.expect(attribs.properties.syncToken).to.be.true;\r",
-                      "        pm.expect(attribs.properties.token).to.not.eql(pm.environment.get('gen_contextToken'));\r",
-                      "        pm.environment.set('gen_contextToken', attribs.properties.token);\r",
-                      "    } else {\r",
-                      "        console.log('Skipping version change check, because SW is version: ' + swVersion);\r",
-                      "        pm.expect(attribs.properties.token).to.eql(pm.environment.get('gen_contextToken'));\r",
-                      "    }\r",
-                      "});\r",
-                      ""
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -2612,8 +2604,18 @@
                       "pm.test(\"Customer token did not change\", function () {\r",
                       "    var jsonData = pm.response.json();\r",
                       "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "    const oldToken = pm.environment.get('gen_contextToken');\r",
+                      "    pm.expect(jsonData.token).to.eq(oldToken);\r",
                       "});"
                     ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "packages": {},
                     "type": "text/javascript"
                   }
                 }
@@ -2760,31 +2762,14 @@
                       "    pm.expect(bodyClass).to.be.lengthOf(1);\r",
                       "});\r",
                       "\r",
-                      "// token will change on logout only in patched versions\r",
-                      "const swVersion = pm.environment.get('gen_shopware_version');\r",
-                      "const isSixFive = Utility.version.isGTE(swVersion, '6.5.8.9');\r",
-                      "const isNotSixSix = Utility.version.isLT(swVersion, '6.6.0.0');\r",
-                      "const isSixSixOne = Utility.version.isGTE(swVersion, '6.6.1.1');\r",
-                      "const isLogoutFixVersion = (isSixFive && isNotSixSix) || isSixSixOne;\r",
-                      "\r",
                       "// token sync calls the pipeline that saves the new context token to App storage\r",
                       "pm.test(\"Check that we got a token sync payload\", function () {\r",
                       "    const sgTemplate = $('template[data-sg-webcheckout-app-plugin=]');\r",
                       "    pm.expect(sgTemplate).to.be.lengthOf(1);\r",
                       "    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
+                      "   \r",
                       "    pm.expect(attribs).to.not.be.undefined;\r",
-                      "    pm.expect(attribs.properties.token).to.be.a('string');\r",
-                      "    pm.expect(attribs.properties.guest).to.be.false;\r",
-                      "    if (isLogoutFixVersion) {\r",
-                      "        pm.expect(attribs.properties.syncToken).to.be.true;\r",
-                      "        pm.expect(attribs.properties.token).to.not.eql(pm.environment.get('gen_contextToken'));\r",
-                      "        pm.environment.set('gen_contextToken', attribs.properties.token);\r",
-                      "    } else {\r",
-                      "        pm.expect(attribs.properties.token).to.eql(pm.environment.get('gen_contextToken'));\r",
-                      "        console.log('Skipping version change check, because SW is version: ' + swVersion);\r",
-                      "    }\r",
-                      "});\r",
-                      ""
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {}
@@ -2840,7 +2825,7 @@
               "response": []
             },
             {
-              "name": "Fetch the current context Copy",
+              "name": "Fetch the current context",
               "event": [
                 {
                   "listen": "test",
@@ -2849,6 +2834,183 @@
                       "pm.test(\"Customer token did not change\", function () {\r",
                       "    var jsonData = pm.response.json();\r",
                       "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "    const oldToken = pm.environment.get('gen_contextToken');\r",
+                      "    pm.expect(jsonData.token).to.eq(oldToken);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{gen_accessKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "sw-access-key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
+                  },
+                  {
+                    "key": "sw-context-token",
+                    "value": "{{gen_contextToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{sw_store_api}}/context",
+                  "host": [
+                    "{{sw_store_api}}"
+                  ],
+                  "path": [
+                    "context"
+                  ]
+                },
+                "description": "Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more."
+              },
+              "response": []
+            },
+            {
+              "name": "Log in a customer",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Save context token\", function () {\r",
+                      "    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+                      "    const oldToken = pm.environment.get('gen_contextToken');\r",
+                      "    const newToken = pm.response.headers.get('Sw-Context-Token');\r",
+                      "    pm.expect(newToken, 'epxecting tokens not to change on API login').to.eq(oldToken);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "// Allow cookie deletion by going to cookies -> Domain Allowlist",
+                      "const jar = pm.cookies.jar();",
+                      "jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});",
+                      "jar.set(pm.environment.get('host'), 'sgWebView', '0', function (error) {",
+                      "    if (error) {",
+                      "        console.log(error.message)",
+                      "    }",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{gen_accessKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "sw-access-key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "(Required) Content type of the request"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "description": "(Required) Accepted response content types"
+                  },
+                  {
+                    "key": "sw-context-token",
+                    "value": "{{gen_contextToken}}",
+                    "description": "if it is set, it will force to regenerate the token!!!",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"{{userEmail}}\",\n  \"password\": \"{{userPass}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{sw_store_api}}/account/login",
+                  "host": [
+                    "{{sw_store_api}}"
+                  ],
+                  "path": [
+                    "account",
+                    "login"
+                  ]
+                },
+                "description": "Logs in customers given their credentials."
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch the current context",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Customer token did not change\", function () {\r",
+                      "    var jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.customer).to.be.not.null;\r",
+                      "    const oldToken = pm.environment.get('gen_contextToken');\r",
+                      "    pm.expect(jsonData.token).to.eq(oldToken);\r",
                       "});"
                     ],
                     "type": "text/javascript"

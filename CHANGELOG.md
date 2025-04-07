@@ -1,3 +1,9 @@
+# 2.3.0
+
+- added a guest context when logging in to prevent token changes
+- removed logout functionality to prevent token changes
+- removed v2.2.2 re-sync with App if token changed (unneeded complication)
+
 # 2.2.4
 
 - fixed issue with observer assuming request is not null

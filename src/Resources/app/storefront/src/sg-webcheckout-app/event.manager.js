@@ -1,7 +1,6 @@
 import CloseBrowserEvent from './events/closeBrowser.event';
 import LoginEvent from './events/login.event';
 import PurchaseEvent from './events/purchase.event';
-import TokenSyncEvent from './events/tokenSync.event';
 
 export default class SGWebcheckoutEventManager {
     /**

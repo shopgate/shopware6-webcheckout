@@ -5,14 +5,18 @@ namespace Shopgate\WebcheckoutSW6\Services;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
+use Shopware\Core\Checkout\Customer\Event\CustomerLogoutEvent;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\Routing\Event\SalesChannelContextResolvedEvent;
 use Shopware\Core\Framework\Routing\SalesChannelRequestContextResolver;
+use Shopware\Core\Framework\Util\Random;
+use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\PlatformRequest;
+use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
 use Shopware\Core\System\SalesChannel\Context\CartRestorer;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -28,7 +32,8 @@ class CustomerManager
         private readonly SalesChannelContextPersister $contextPersist,
         private readonly SalesChannelRequestContextResolver $contextResolver,
         private readonly AbstractLogoutRoute $logoutRoute,
-        private readonly Connection $connection
+        private readonly Connection $connection,
+        private readonly AbstractSalesChannelContextFactory $contextFactory
     ) {
     }
 
@@ -53,13 +58,15 @@ class CustomerManager
     public function loginCustomerById(string $customerId, SalesChannelContext $context): SalesChannelContext
     {
         $this->extendCustomerTokenLife($context->getToken(), $context->getSalesChannelId(), $customerId);
-        $newContext = $this->cartRestorer->restore($customerId, $context);
+        // prevents new token generation for customer
+        $blankContext = $this->contextFactory->create(Random::getAlphanumericString(32), $context->getSalesChannelId());
+        $newContext = $this->cartRestorer->restore($customerId, $blankContext);
         $this->customerRepository->update([
             [
                 'id' => $customerId,
                 'lastLogin' => new DateTimeImmutable(),
             ],
-        ], $context->getContext());
+        ], $newContext->getContext());
 
         $event = new CustomerLoginEvent($context, $newContext->getCustomer(), $newContext->getToken());
         $this->dispatcher->dispatch($event);
@@ -77,6 +84,12 @@ class CustomerManager
         } catch (ConstraintViolationException $formViolations) {
             return ['formViolations' => $formViolations];
         }
+    }
+
+    public function unsetStorefrontCustomerSession(SalesChannelContext $context): void
+    {
+        $event = new CustomerLogoutEvent($context, $context->getCustomer());
+        $this->dispatcher->dispatch($event);
     }
 
     /**

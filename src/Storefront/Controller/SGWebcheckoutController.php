@@ -37,7 +37,7 @@ class SGWebcheckoutController extends StorefrontController
      * SW6 allows the user to check out as guest, but that is only possible
      * when they are checking out & therefore directed to a special registry page.
      */
-    public function register(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
+    public function register(Request $request, SalesChannelContext $context): RedirectResponse
     {
         // identifies the registration call coming from App's checkout page
         $isCheckout = $request->get('sgcloud_checkout') === '1';
@@ -54,13 +54,10 @@ class SGWebcheckoutController extends StorefrontController
             return $this->redirectToRoute($registerRoute, $parameters);
         }
 
-        $violations = $this->customerManager->logoutCustomer($context, $dataBag);
-        $export = array_merge(
-            $parameters,
-            isset($violations['formViolations']) ? ['formViolations' => $violations['formViolations']] : []
-        );
+        // in case the customer is already logged in the inApp (we need to allow a new one to register)
+        $this->customerManager->unsetStorefrontCustomerSession($context);
 
-        return $this->redirectToRoute('frontend.account.login.page', $export);
+        return $this->redirectToRoute('frontend.account.login.page', $parameters);
     }
 
     #[Route(path: '/sgwebcheckout/registered', name: 'frontend.sgwebcheckout.registered', methods: ['GET'])]
@@ -88,29 +85,29 @@ class SGWebcheckoutController extends StorefrontController
      */
     public function login(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
     {
-        $token = $request->query->get('token', '');
-        if (!$this->tokenManager->validateToken($token)) {
+        $jwt = $request->query->get('token', '');
+        if (!$this->tokenManager->validateToken($jwt)) {
             $this->log(Level::Warning, $request, 'Token expired or invalid');
             $page = $this->genericPageLoader->load($request, $context);
             return $this->renderStorefront('@SgateWebcheckoutSW6/sgwebcheckout/page/spinner.html.twig', [
                 'page' => $page
             ]);
         }
-        $currentToken = $this->tokenManager->getContextToken($token);
+
         // case where a customer is logged in through a session cookie (inApp browser)
         // we log them out in case this is an attempt to register
         if ($context->getCustomer()) {
-            $currentToken = $this->customerManager->logoutCustomer($context, $dataBag)['token'] ?? $currentToken;
+            $this->customerManager->unsetStorefrontCustomerSession($context);
         }
 
         // load customerId from encrypted token
-        $customerId = $this->tokenManager->getCustomerId($token);
+        $customerId = $this->tokenManager->getCustomerId($jwt);
         if ($customerId) {
-            $context = $this->customerManager->loginCustomerById($customerId, $context);
-            $context->getToken() !== $currentToken && $dataBag->set('sgTokenNeedsSync', 1);
+            $this->customerManager->loginCustomerById($customerId, $context);
         } else {
             $this->log(Level::Info, $request, 'Signing in as guest token');
-            $this->customerManager->loginByContextToken($currentToken, $request, $context);
+            $token = $this->tokenManager->getContextToken($jwt);
+            $this->customerManager->loginByContextToken($token, $request, $context);
         }
 
         return $this->getRedirect($request, $dataBag->all());
