@@ -6,11 +6,11 @@ Shopware.Component.extend('is-shopgate-webcheckout', 'sw-condition-base', {
         selectValues() {
             return [
                 {
-                    label: this.$tc('global.sw-condition.condition.yes'),
+                    label: this.$tc('global.default.yes'),
                     value: true
                 },
                 {
-                    label: this.$tc('global.sw-condition.condition.no'),
+                    label: this.$tc('global.default.no'),
                     value: false
                 }
             ];

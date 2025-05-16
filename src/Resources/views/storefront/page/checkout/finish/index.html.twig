@@ -1,7 +1,7 @@
 {% sw_extends '@Storefront/storefront/page/checkout/finish/index.html.twig' %}
 
 {# Find out currency of the order (fallback to context) #}
-{% set currency = page.header.currencies.get(page.order.currencyId) %}
+{% set currency = page.currency %}
 {% if not currency %}
     {% set currency = context.currency %}
 {% endif %}
@@ -9,7 +9,7 @@
 {# Porduct data #}
 {% set SGCproducts = [] %}
 
-{% for lineItem in page.order.nestedLineItems %}
+{% for lineItem in page.order.lineItems.elements %}
     {% set calculatedTax = lineItem.price.calculatedTaxes.getAmount %}
     {% if context.taxState == "gross" %}
         {% set grossPrice = lineItem.price.unitPrice %}

@@ -1822,9 +1822,10 @@
 											"\r",
 											"pm.test(\"Check cart page\", function () {\r",
 											"    const totals = $('.hidden-line-items-information')\r",
-											"    const lineItem = $('.hidden-line-item')\r",
+											"    const lineItem = $('.hidden-line-items-information .hidden-line-item')\r",
 											"    pm.expect(totals).to.be.not.undefined;\r",
 											"    pm.expect(lineItem).to.be.not.undefined;\r",
+											"    console.log(lineItem)\r",
 											"    pm.expect(lineItem.length).to.eq(2, 'Should have 1 qty main + 3 qty main product');\r",
 											"});\r",
 											"\r",
@@ -2297,7 +2298,13 @@
 											"   \r",
 											"    pm.expect(attribs).to.not.be.undefined;\r",
 											"});\r",
-											""
+											"\r",
+											"pm.test(\"Check vieport that we set\", () => {\r",
+											"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+											"    const vieport = $('meta[name=\"viewport\"]');\r",
+											"    pm.expect(vieport).to.be.lengthOf(1);\r",
+											"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -2538,6 +2545,13 @@
 											"    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
 											"   \r",
 											"    pm.expect(attribs).to.not.be.undefined;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check vieport that we set\", () => {\r",
+											"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+											"    const vieport = $('meta[name=\"viewport\"]');\r",
+											"    pm.expect(vieport).to.be.lengthOf(1);\r",
+											"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
 											"});"
 										],
 										"type": "text/javascript",
@@ -2769,6 +2783,13 @@
 											"    const attribs = JSON.parse(sgTemplate[0].attribs['data-sg-webcheckout-app-plugin-options']);\r",
 											"   \r",
 											"    pm.expect(attribs).to.not.be.undefined;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check vieport that we set\", () => {\r",
+											"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+											"    const vieport = $('meta[name=\"viewport\"]');\r",
+											"    pm.expect(vieport).to.be.lengthOf(1);\r",
+											"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
 											"});"
 										],
 										"type": "text/javascript",
@@ -4253,8 +4274,15 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Check we redirected to logged out cart page\", function () {\r",
-									"    const bodyClass = $('.is-ctl-checkout.is-act-cartpage')\r",
+									"    const bodyClass = $('.is-ctl-checkout.is-act-cartpage.is-sg-app')\r",
 									"    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check vieport that we set\", () => {\r",
+									"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+									"    const vieport = $('meta[name=\"viewport\"]');\r",
+									"    pm.expect(vieport).to.be.lengthOf(1);\r",
+									"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -4628,8 +4656,15 @@
 													"const $ = pkg.load(pm.response.text());\r",
 													"\r",
 													"pm.test(\"Check we redirected to register cart page\", function () {\r",
-													"    const bodyClass = $('.is-ctl-register.is-act-checkoutregisterpage')\r",
+													"    const bodyClass = $('.is-ctl-register.is-act-checkoutregisterpage.is-sg-app')\r",
 													"    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check vieport that we set\", () => {\r",
+													"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+													"    const vieport = $('meta[name=\"viewport\"]');\r",
+													"    pm.expect(vieport).to.be.lengthOf(1);\r",
+													"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
 													"});"
 												],
 												"type": "text/javascript",
@@ -4897,7 +4932,8 @@
 													"const pkg = require('cheerio')\r",
 													"const $ = pkg.load(pm.response.text());\r",
 													"\r",
-													"pm.test(\"Check we redirected to regular registration page as we are logged out\", function () {\r",
+													"// \r",
+													"pm.test(\"Check we redirected to regular registration page, not checkout registration\", function () {\r",
 													"    const bodyClass = $('.is-ctl-auth.is-act-loginpage');\r",
 													"    pm.expect(bodyClass).to.be.lengthOf(1);\r",
 													"});"
@@ -4921,7 +4957,13 @@
 									],
 									"request": {
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+												"type": "text"
+											}
+										],
 										"url": {
 											"raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?redirectTo={{redirect}}&sgcloud_checkout=1&token={{gen_login_token}}",
 											"host": [
@@ -4989,10 +5031,293 @@
 									},
 									"response": []
 								}
-							]
+							],
+							"description": "case where a customer is logged out the app & trying to register again, we log them out from inApp"
 						}
 					],
 					"description": "Checks if the user is redirected to the proper registration page (see [SG-170](https://apite.atlassian.net/browse/SG-170))"
+				},
+				{
+					"name": "Registered",
+					"item": [
+						{
+							"name": "Log in a customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Save context token\", function () {\r",
+											"    pm.response.to.have.header(\"Sw-Context-Token\");\r",
+											"    pm.environment.set(\"gen_contextToken\", pm.response.headers.get('Sw-Context-Token'));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "{{gen_accessKey}}",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "sw-access-key",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": "(Required) Content type of the request"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": "(Required) Accepted response content types"
+									},
+									{
+										"key": "sw-context-token",
+										"value": "{{gen_contextToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"{{userEmail}}\",\n  \"password\": \"{{userPass}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{sw_store_api}}/account/login",
+									"host": [
+										"{{sw_store_api}}"
+									],
+									"path": [
+										"account",
+										"login"
+									]
+								},
+								"description": "Logs in customers given their credentials."
+							},
+							"response": []
+						},
+						{
+							"name": "get sg login token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Has token\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.token).to.be.a('string')\r",
+											"    pm.environment.set(\"gen_login_token\", jsonData.token);\r",
+											"    pm.expect(jsonData.expiration).to.be.a('number');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "{{gen_accessKey}}",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "sw-access-key",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": "(Required) Content type of the request"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": "(Required) Accepted response content types"
+									},
+									{
+										"key": "sw-context-token",
+										"value": "{{gen_contextToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{sw_store_api}}/sgwebcheckout/login/token",
+									"host": [
+										"{{sw_store_api}}"
+									],
+									"path": [
+										"sgwebcheckout",
+										"login",
+										"token"
+									]
+								},
+								"description": "Fetches a list of compressed sitemap files, which are often used by search engines."
+							},
+							"response": []
+						},
+						{
+							"name": "Frontend login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Load the HTML response to $\r",
+											"const pkg = require('cheerio')\r",
+											"const $ = pkg.load(pm.response.text());\r",
+											"\r",
+											"pm.test(\"Check we redirected to regular registration page, not checkout registration\", function () {\r",
+											"    const bodyClass = $('.is-ctl-sgwebcheckout.is-act-registered.is-sg-app');\r",
+											"    pm.expect(bodyClass).to.be.lengthOf(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check vieport that we set\", () => {\r",
+											"    // Checks <meta name=\"viewport\" content=\"user-scalable=no, width=device-width\">\r",
+											"    const vieport = $('meta[name=\"viewport\"]');\r",
+											"    pm.expect(vieport).to.be.lengthOf(1);\r",
+											"    pm.expect(vieport[0].attribs.content).to.eq('user-scalable=no, width=device-width')\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check spinner\", () => {\r",
+											"    const spinner = $('div[class=\"sg-spinner-wrapper\"]');\r",
+											"    pm.expect(spinner).to.be.lengthOf(1);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const endpoint = pm.globals.replaceIn(pm.environment.replaceIn(pm.environment.get(\"sw_endpoint_frontend\")));\r",
+											"const encodedUrl = encodeURIComponent(endpoint + '/sgwebcheckout/registered');\r",
+											"pm.variables.set('redirect', encodedUrl);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "PostmanRuntime Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 libshopgate/25.0 (RN Engage 11.0.0-beta.5 Codebase:11.0.0-beta.5) Mozilla/5.0 (Linux; Android 12; Nokia 5.3 Build/SKQ1.211230.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.143 Mobile Safari/537.36 libshopgate/25.0 (Jagdwelt 24 11.0.2 Codebase:11.0.2)",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{sw_endpoint_frontend}}/sgwebcheckout/login?redirectTo={{redirect}}&sgcloud_checkout=1&token={{gen_login_token}}",
+									"host": [
+										"{{sw_endpoint_frontend}}"
+									],
+									"path": [
+										"sgwebcheckout",
+										"login"
+									],
+									"query": [
+										{
+											"key": "redirectTo",
+											"value": "{{redirect}}"
+										},
+										{
+											"key": "sgcloud_checkout",
+											"value": "1"
+										},
+										{
+											"key": "token",
+											"value": "{{gen_login_token}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "unset front session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Allow cookie deletion by going to cookies -> Domain Allowlist\r",
+											"const jar = pm.cookies.jar();\r",
+											"jar.unset(pm.environment.get(\"host\"), 'session-', function (error) {\r",
+											"    if (error) {\r",
+											"        console.log(error.message)\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{sw_endpoint_frontend}}",
+									"host": [
+										"{{sw_endpoint_frontend}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Checks registered / spinner page"
 				}
 			]
 		},

@@ -1,11 +1,11 @@
-{% if page.header.extensions.sg_webcheckout_data %}
+{% if page.extensions.sg_webcheckout_data %}
 
     {% block sgwebcheckout_account_back_to_overview %}
 
         <a href="{{ path('frontend.account.home.page') }}"
-           title="{{ "account.editOrderBackToAccountButton"|trans|striptags }}"
+           title="{{ 'account.editOrderBackToAccountButton'|trans|striptags }}"
            class="btn btn-light sg-webcheckout-nav">
-            {{ "account.editOrderBackToAccountButton"|trans|sw_sanitize }}
+            {{ 'account.editOrderBackToAccountButton'|trans|sw_sanitize }}
         </a>
 
     {% endblock %}
