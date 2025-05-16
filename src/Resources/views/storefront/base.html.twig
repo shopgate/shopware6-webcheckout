@@ -9,9 +9,10 @@
 {% block base_body_classes %}{{ parent() }}{% if page.extensions.sg_webcheckout_data %} is-sg-app {{ sgAppVersion }}{% endif %}{% endblock %}
 
 {% block base_body_script %}
-    {{ parent() }}
-    {{ dump() }}
 
+    {{ parent() }}
+
+    <!-- SG base -->
     {% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
         controllerName: controllerName|lower,
         actionName: controllerAction|lower,
