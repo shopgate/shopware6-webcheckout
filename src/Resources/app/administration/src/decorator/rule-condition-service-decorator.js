@@ -4,7 +4,7 @@ import '../core/component/is-shopgate-webcheckout';
 Shopware.Application.addServiceProviderDecorator('ruleConditionDataProviderService', (ruleConditionService) => {
     ruleConditionService.addCondition('is_shopgate_webcheckout', {
         component: 'is-shopgate-webcheckout',
-        label: 'Is Shopgate Web Checkout',
+        label: 'sg.condition.is-webcheckout',
         scopes: ['global'],
         group: 'misc'
     });
