@@ -2,7 +2,7 @@
 
 namespace Shopgate\WebcheckoutSW6\System\Db\Rule;
 
-use Shopgate\Shopware\System\Db\EntityChecker;
+use Shopgate\WebcheckoutSW6\System\Db\EntityChecker;
 use Shopgate\WebcheckoutSW6\System\Db\ClassCastInterface;
 use Shopware\Core\Content\Rule\RuleEntity;
 

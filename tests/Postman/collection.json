@@ -1825,7 +1825,6 @@
 											"    const lineItem = $('.hidden-line-items-information .hidden-line-item')\r",
 											"    pm.expect(totals).to.be.not.undefined;\r",
 											"    pm.expect(lineItem).to.be.not.undefined;\r",
-											"    console.log(lineItem)\r",
 											"    pm.expect(lineItem.length).to.eq(2, 'Should have 1 qty main + 3 qty main product');\r",
 											"});\r",
 											"\r",
