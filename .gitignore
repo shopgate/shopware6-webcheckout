@@ -7,4 +7,4 @@ package-lock.json
 pnpm-lock.yaml
 var
 *.map
-*/.tmp
+**/.tmp

@@ -51,9 +51,8 @@ workflow:
     - bin/console plugin:refresh --quiet
     - bin/console plugin:install --quiet --activate $PLUGIN_NAME
     - bin/console sales-channel:update:domain "$HOSTNAME"
-    - bin/console secrets:set APP_SECRET --random --quiet
-    - bin/console secrets:set APP_SECRET --random --quiet --local
-    - bin/console secrets:list --reveal
+    - bin/console secrets:set APP_SECRET --random=256 --quiet
+    - bin/console secrets:set APP_SECRET --random=256 --quiet --local
     - >
       if bin/console debug:container --parameter kernel.plugin_infos --format json | grep -q "$PLUGIN_NAME";
         then echo "$PLUGIN_NAME is active";
@@ -71,6 +70,7 @@ newman:
       - PLATFORM_BRANCH:
           - 6.6.0.0
           - 6.6.10.4
+          - 6.7.0.0-rc4
       - PHP_VERSION:
           - '8.3'
   except:
