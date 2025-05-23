@@ -1,0 +1,23 @@
+{
+  "base": "/bundles/sgatewebcheckoutsw6/administration/",
+  "entryPoints": {
+    "sgate-webcheckout-s-w6": {
+      "css": [],
+      "dynamic": [],
+      "js": [
+        "/bundles/sgatewebcheckoutsw6/administration/assets/sgate-webcheckout-s-w6-DzJmIR0M.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}

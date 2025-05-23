@@ -47,7 +47,9 @@ class CustomerManager
             return $context;
         }
 
-        $this->contextResolver->handleSalesChannelContext($request, $context->getSalesChannelId(), $contextToken);
+        $request->attributes->set(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_ID, $context->getSalesChannelId());
+        $request->headers->set(PlatformRequest::HEADER_CONTEXT_TOKEN, $contextToken);
+        $this->contextResolver->resolve($request);
         $newContext = $request->attributes->get(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_CONTEXT_OBJECT);
 
         $this->dispatcher->dispatch(new SalesChannelContextResolvedEvent($newContext, $context->getToken()));

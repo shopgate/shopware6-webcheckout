@@ -5,6 +5,7 @@ namespace Shopgate\WebcheckoutSW6\System\Db\Migration;
 use DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\ParameterType;
 use JsonException;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Migration\MigrationStep;
@@ -22,6 +23,7 @@ class Migration1661693083TokenTestSamples extends MigrationStep
      * @throws \Doctrine\DBAL\Exception
      * @throws JsonException
      * @throws Exception
+     * @throws \Exception
      */
     public function update(Connection $connection): void
     {
@@ -36,6 +38,9 @@ class Migration1661693083TokenTestSamples extends MigrationStep
             ]
         ];
         $storeId = $this->getIdOfSalesChannelViaTypeId($connection);
+        if (!$storeId) {
+            throw new \Exception('Cannot get a valid channel ID in sample data file');
+        }
         array_map(function (array $payload) use ($storeId, $connection) {
             $this->createEntity($payload['token'], $storeId, $connection, $payload['customerId']);
         }, $payloads);
@@ -50,11 +55,15 @@ class Migration1661693083TokenTestSamples extends MigrationStep
      * get the id of the sales channel via the sales channel type id
      * @throws \Doctrine\DBAL\Exception
      */
-    private function getIdOfSalesChannelViaTypeId(Connection $connection): string
+    private function getIdOfSalesChannelViaTypeId(Connection $connection): bool|string
     {
-        $statement = $connection->prepare('SELECT id FROM sales_channel WHERE type_id = UNHEX(?)');
+        $query = $connection->createQueryBuilder()
+            ->select('LOWER(HEX(id))')
+            ->from('sales_channel')
+            ->andWhere('type_id = :channelType')
+            ->setParameter('channelType', Uuid::fromHexToBytes(Defaults::SALES_CHANNEL_TYPE_STOREFRONT), ParameterType::BINARY);
 
-        return Uuid::fromBytesToHex($statement->executeQuery([Defaults::SALES_CHANNEL_TYPE_STOREFRONT])->fetchOne());
+        return $query->executeQuery()->fetchOne();
     }
 
     /**
@@ -65,8 +74,8 @@ class Migration1661693083TokenTestSamples extends MigrationStep
     {
         try {
             $conn->createQueryBuilder()
-                ->delete('sales_channel_api_context', 'a')
-                ->where('a.token = :token')
+                ->delete('sales_channel_api_context')
+                ->where('token = :token')
                 ->setParameter('token', $token)
                 ->executeStatement();
         } catch (Throwable) {

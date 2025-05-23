@@ -2,7 +2,7 @@
 
 namespace Shopgate\WebcheckoutSW6\Entity;
 
-use Shopware\Core\Checkout\Order\OrderDefinition as SWOrderDefinition;
+use Shopware\Core\Checkout\Order\OrderDefinition as ShopwareOrderDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
@@ -18,8 +18,16 @@ class OrderExtension extends EntityExtension
         );
     }
 
+    public function getEntityName(): string
+    {
+        return ShopwareOrderDefinition::ENTITY_NAME;
+    }
+
+    /**
+     * Not needed starting SW 6.7
+     */
     public function getDefinitionClass(): string
     {
-        return SWOrderDefinition::class;
+        return ShopwareOrderDefinition::class;
     }
 }

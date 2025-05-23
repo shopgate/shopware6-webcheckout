@@ -1,3 +1,7 @@
+# 3.3.0
+
+- added support for shopware 6.7-RC.4
+
 # 3.2.0
 
 - added a guest context when logging in to prevent token changes
