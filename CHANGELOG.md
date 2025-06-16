@@ -1,6 +1,6 @@
 # 3.3.0
 
-- added support for shopware 6.7-RC.4
+- added support for shopware 6.7-RC.5
 
 # 3.2.0
 
