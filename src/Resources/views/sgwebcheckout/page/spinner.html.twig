@@ -1,9 +1,10 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
 {# pass sw-context-token to the login pipeline call #}
+{# In SW 6.7+ context.token is not accessible in Twig, so we use page extension data #}
 {% set sgWebcheckoutOptions = sgWebcheckoutOptions|default({})|replace_recursive({
     properties: {
-        token: app.request.attributes.get('sw-sales-channel-context').token
+        token: page.extensions.sg_webcheckout_data.contextToken|default('')
     }
 }) %}
 
