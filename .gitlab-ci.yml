@@ -37,7 +37,7 @@ workflow:
     - when: always
 
 .defaults: &defaults
-  image: dockware/dev:$PLATFORM_BRANCH
+  image: dockware/shopware:$PLATFORM_BRANCH
   cache:
     <<: *cache
   before_script:
@@ -70,7 +70,7 @@ newman:
       - PLATFORM_BRANCH:
           - 6.6.0.0
           - 6.6.10.4
-          - 6.7.2.2
+          - 6.7.5.1
       - PHP_VERSION:
           - '8.3'
   except:
