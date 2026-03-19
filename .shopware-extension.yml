@@ -1,0 +1,10 @@
+# https://developer.shopware.com/docs/products/cli/extension-commands/configuration.html
+compatibility_date: '2026-02-11'
+
+build:
+  zip:
+    pack:
+      excludes:
+        paths:
+          # CLI cache / tooling output created in CI (dockware); must not ship in the zip
+          - shopware-cli
