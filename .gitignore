@@ -1,4 +1,5 @@
 .idea
+shopware-cli
 vendor
 composer.lock
 src/System/Db/Migration/Migration1661693083TokenTestSamples.php
@@ -7,3 +8,4 @@ package-lock.json
 pnpm-lock.yaml
 var
 *.map
+.DS_Store

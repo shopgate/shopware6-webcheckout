@@ -1,3 +1,7 @@
+# 2.3.1
+
+- fixed ReferenceError: TokenSyncEvent is not defined (removed registration of non-existent event)
+
 # 2.3.0
 
 - added a guest context when logging in to prevent token changes

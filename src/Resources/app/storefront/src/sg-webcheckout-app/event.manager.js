@@ -24,7 +24,6 @@ export default class SGWebcheckoutEventManager {
         this.registerEvent(CloseBrowserEvent);
         this.registerEvent(LoginEvent);
         this.registerEvent(PurchaseEvent);
-        this.registerEvent(TokenSyncEvent);
     }
 
     /**
