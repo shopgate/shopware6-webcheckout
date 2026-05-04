@@ -1,3 +1,7 @@
+# Unreleased
+
+- CI: run Newman/Postman tests against Shopware 6.7.9.0 (GitLab matrix)
+
 # 3.3.2
 
 - fixed `NotEncodableValueException: "Recursion detected"` on Store API responses when serializing `OrderEntity` with `shopgateWebcOrder` extension: removed `ApiAware` from the `order` back-reference association on `shopgate_webc_order` (bidirectional OneToOne with `OrderEntity` caused Symfony JSON encoder recursion)
