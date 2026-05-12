@@ -9,6 +9,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 
 class SeoUrlEntityResolver
 {
@@ -17,8 +18,8 @@ class SeoUrlEntityResolver
 
     public function __construct(
         private readonly EntityRepository $seoUrlRepository,
-        private readonly EntityRepository $salesChannelProductRepository,
-        private readonly EntityRepository $salesChannelCategoryRepository
+        private readonly SalesChannelRepository $salesChannelProductRepository,
+        private readonly SalesChannelRepository $salesChannelCategoryRepository
     ) {
     }
 
@@ -30,7 +31,7 @@ class SeoUrlEntityResolver
         }
 
         $criteria = new Criteria([$productId]);
-        $result = $this->salesChannelProductRepository->search($criteria, $salesChannelContext->getContext());
+        $result = $this->salesChannelProductRepository->search($criteria, $salesChannelContext);
         $product = $result->first();
 
         return $product instanceof ProductEntity ? $product : null;
@@ -44,7 +45,7 @@ class SeoUrlEntityResolver
         }
 
         $criteria = new Criteria([$categoryId]);
-        $result = $this->salesChannelCategoryRepository->search($criteria, $salesChannelContext->getContext());
+        $result = $this->salesChannelCategoryRepository->search($criteria, $salesChannelContext);
         $category = $result->first();
 
         return $category instanceof CategoryEntity ? $category : null;
