@@ -54,6 +54,9 @@ class SeoUrlEntityResolver
     private function resolveForeignKey(string $seoPath, string $routeName, SalesChannelContext $salesChannelContext): ?string
     {
         $candidates = $this->buildSeoPathCandidates($seoPath);
+        if ($candidates === []) {
+            return null;
+        }
 
         $criteria = new Criteria();
         $criteria->setLimit(1);
