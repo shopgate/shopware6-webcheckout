@@ -34,6 +34,11 @@
                 <argument type="service" id="service_container"/>
             </call>
         </service>
+        <service id="Shopgate\WebcheckoutSW6\Storefront\Controller\SeoUrlController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
         <service id="Shopgate\WebcheckoutSW6\Services\TokenManager">
             <argument key="$tokens" type="service" id="Shopgate\WebcheckoutSW6\Token\TokenBuilder"/>
             <argument key="$secret" type="string">%kernel.secret%</argument>
@@ -46,6 +51,11 @@
             <argument key="$logoutRoute" type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
             <argument key="$customerRepository" type="service" id="customer.repository"/>
             <argument key="$contextFactory" type="service" id="Shopware\Core\System\SalesChannel\Context\CachedSalesChannelContextFactory"/>
+        </service>
+        <service id="Shopgate\WebcheckoutSW6\Services\SeoUrlEntityResolver">
+            <argument key="$seoUrlRepository" type="service" id="seo_url.repository"/>
+            <argument key="$salesChannelProductRepository" type="service" id="sales_channel.product.repository"/>
+            <argument key="$salesChannelCategoryRepository" type="service" id="sales_channel.category.repository"/>
         </service>
         <service id="Shopgate\WebcheckoutSW6\System\Db\Rule\IsShopgateWebcheckoutRuleCondition">
             <tag name="shopware.rule.definition"/>
