@@ -80,7 +80,7 @@ class SeoUrlEntityResolver
      */
     private function buildSeoPathCandidates(string $seoPath): array
     {
-        $normalized = trim(rawurldecode($seoPath), '/');
+        $normalized = trim($seoPath, '/');
         if ($normalized === '') {
             return [];
         }
