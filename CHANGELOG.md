@@ -1,6 +1,7 @@
 # Unreleased
 
 - CI: run Newman/Postman tests against Shopware 6.7.9.0 (GitLab matrix)
+- added new storefront API endpoints to resolve product and category entities by SEO URL.
 
 # 3.3.2
 
