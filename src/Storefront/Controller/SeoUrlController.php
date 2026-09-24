@@ -20,7 +20,7 @@ class SeoUrlController extends StorefrontController
 
     /**
      * This endpoint allows resolving a product based on a given SEO URL path.
-     * The endpoints expects a query parameter named 'url' containing the SEO URL path to be resolved.
+     * The endpoint expects a query parameter named 'url' containing the SEO URL path to be resolved.
      * If a matching product is found for the provided SEO URL path, it returns the product data as a JSON response; otherwise, it throws a NotFoundHttpException.
      */
     #[Route(path: '/store-api/sgwebcheckout/product/by-seo-url', name: 'store-api.sgwebcheckout.product.by-seo-url', defaults: [
@@ -43,7 +43,7 @@ class SeoUrlController extends StorefrontController
 
     /**
      * This endpoint allows resolving a category based on a given SEO URL path.
-     * The endpoints expects a query parameter named 'url' containing the SEO URL path to be resolved.
+     * The endpoint expects a query parameter named 'url' containing the SEO URL path to be resolved.
      * If a matching category is found for the provided SEO URL path, it returns the category data as a JSON response; otherwise, it throws a NotFoundHttpException.
      */
     #[Route(path: '/store-api/sgwebcheckout/category/by-seo-url', name: 'store-api.sgwebcheckout.category.by-seo-url', defaults: [
