@@ -3,7 +3,7 @@
     "description": "Shopgate Webcheckout for Shopware 6",
     "license": "proprietary",
     "type": "shopware-platform-plugin",
-    "version": "3.3.2",
+    "version": "3.4.0",
     "keywords": [
         "mobile",
         "app"
@@ -58,6 +58,11 @@
     "autoload": {
         "psr-4": {
             "Shopgate\\WebcheckoutSW6\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
         }
     }
 }
